@@ -1,0 +1,165 @@
+/* Contenedor principal */
+.table-section {
+  background-color: white;
+  border-radius: 8px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+}
+
+/* Cabecera de la tabla */
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.table-header h2 {
+  color: #333;
+  font-size: 18px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+}
+
+.search {
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 14px;
+  padding: 8px 12px;
+  width: 220px;
+}
+
+.btn-add {
+  background-color: #3498db;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 16px;
+  transition: background-color 0.15s ease;
+}
+
+.btn-add:hover {
+  background-color: #2980b9;
+}
+
+/* Tabla de datos */
+.data-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.data-table th,
+.data-table td {
+  border-bottom: 1px solid #f0f0f0;
+  padding: 14px 20px;
+  text-align: left;
+}
+
+.data-table th {
+  color: #666;
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.data-table tr:hover {
+  background-color: #f9f9f9;
+}
+
+/* Estilos para valores específicos */
+.tipo-credito {
+  color: #27ae60;
+}
+
+.tipo-debito {
+  color: #e74c3c;
+}
+
+.valor-positivo {
+  color: #27ae60;
+  font-weight: 500;
+}
+
+.valor-negativo {
+  color: #e74c3c;
+  font-weight: 500;
+}
+
+/* Botones de acción */
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-edit, .btn-delete {
+  background-color: transparent;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  color: #555;
+  cursor: pointer;
+  font-size: 13px;
+  padding: 6px 10px;
+  transition: all 0.15s ease;
+}
+
+.btn-edit:hover {
+  background-color: #f0f7ff;
+  border-color: #3498db;
+  color: #3498db;
+}
+
+.btn-delete:hover {
+  background-color: #fff5f5;
+  border-color: #e74c3c;
+  color: #e74c3c;
+}
+
+/* Paginación */
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.page-info {
+  color: #777;
+  font-size: 14px;
+}
+
+.page-controls {
+  display: flex;
+  gap: 6px;
+}
+
+.page-btn {
+  background-color: transparent;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  color: #555;
+  cursor: pointer;
+  font-size: 13px;
+  padding: 6px 12px;
+  transition: all 0.15s ease;
+}
+
+.page-btn:hover {
+  background-color: #f8f8f8;
+  border-color: #bbb;
+}
+
+.page-btn.active {
+  background-color: #3498db;
+  border-color: #3498db;
+  color: white;
+}

@@ -1,0 +1,19 @@
+/* Estilos para el componente de cuentas */
+.data-table th,
+.data-table td {
+  text-align: center !important;
+  border: 1px solid whitesmoke;
+}
+
+.data-table td.actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.no-data {
+  text-align: center;
+  font-style: italic;
+  color: gray;
+}

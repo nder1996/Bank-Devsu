@@ -1,0 +1,41 @@
+/* You can add global styles to this file, and also import other style files */
+* {
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden; /* Evita el scroll en el body */
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.main-content {
+  display: flex;
+  flex: 1;
+  height: calc(100vh - 115px); /* Altura total - (header + footer) */
+  overflow: hidden;
+}
+
+.content {
+  flex: 1;
+  overflow-y: auto; /* Solo scroll en el área de contenido */
+  padding: 25px;
+}
+
+
+.data-table{
+  border:1px solid red !important
+}
+
+.data-table th{
+  border: 1px solid black !important;
+}

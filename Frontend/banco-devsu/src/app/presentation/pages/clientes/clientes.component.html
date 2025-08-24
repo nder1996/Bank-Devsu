@@ -1,0 +1,196 @@
+<div class="table-section">
+  <div class="table-header">
+    <h2>Cliente</h2>
+    <div class="table-actions">
+      <input type="text" class="search-input" placeholder="Buscar Cliente..." [(ngModel)]="searchTerm"
+        (input)="filterItems()">
+      <button class="btn-add" (click)="showDialog()">Agregar Cliente +</button>
+    </div>
+  </div>
+
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Identificación</th>
+        <th>Edad</th>
+        <th>Género</th>
+        <th>Dirección</th>
+        <th>Teléfono</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of paginatedItems">
+        <td>{{item.id}}</td>
+        <td>{{item.nombre}}</td>
+        <td>{{item.identificacion}}</td>
+        <td>{{item.edad}}</td>
+        <td>{{item.genero}}</td>
+        <td>{{item.direccion}}</td>
+        <td>{{item.telefono}}</td>
+        <td>{{item.estado ? 'Activo' : 'Inactivo'}}</td>
+        <td class="actions">
+          <button class="btn-edit" (click)="editClient(item)">Editar</button>
+          <button class="btn-delete" (click)="confirmDelete(item)">Eliminar</button>
+        </td>
+      </tr>
+      <tr *ngIf="paginatedItems.length === 0">
+        <td colspan="6" class="no-data">No se encontraron cuentas</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="pagination">
+    <span class="page-info">
+      Mostrando {{filteredItems.length ? startIndex + 1 : 0}}-{{endIndex}} de {{filteredItems.length}}
+    </span>
+    <div class="page-controls">
+      <button class="page-btn" [disabled]="currentPage === 1" (click)="changePage(currentPage - 1)">
+        Anterior
+      </button>
+
+      <button *ngFor="let page of pages" class="page-btn" [class.active]="page === currentPage"
+        (click)="changePage(page)">
+        {{page}}
+      </button>
+
+      <button class="page-btn" [disabled]="currentPage === totalPages" (click)="changePage(currentPage + 1)">
+        Siguiente
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" [class.show]="isDialogVisible">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>{{ isEditMode ? 'Editar Cliente' : 'Nuevo Cliente' }}</h3>
+    </div>
+    <form [formGroup]="clientForm" (ngSubmit)="saveClient()">
+      <div class="container-form">
+        <!-- Fila 1: Nombre y Género -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input type="text" id="nombre" formControlName="nombre" class="form-control" [class.is-invalid]="formSubmitted && clientForm.get('nombre')?.invalid">
+            <div *ngIf="(formSubmitted || clientForm.get('nombre')?.touched) && clientForm.get('nombre')?.invalid" class="error-message">
+              Nombre es requerido
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="genero">Género</label>
+            <select id="genero" formControlName="genero" class="form-control" [class.is-invalid]="formSubmitted && clientForm.get('genero')?.invalid">
+              <option value="" disabled>Seleccione...</option>
+              <option value="Masculino">Masculino</option>
+              <option value="Femenino">Femenino</option>
+              <option value="Otro">Otro</option>
+            </select>
+            <div *ngIf="(formSubmitted || clientForm.get('genero')?.touched) && clientForm.get('genero')?.invalid" class="error-message">
+              Género es requerido
+            </div>
+          </div>
+        </div>
+
+        <!-- Fila 2: Edad e Identificación -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="edad">Edad</label>
+            <input type="number" id="edad" formControlName="edad" class="form-control" [class.is-invalid]="formSubmitted && clientForm.get('edad')?.invalid">
+            <div *ngIf="(formSubmitted || clientForm.get('edad')?.touched) && clientForm.get('edad')?.errors?.['required']"
+              class="error-message">
+              Edad es requerida
+            </div>
+            <div *ngIf="(formSubmitted || clientForm.get('edad')?.touched) && clientForm.get('edad')?.errors?.['min']"
+              class="error-message">
+              Debe ser mayor de 18 años
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="identificacion">Identificación</label>
+            <input type="text" id="identificacion" formControlName="identificacion" class="form-control" [class.is-invalid]="formSubmitted && clientForm.get('identificacion')?.invalid">
+            <div *ngIf="(formSubmitted || clientForm.get('identificacion')?.touched) && clientForm.get('identificacion')?.invalid"
+              class="error-message">
+              Identificación es requerida
+            </div>
+          </div>
+        </div>
+
+        <!-- Fila 3: Dirección y Teléfono -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="direccion">Dirección</label>
+            <input type="text" id="direccion" formControlName="direccion" class="form-control" [class.is-invalid]="formSubmitted && clientForm.get('direccion')?.invalid">
+            <div *ngIf="(formSubmitted || clientForm.get('direccion')?.touched) && clientForm.get('direccion')?.invalid"
+              class="error-message">
+              Dirección es requerida
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="telefono">Teléfono</label>
+            <input type="tel" id="telefono" formControlName="telefono" class="form-control" [class.is-invalid]="formSubmitted && clientForm.get('telefono')?.invalid">
+            <div *ngIf="(formSubmitted || clientForm.get('telefono')?.touched) && clientForm.get('telefono')?.invalid"
+              class="error-message">
+              Teléfono es requerido
+            </div>
+          </div>
+        </div>
+
+        <!-- Fila 4: Contraseña y Estado -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="contrasena">Contraseña</label>
+            <input type="password" id="contrasena" formControlName="contrasena" class="form-control" [class.is-invalid]="formSubmitted && clientForm.get('contrasena')?.invalid">
+            <div *ngIf="(formSubmitted || clientForm.get('contrasena')?.touched) && clientForm.get('contrasena')?.errors?.['required']"
+              class="error-message">
+              Contraseña es requerida
+            </div>
+            <div *ngIf="(formSubmitted || clientForm.get('contrasena')?.touched) && clientForm.get('contrasena')?.errors?.['minlength']"
+              class="error-message">
+              Contraseña debe tener al menos 6 caracteres
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="estado">Estado</label>
+            <select id="estado" formControlName="estado" class="form-control" [class.is-invalid]="formSubmitted && clientForm.get('estado')?.invalid">
+              <option [ngValue]="true">Activo</option>
+              <option [ngValue]="false">Inactivo</option>
+            </select>
+            <div *ngIf="(formSubmitted || clientForm.get('estado')?.touched) && clientForm.get('estado')?.invalid" class="error-message">
+              Estado es requerido
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botones de acción -->
+      <div class="form-actions fixed-bottom">
+        <button type="button" class="btn btn-secondary" (click)="cancelForm()">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal de confirmación para eliminar -->
+<div class="modal" [class.show]="isDeleteModalVisible">
+  <div class="modal-content confirmation">
+    <div class="modal-header">
+      <h3>Confirmar eliminación</h3>
+    </div>
+    <div class="modal-body">
+      <p>¿Está seguro de que desea eliminar este cliente?</p>
+      <p *ngIf="clientToDelete"><strong>{{ clientToDelete.nombre }}</strong></p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="cancelDelete()">Cancelar</button>
+      <button type="button" class="btn btn-danger" (click)="deleteClient()">Eliminar</button>
+    </div>
+  </div>
+</div>
