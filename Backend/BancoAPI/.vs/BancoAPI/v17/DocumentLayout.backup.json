@@ -3,40 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|c:\\users\\usuario\\documents\\github\\bank-devsu\\backend\\bancoapi\\bancoapi\\infrastructure\\repositories\\movimientorepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|solutionrelative:bancoapi\\infrastructure\\repositories\\movimientorepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|c:\\users\\usuario\\documents\\github\\bank-devsu\\backend\\bancoapi\\bancoapi\\application\\exceptions\\cupodiarioexcedidoexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|solutionrelative:bancoapi\\application\\exceptions\\cupodiarioexcedidoexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|c:\\users\\usuario\\documents\\github\\bank-devsu\\backend\\bancoapi\\bancoapi\\infrastructure\\repositories\\clienterepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|solutionrelative:bancoapi\\infrastructure\\repositories\\clienterepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|c:\\users\\usuario\\documents\\github\\bank-devsu\\backend\\bancoapi\\bancoapi\\application\\exceptions\\saldonodisponibleexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|solutionrelative:bancoapi\\application\\exceptions\\saldonodisponibleexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|c:\\users\\usuario\\documents\\github\\bank-devsu\\backend\\bancoapi\\bancoapi\\infrastructure\\repositories\\cuentarepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|solutionrelative:bancoapi\\infrastructure\\repositories\\cuentarepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|c:\\users\\usuario\\documents\\github\\bank-devsu\\backend\\bancoapi\\bancoapi\\domain\\interfaces\\repositories\\iclienterepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|solutionrelative:bancoapi\\domain\\interfaces\\repositories\\iclienterepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|c:\\users\\usuario\\documents\\github\\bank-devsu\\backend\\bancoapi\\bancoapi\\domain\\interfaces\\repositories\\icuentarepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|solutionrelative:bancoapi\\domain\\interfaces\\repositories\\icuentarepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|c:\\users\\usuario\\documents\\github\\bank-devsu\\backend\\bancoapi\\bancoapi\\controllers\\clientescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|solutionrelative:bancoapi\\controllers\\clientescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|c:\\users\\usuario\\documents\\github\\bank-devsu\\backend\\bancoapi\\bancoapi\\application\\dtos\\clientedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|solutionrelative:bancoapi\\application\\dtos\\clientedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|c:\\users\\usuario\\documents\\github\\bank-devsu\\backend\\bancoapi\\bancoapi\\application\\dtos\\cuentadto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|solutionrelative:bancoapi\\application\\dtos\\cuentadto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|c:\\users\\usuario\\documents\\github\\bank-devsu\\backend\\bancoapi\\bancoapi\\application\\dtos\\movimientodto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|solutionrelative:bancoapi\\application\\dtos\\movimientodto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|c:\\users\\usuario\\documents\\github\\bank-devsu\\backend\\bancoapi\\bancoapi\\middlewares\\apiexceptionfilter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|solutionrelative:bancoapi\\middlewares\\apiexceptionfilter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -46,123 +22,45 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "MovimientoRepository.cs",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Infrastructure\\Repositories\\MovimientoRepository.cs",
-              "RelativeDocumentMoniker": "BancoAPI\\Infrastructure\\Repositories\\MovimientoRepository.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Infrastructure\\Repositories\\MovimientoRepository.cs",
-              "RelativeToolTip": "BancoAPI\\Infrastructure\\Repositories\\MovimientoRepository.cs",
-              "ViewState": "AgIAAAsAAAAAAAAAAAAQwBsAAAALAAAAAAAAAA==",
+              "DocumentIndex": 2,
+              "Title": "ApiExceptionFilter.cs",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Middlewares\\ApiExceptionFilter.cs",
+              "RelativeDocumentMoniker": "BancoAPI\\Middlewares\\ApiExceptionFilter.cs",
+              "ToolTip": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Middlewares\\ApiExceptionFilter.cs",
+              "RelativeToolTip": "BancoAPI\\Middlewares\\ApiExceptionFilter.cs",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAAABcAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-24T04:52:01.811Z",
+              "WhenOpened": "2025-08-24T05:13:22.011Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "CupoDiarioExcedidoException.cs",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Application\\Exceptions\\CupoDiarioExcedidoException.cs",
+              "RelativeDocumentMoniker": "BancoAPI\\Application\\Exceptions\\CupoDiarioExcedidoException.cs",
+              "ToolTip": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Application\\Exceptions\\CupoDiarioExcedidoException.cs",
+              "RelativeToolTip": "BancoAPI\\Application\\Exceptions\\CupoDiarioExcedidoException.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-24T05:09:49.765Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "ClienteRepository.cs",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Infrastructure\\Repositories\\ClienteRepository.cs",
-              "RelativeDocumentMoniker": "BancoAPI\\Infrastructure\\Repositories\\ClienteRepository.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Infrastructure\\Repositories\\ClienteRepository.cs",
-              "RelativeToolTip": "BancoAPI\\Infrastructure\\Repositories\\ClienteRepository.cs",
-              "ViewState": "AgIAAEcAAAAAAAAAAAAAABcAAAAbAAAAAAAAAA==",
+              "Title": "SaldoNoDisponibleException.cs",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Application\\Exceptions\\SaldoNoDisponibleException.cs",
+              "RelativeDocumentMoniker": "BancoAPI\\Application\\Exceptions\\SaldoNoDisponibleException.cs",
+              "ToolTip": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Application\\Exceptions\\SaldoNoDisponibleException.cs",
+              "RelativeToolTip": "BancoAPI\\Application\\Exceptions\\SaldoNoDisponibleException.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAA1AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-24T04:49:39.56Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "CuentaRepository.cs",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Infrastructure\\Repositories\\CuentaRepository.cs",
-              "RelativeDocumentMoniker": "BancoAPI\\Infrastructure\\Repositories\\CuentaRepository.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Infrastructure\\Repositories\\CuentaRepository.cs",
-              "RelativeToolTip": "BancoAPI\\Infrastructure\\Repositories\\CuentaRepository.cs",
-              "ViewState": "AgIAABcAAAAAAAAAAAAswDUAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-24T04:45:00.033Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "IClienteRepository.cs",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Domain\\Interfaces\\Repositories\\IClienteRepository.cs",
-              "RelativeDocumentMoniker": "BancoAPI\\Domain\\Interfaces\\Repositories\\IClienteRepository.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Domain\\Interfaces\\Repositories\\IClienteRepository.cs",
-              "RelativeToolTip": "BancoAPI\\Domain\\Interfaces\\Repositories\\IClienteRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-24T04:44:47.371Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "ICuentaRepository.cs",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Domain\\Interfaces\\Repositories\\ICuentaRepository.cs",
-              "RelativeDocumentMoniker": "BancoAPI\\Domain\\Interfaces\\Repositories\\ICuentaRepository.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Domain\\Interfaces\\Repositories\\ICuentaRepository.cs",
-              "RelativeToolTip": "BancoAPI\\Domain\\Interfaces\\Repositories\\ICuentaRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-24T04:44:45.771Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "ClientesController.cs",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Controllers\\ClientesController.cs",
-              "RelativeDocumentMoniker": "BancoAPI\\Controllers\\ClientesController.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Controllers\\ClientesController.cs",
-              "RelativeToolTip": "BancoAPI\\Controllers\\ClientesController.cs",
-              "ViewState": "AgIAACIAAAAAAAAAAAAAAAwAAAA5AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-24T00:28:21.972Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "ClienteDto.cs",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Application\\DTOs\\ClienteDto.cs",
-              "RelativeDocumentMoniker": "BancoAPI\\Application\\DTOs\\ClienteDto.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Application\\DTOs\\ClienteDto.cs",
-              "RelativeToolTip": "BancoAPI\\Application\\DTOs\\ClienteDto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-23T23:43:43.052Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "CuentaDto.cs",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Application\\DTOs\\CuentaDto.cs",
-              "RelativeDocumentMoniker": "BancoAPI\\Application\\DTOs\\CuentaDto.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Application\\DTOs\\CuentaDto.cs",
-              "RelativeToolTip": "BancoAPI\\Application\\DTOs\\CuentaDto.cs",
-              "ViewState": "AgIAAAgAAAAAAAAAAAAQwAUAAAAaAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-23T23:42:06.425Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "MovimientoDto.cs",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Application\\DTOs\\MovimientoDto.cs",
-              "RelativeDocumentMoniker": "BancoAPI\\Application\\DTOs\\MovimientoDto.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Application\\DTOs\\MovimientoDto.cs",
-              "RelativeToolTip": "BancoAPI\\Application\\DTOs\\MovimientoDto.cs",
-              "ViewState": "AgIAAA0AAAAAAAAAAAAgwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-22T00:26:16.709Z",
+              "WhenOpened": "2025-08-24T05:09:36.994Z",
               "EditorCaption": ""
             }
           ]

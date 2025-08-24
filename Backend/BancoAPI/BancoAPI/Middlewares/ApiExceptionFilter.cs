@@ -1,4 +1,5 @@
 ﻿using BancoAPI.Application.DTOs;
+using BancoAPI.Application.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -22,7 +23,7 @@ namespace BancoAPI.Middlewares
 
             switch (context.Exception)
             {
-                /*case SaldoNoDisponibleException:
+                case SaldoNoDisponibleException:
                     statusCode = StatusCodes.Status400BadRequest;
                     response = ApiResponse<object>.Fail("Saldo no disponible");
                     break;
@@ -41,7 +42,6 @@ namespace BancoAPI.Middlewares
                     statusCode = StatusCodes.Status400BadRequest;
                     response = ApiResponse<object>.Fail(context.Exception.Message);
                     break;
-                */
                 default:
                     statusCode = StatusCodes.Status500InternalServerError;
                     response = ApiResponse<object>.Fail(
