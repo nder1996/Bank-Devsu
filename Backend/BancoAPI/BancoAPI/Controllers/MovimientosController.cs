@@ -1,5 +1,6 @@
 ﻿using BancoAPI.Application.DTOs;
 using BancoAPI.Application.Services;
+using BancoAPI.Domain.Entities;
 using BancoAPI.Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,44 +21,51 @@ namespace BancoAPI.Controllers
         }
 
 
-        // GET: api/<ValuesController>
+        // GET: api/Movimientos
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<ActionResult<IEnumerable<MovimientoDto>>> Get()
         {
-            try
-            {
-                var movimientos = await _movimientoService.GetAllAsync();
-                return Ok(movimientos);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { mensaje = ex.Message });
-            }
+            var movimientos = await _movimientoService.GetAllAsync();
+            return Ok(movimientos);
         }
 
-            // GET api/<ValuesController>/5
-            /* [HttpGet("{id}")]
-             public string Get(int id)
-             {
-                 return "value";
-             }
-
-             // POST api/<ValuesController>
-             [HttpPost]
-             public void Post([FromBody]string value)
-             {
-             }
-
-             // PUT api/<ValuesController>/5
-             [HttpPut("{id}")]
-             public void Put(int id, [FromBody]string value)
-             {
-             }
-
-             // DELETE api/<ValuesController>/5
-             [HttpDelete("{id}")]
-             public void Delete(int id)
-             {
-             }*/
+        // GET: api/Movimientos/5
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<Movimiento>> Get(int id)
+        {
+            var movimiento = await _movimientoService.GetByIdAsync(id);
+            if (movimiento == null)
+                return NotFound();
+            return Ok(movimiento);
         }
+
+        // POST: api/Movimientos
+        [HttpPost]
+        public async Task<ActionResult<Movimiento>> Post([FromBody] MovimientoDto movimiento)
+        {
+            var nuevoMovimiento = await _movimientoService.CreateAsync(movimiento);
+            return CreatedAtAction(nameof(Get), new { id = nuevoMovimiento.id }, nuevoMovimiento);
+        }
+
+        // PUT: api/Movimientos/5
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult<Movimiento>> Put(int id, [FromBody] MovimientoDto movimiento)
+        {
+            if (id != movimiento.id)
+                return BadRequest("El ID del movimiento no coincide.");
+
+            var movimientoActualizado = await _movimientoService.UpdateAsync(movimiento);
+            return Ok(movimientoActualizado);
+        }
+
+        // DELETE: api/Movimientos/5
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var resultado = await _movimientoService.DeleteAsync(id);
+            if (!resultado)
+                return NotFound();
+            return NoContent();
+        }
+    }
 }

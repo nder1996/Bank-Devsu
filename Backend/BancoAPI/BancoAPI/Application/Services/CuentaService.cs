@@ -21,45 +21,136 @@ namespace BancoAPI.Application.Services
         }
 
 
-        Task<bool> ICuentaService.ActualizarEstadoAsync(long cuentaId, bool nuevoEstado)
+        public async Task<bool> ActualizarEstadoAsync(long cuentaId, bool nuevoEstado)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (cuentaId <= 0)
+                    throw new ArgumentException("El id de la cuenta debe ser mayor a cero.", nameof(cuentaId));
+
+                return await _cuentaRepository.ActualizarEstadoAsync(cuentaId, nuevoEstado);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al actualizar el estado de la cuenta.", ex);
+            }
         }
 
-        Task<bool> ICuentaService.ActualizarTipoCuentaAsync(long cuentaId, string nuevoTipo)
+        public async Task<bool> ActualizarTipoCuentaAsync(long cuentaId, string nuevoTipo)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (cuentaId <= 0)
+                    throw new ArgumentException("El id de la cuenta debe ser mayor a cero.", nameof(cuentaId));
+                if (string.IsNullOrWhiteSpace(nuevoTipo))
+                    throw new ArgumentException("El nuevo tipo de cuenta es requerido.", nameof(nuevoTipo));
+
+                return await _cuentaRepository.ActualizarTipoCuentaAsync(cuentaId, nuevoTipo);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al actualizar el tipo de la cuenta.", ex);
+            }
         }
 
-        Task<Cuenta> ICuentaService.CrearAsync(Cuenta cuenta)
+        public async Task<CuentaDto> CrearAsync(CuentaDto cuentaDto)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (cuentaDto is null)
+                    throw new ArgumentNullException(nameof(cuentaDto), "La cuenta no puede ser nula.");
+                if (string.IsNullOrWhiteSpace(cuentaDto.numeroCuenta))
+                    throw new ArgumentException("El número de cuenta es requerido.", nameof(cuentaDto.numeroCuenta));
+                if (cuentaDto.saldoInicial < 0)
+                    throw new ArgumentException("El saldo inicial debe ser mayor o igual a cero.", nameof(cuentaDto.saldoInicial));
+
+                // Mapeo de DTO a entidad
+                var cuentaEntity = _mapper.Map<Cuenta>(cuentaDto);
+                var cuentaCreada = await _cuentaRepository.CrearAsync(cuentaEntity);
+
+                // Mapeo de entidad a DTO
+                return _mapper.Map<CuentaDto>(cuentaCreada);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al crear la cuenta.", ex);
+            }
         }
 
-        Task<bool> ICuentaService.EliminarAsync(long cuentaId)
+        public async Task<bool> EliminarAsync(long cuentaId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (cuentaId <= 0)
+                    throw new ArgumentException("El id de la cuenta debe ser mayor a cero.", nameof(cuentaId));
+
+                return await _cuentaRepository.EliminarAsync(cuentaId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al eliminar la cuenta.", ex);
+            }
         }
 
-        Task<IEnumerable<Cuenta>> ICuentaService.ObtenerPorClienteIdAsync(long clienteId)
+        public async Task<IEnumerable<CuentaDto>> ObtenerPorClienteIdAsync(long clienteId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (clienteId <= 0)
+                    throw new ArgumentException("El id del cliente debe ser mayor a cero.", nameof(clienteId));
+
+                var cuentas = await _cuentaRepository.ObtenerPorClienteIdAsync(clienteId);
+                return _mapper.Map<IEnumerable<CuentaDto>>(cuentas);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener las cuentas del cliente.", ex);
+            }
         }
 
-        Task<Cuenta> ICuentaService.ObtenerPorIdAsync(long cuentaId)
+        public async Task<CuentaDto> ObtenerPorIdAsync(long cuentaId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (cuentaId <= 0)
+                    throw new ArgumentException("El id de la cuenta debe ser mayor a cero.", nameof(cuentaId));
+
+                var cuenta = await _cuentaRepository.ObtenerPorIdAsync(cuentaId);
+                return _mapper.Map<CuentaDto>(cuenta);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener la cuenta por id.", ex);
+            }
         }
 
-        Task<Cuenta> ICuentaService.ObtenerPorNumeroCuentaAsync(string numeroCuenta)
+        public async Task<CuentaDto> ObtenerPorNumeroCuentaAsync(string numeroCuenta)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (string.IsNullOrWhiteSpace(numeroCuenta))
+                    throw new ArgumentException("El número de cuenta es requerido.", nameof(numeroCuenta));
+
+                var cuenta = await _cuentaRepository.ObtenerPorNumeroCuentaAsync(numeroCuenta);
+                return _mapper.Map<CuentaDto>(cuenta);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener la cuenta por número de cuenta.", ex);
+            }
         }
 
-        async Task<IEnumerable<CuentaDto>> ICuentaService.ObtenerTodasAsync()
+        public async Task<IEnumerable<CuentaDto>> ObtenerTodasAsync()
         {
-            var cuentas = await _cuentaRepository.ObtenerTodasAsync();
-            return _mapper.Map<IEnumerable<CuentaDto>>(cuentas);
+            try
+            {
+                var cuentas = await _cuentaRepository.ObtenerTodasAsync();
+                return _mapper.Map<IEnumerable<CuentaDto>>(cuentas);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener todas las cuentas.", ex);
+            }
         }
     }
 }

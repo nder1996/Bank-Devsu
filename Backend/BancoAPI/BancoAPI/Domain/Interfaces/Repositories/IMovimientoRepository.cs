@@ -9,5 +9,7 @@ namespace BancoAPI.Domain.Interfaces.Repositories
         Task<IEnumerable<Movimiento>> GetAllAsync();
         Task<Movimiento> UpdateAsync(Movimiento movimiento);
         Task<bool> DeleteAsync(int id);
+        Task<IEnumerable<Movimiento>> GetByCuentaIdAsync(long cuentaId);
+        Task<IEnumerable<Movimiento>> GetDebitosDiariosByCuentaIdAsync(long cuentaId, DateTime fechaInicio, DateTime fechaFin);
     }
 }

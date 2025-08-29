@@ -1,4 +1,5 @@
 ﻿using BancoAPI.Domain.Entities;
+using BancoAPI.Domain.Enums;
 using BancoAPI.Domain.Interfaces.Repositories;
 using BancoAPI.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -34,12 +35,29 @@ namespace BancoAPI.Infrastructure.Repositories
                .ToListAsync();
         }
 
+        async Task<IEnumerable<Movimiento>> IMovimientoRepository.GetByCuentaIdAsync(long cuentaId)
+        {
+            return await _context.Movimientos
+            .Where(m => m.CuentaId == cuentaId)
+            .ToListAsync();
+        }
+
         async Task<Movimiento?> IMovimientoRepository.GetByIdAsync(int id)
         {
             return await _context.Movimientos
                 .Include(m => m.Cuenta)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
+        }
+
+        async Task<IEnumerable<Movimiento>> IMovimientoRepository.GetDebitosDiariosByCuentaIdAsync(long cuentaId, DateTime fechaInicio, DateTime fechaFin)
+        {
+            return await _context.Movimientos
+            .Where(m => m.CuentaId == cuentaId &&
+                  m.TipoMovimiento == TipoMovimiento.Debito &&
+                  m.Fecha >= fechaInicio &&
+                  m.Fecha < fechaFin)
+            .ToListAsync();
         }
 
         async Task<Movimiento> IMovimientoRepository.UpdateAsync(Movimiento movimiento)

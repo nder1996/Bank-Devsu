@@ -1,7 +1,5 @@
 import { CuentaDto } from "./cuenta.dto";
 
-
-
 export class ClienteDto {
   constructor(
     public id?: number,

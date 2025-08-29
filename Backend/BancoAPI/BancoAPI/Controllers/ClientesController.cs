@@ -1,4 +1,6 @@
-﻿using BancoAPI.Domain.Interfaces.Services;
+﻿using BancoAPI.Application.DTOs;
+using BancoAPI.Domain.Entities;
+using BancoAPI.Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -21,49 +23,49 @@ namespace BancoAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            try
-            {
-                var clientes = await _clienteService.ObtenerTodosAsync();
-                return Ok(clientes);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { mensaje = ex.Message });
-            }
+            var clientes = await _clienteService.ObtenerTodosAsync();
+            return Ok(clientes);
         }
 
-
-
-       /* // GET: api/<ValuesController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        // GET: api/Clientes/5
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> Get(int id)
         {
-            return new string[] { "value1", "value2" };
-        }*/
-
-        // GET api/<ValuesController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
+            var cliente = await _clienteService.ObtenerPorIdAsync(id);
+            return Ok(cliente);
         }
 
-        // POST api/<ValuesController>
+        // POST: api/Clientes
         [HttpPost]
-        public void Post([FromBody]string value)
+        public async Task<IActionResult> Post([FromBody] ClienteDto cliente)
         {
+            var nuevoCliente = await _clienteService.CrearAsync(cliente);
+            return CreatedAtAction(nameof(Get), new { id = nuevoCliente.id }, nuevoCliente);
         }
 
-        // PUT api/<ValuesController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        // PUT: api/Clientes/5
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> Put(int id, [FromBody] ClienteDto cliente)
         {
+            if (cliente.id != id)
+            {
+                return BadRequest("El identificador no coincide");
+            }
+
+            var clienteActualizado = await _clienteService.ActualizarAsync(cliente);
+            return Ok(clienteActualizado);
         }
 
-        // DELETE api/<ValuesController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        // DELETE: api/Clientes/5
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> Delete(long id)
         {
+            var eliminado = await _clienteService.EliminarAsync(id);
+            if (eliminado)
+            {
+                return NoContent();
+            }
+            return BadRequest("No se pudo eliminar el cliente");
         }
     }
 }

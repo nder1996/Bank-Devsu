@@ -5,10 +5,10 @@ namespace BancoAPI.Domain.Interfaces.Services
 {
     public interface IMovimientoService
     {
-        Task<Movimiento> CreateAsync(Movimiento movimiento);
-        Task<Movimiento?> GetByIdAsync(int id);
+        Task<MovimientoDto> CreateAsync(MovimientoDto movimiento);
+        Task<MovimientoDto?> GetByIdAsync(int id);
         Task<IEnumerable<MovimientoDto>> GetAllAsync();
-        Task<Movimiento> UpdateAsync(Movimiento movimiento);
+        Task<MovimientoDto> UpdateAsync(MovimientoDto movimiento);
         Task<bool> DeleteAsync(int id);
     }
 }

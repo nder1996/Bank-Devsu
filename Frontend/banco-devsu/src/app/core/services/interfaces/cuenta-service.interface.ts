@@ -6,7 +6,7 @@ import { CuentaDto } from '../../dtos/cuenta.dto';
 export interface ICuentaService {
   getCuentas(): Observable<Cuenta[]>;
   getCuentaById(id: number): Observable<Cuenta>;
-  createCuenta(cuentaDto: CuentaDto): Observable<Cuenta>;
+  createCuenta(cuentaDto: CuentaDto): Observable<CuentaDto>;
   updateCuenta(id: number, cuentaDto: CuentaDto): Observable<Cuenta>;
   deleteCuenta(id: number): Observable<void>;
 }

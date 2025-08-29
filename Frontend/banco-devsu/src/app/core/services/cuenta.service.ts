@@ -10,7 +10,7 @@ import { CuentaDto } from '../dtos/cuenta.dto';
   providedIn: 'root',
 })
 export class CuentaService implements ICuentaService {
-  private apiUrl = `${environment.apiUrl}/cuentas`;
+  private apiUrl = `${environment.apiUrl}/Cuentas`;
 
   constructor(private http: HttpClient) {}
 
@@ -25,8 +25,8 @@ export class CuentaService implements ICuentaService {
   }
 
   // Crear una nueva cuenta
-  createCuenta(cuentaDto: CuentaDto): Observable<Cuenta> {
-    return this.http.post<Cuenta>(this.apiUrl, cuentaDto);
+  createCuenta(cuentaDto: CuentaDto): Observable<CuentaDto> {
+    return this.http.post<CuentaDto>(this.apiUrl, cuentaDto);
   }
 
   // Actualizar una cuenta existente

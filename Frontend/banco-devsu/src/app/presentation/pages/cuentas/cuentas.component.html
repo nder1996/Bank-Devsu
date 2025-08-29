@@ -8,7 +8,7 @@
         placeholder="Buscar cuenta..."
         [(ngModel)]="searchTerm"
         (input)="filterItems()">
-      <button class="btn-add">Nuevo</button>
+      <button class="btn-add" (click)="showDialog()">Nuevo</button>
     </div>
   </div>
 
@@ -33,8 +33,8 @@
          <td>{{item.estado}}</td>
         <td>{{item.nombreCliente}}</td>
         <td class="actions">
-          <button class="btn-edit">Editar</button>
-          <button class="btn-delete">Eliminar</button>
+          <button class="btn-edit" (click)="showDialog(true, item)">Editar</button>
+          <button class="btn-delete" (click)="showDeleteConfirmation(item)">Eliminar</button>
         </td>
       </tr>
       <tr *ngIf="paginatedItems.length === 0">
@@ -63,6 +63,109 @@
       <button class="page-btn" [disabled]="currentPage === totalPages" (click)="changePage(currentPage + 1)">
         Siguiente
       </button>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal" [class.show]="isDialogVisible">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>{{ isEditMode ? 'Editar Cuenta' : 'Nueva Cuenta' }}</h3>
+    </div>
+    <form [formGroup]="accountForm" (ngSubmit)="saveAccount()">
+      <div class="container-form">
+        <!-- Fila 1: Número de Cuenta y Tipo de Cuenta -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="numeroCuenta">Número de Cuenta</label>
+            <input type="text" id="numeroCuenta" formControlName="numeroCuenta" class="form-control" [class.is-invalid]="formSubmitted && accountForm.get('numeroCuenta')?.invalid">
+            <div *ngIf="(formSubmitted || accountForm.get('numeroCuenta')?.touched) && accountForm.get('numeroCuenta')?.invalid" class="error-message">
+              Número de cuenta es requerido
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="tipoCuenta">Tipo de Cuenta</label>
+            <select id="tipoCuenta" formControlName="tipoCuenta" class="form-control" [class.is-invalid]="formSubmitted && accountForm.get('tipoCuenta')?.invalid">
+              <option value="" disabled>Seleccione...</option>
+              <option [ngValue]="0">Ahorro</option>
+              <option [ngValue]="1">Corriente</option>
+            </select>
+            <div *ngIf="(formSubmitted || accountForm.get('tipoCuenta')?.touched) && accountForm.get('tipoCuenta')?.invalid" class="error-message">
+              Tipo de cuenta es requerido
+            </div>
+          </div>
+        </div>
+
+        <!-- Fila 2: Saldo Inicial y Cliente -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="saldoInicial">Saldo Inicial</label>
+            <input type="number" id="saldoInicial" formControlName="saldoInicial" class="form-control" [class.is-invalid]="formSubmitted && accountForm.get('saldoInicial')?.invalid">
+            <div *ngIf="(formSubmitted || accountForm.get('saldoInicial')?.touched) && accountForm.get('saldoInicial')?.errors?.['required']"
+              class="error-message">
+              Saldo inicial es requerido
+            </div>
+            <div *ngIf="(formSubmitted || accountForm.get('saldoInicial')?.touched) && accountForm.get('saldoInicial')?.errors?.['min']"
+              class="error-message">
+              El saldo no puede ser negativo
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="clienteId">Cliente</label>
+            <select id="clienteId" formControlName="clienteId" class="form-control" [class.is-invalid]="formSubmitted && accountForm.get('clienteId')?.invalid">
+              <option value="" disabled>Seleccione cliente...</option>
+              <option *ngFor="let cliente of clientes" [ngValue]="cliente.id">
+                {{ cliente.nombre }}
+              </option>
+            </select>
+            <div *ngIf="(formSubmitted || accountForm.get('clienteId')?.touched) && accountForm.get('clienteId')?.invalid"
+              class="error-message">
+              Cliente es requerido
+            </div>
+          </div>
+        </div>
+
+        <!-- Fila 3: Estado -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="estado">Estado</label>
+            <select id="estado" formControlName="estado" class="form-control" [class.is-invalid]="formSubmitted && accountForm.get('estado')?.invalid">
+              <option [ngValue]="true">Activo</option>
+              <option [ngValue]="false">Inactivo</option>
+            </select>
+            <div *ngIf="(formSubmitted || accountForm.get('estado')?.touched) && accountForm.get('estado')?.invalid" class="error-message">
+              Estado es requerido
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botones de acción -->
+      <div class="form-actions fixed-bottom">
+        <button type="button" class="btn btn-secondary" (click)="cancelForm()">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal de confirmación para eliminar -->
+<div class="modal" [class.show]="isDeleteModalVisible">
+  <div class="modal-content confirmation">
+    <div class="modal-header">
+      <h3>Confirmar eliminación</h3>
+    </div>
+    <div class="modal-body">
+      <p>¿Está seguro de que desea eliminar esta cuenta?</p>
+      <p *ngIf="accountToDelete"><strong>{{ accountToDelete.numeroCuenta }}</strong></p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="cancelDelete()">Cancelar</button>
+      <button type="button" class="btn btn-danger" (click)="deleteAccount()">Eliminar</button>
     </div>
   </div>
 </div>

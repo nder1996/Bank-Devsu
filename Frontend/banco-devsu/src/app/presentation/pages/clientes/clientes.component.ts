@@ -1,315 +1,288 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
-import { CuentaDto } from 'src/app/core/dtos/cuenta.dto';
-import { CuentaService } from 'src/app/core/services/cuenta.service';
-
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ClienteDto } from 'src/app/core/dtos/cliente.dto';
 import { ClienteService } from '../../../core/services/cliente.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-clientes',
   templateUrl: './clientes.component.html',
   styleUrls: ['./clientes.component.css']
 })
-export class ClientesComponent {
-  items = [
-    { fecha: '10/08/2025', cuenta: '478758', tipo: 'Crédito', valor: 2000, saldo: 4500 },
-    { fecha: '08/08/2025', cuenta: '225487', tipo: 'Débito', valor: -575, saldo: 2500 },
-    { fecha: '05/08/2025', cuenta: '495878', tipo: 'Crédito', valor: 600, saldo: 700 },
-    { fecha: '01/08/2025', cuenta: '496825', tipo: 'Débito', valor: -150, saldo: 0 },
-    { fecha: '30/07/2025', cuenta: '478758', tipo: 'Crédito', valor: 1500, saldo: 3000 },
-    { fecha: '28/07/2025', cuenta: '225487', tipo: 'Débito', valor: -800, saldo: 3075 },
-    { fecha: '26/07/2025', cuenta: '495878', tipo: 'Crédito', valor: 100, saldo: 100 },
-    { fecha: '20/07/2025', cuenta: '496825', tipo: 'Débito', valor: -250, saldo: 150 },
-    { fecha: '15/07/2025', cuenta: '478758', tipo: 'Crédito', valor: 1000, saldo: 1500 },
-    { fecha: '10/07/2025', cuenta: '225487', tipo: 'Débito', valor: -125, saldo: 3875 },
-    { fecha: '05/07/2025', cuenta: '495878', tipo: 'Crédito', valor: 900, saldo: 1000 },
-    { fecha: '01/07/2025', cuenta: '496825', tipo: 'Débito', valor: -300, saldo: 400 }
-  ];
-
-  cuentas: CuentaDto[] = [];
-
+export class ClientesComponent implements OnInit {
+  // Data properties
   clientes: ClienteDto[] = [];
-
-  searchTerm: string = '';
-  filteredItems: any[] = [];
-
-  paginatedItems: any[] = [];
+  filteredClientes: ClienteDto[] = [];
+  
+  // Pagination
+  paginatedClientes: ClienteDto[] = [];
   currentPage = 1;
   pageSize = 5;
   totalPages = 0;
   pages: number[] = [];
-  startIndex = 0;
-  endIndex = 0;
 
-  constructor(private clienteService:ClienteService, private fb: FormBuilder) { }
+  // UI State
+  isLoading = false;
+  errorMessage: string | null = null;
+  searchTerm = '';
 
-  clientForm!: FormGroup;
+  // Modal states
+  isModalVisible = false;
+  isDeleteModalVisible = false;
   isEditMode = false;
-  formSubmitted = false; // Variable para controlar si el formulario ha sido enviado
+  clienteToDelete: ClienteDto | null = null;
 
-  ngOnInit() {
+  // Form
+  clientForm!: FormGroup;
+  formSubmitted = false;
+
+  constructor(
+    private clienteService: ClienteService, 
+    private fb: FormBuilder
+  ) {}
+
+  ngOnInit(): void {
     this.initForm();
-    this.cargarCuentas();
+    this.loadClientes();
   }
 
-  cargarCuentas(): void {
-    this.clienteService.getClientes().subscribe(
-      (response: any) => {
-        if (response.success) {
-          // Mapeamos los clientes y sus cuentas para el CRUD
-          this.clientes = response.data.map((cliente: ClienteDto) => ({
-            id: cliente.id,
-            nombre: cliente.nombre,
-            identificacion: cliente.identificacion,
-            direccion: cliente.direccion,
-            telefono: cliente.telefono,
-            edad: cliente.edad,
-            genero: cliente.genero,
-            estado: cliente.estado,
-            cuentas: cliente.cuentas?.map((cuenta: CuentaDto) => ({
-              cuentaId: cuenta.numeroCuenta,
-              tipo: cuenta.tipoCuenta === 1 ? 'Crédito' : 'Débito',
-              saldo: cuenta.saldoInicial,
-              estado: cuenta.estado
-            })) || []
-          }));
-          console.log("json clientes :", JSON.stringify(response.data));
-          this.filteredItems = [...this.clientes];
-          this.updatePagination();
-          this.updatePage();
-        } else {
-          console.error('Errores en la respuesta:', response.errors);
-        }
-      },
-      (error) => {
-        console.error('Error al cargar clientes:', error);
-      }
-    );
-  }
-
-  filterItems() {
-    if (!this.searchTerm.trim()) {
-      this.filteredItems = [...this.items];
-    } else {
-      const term = this.searchTerm.toLowerCase();
-      this.filteredItems = this.items.filter(item =>
-        item.cuenta.toLowerCase().includes(term) ||
-        item.tipo.toLowerCase().includes(term) ||
-        item.fecha.includes(term) ||
-        item.valor.toString().includes(term) ||
-        item.saldo.toString().includes(term)
-      );
-    }
-
-    this.currentPage = 1;
-    this.updatePagination();
-    this.updatePage();
-  }
-
-  updatePagination() {
-    this.totalPages = Math.ceil(this.filteredItems.length / this.pageSize);
-    this.generatePages();
-  }
-
-  generatePages() {
-    this.pages = [];
-    for (let i = 1; i <= this.totalPages; i++) {
-      this.pages.push(i);
-    }
-  }
-
-  changePage(page: number) {
-    if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page;
-      this.updatePage();
-    }
-  }
-
-  updatePage() {
-    this.startIndex = (this.currentPage - 1) * this.pageSize;
-    this.endIndex = Math.min(this.startIndex + this.pageSize, this.filteredItems.length);
-    this.paginatedItems = this.filteredItems.slice(this.startIndex, this.endIndex);
-  }
-
-  isDialogVisible = false;
-
-  showDialog(): void {
-    // Limpiar el formulario para un nuevo cliente
-    this.clientForm.reset();
-    // Establecer el valor por defecto para estado
-    this.clientForm.get('estado')?.setValue(true);
-    // Resetear el modo de edición
-    this.isEditMode = false;
-    // Resetear la variable de validación
-    this.formSubmitted = false;
-    // Mostrar el modal
-    this.isDialogVisible = true;
-  }
-
-  closeDialog(): void {
-    this.isDialogVisible = false;
-  }
-
-   initForm(): void {
-      this.clientForm = this.fb.group({
-      clienteid: [null],
+  // === FORM SETUP ===
+  private initForm(): void {
+    this.clientForm = this.fb.group({
+      id: [null],
       nombre: ['', Validators.required],
       genero: ['', Validators.required],
       edad: ['', [Validators.required, Validators.min(18)]],
       identificacion: ['', Validators.required],
       direccion: ['', Validators.required],
-      telefono: ['', Validators.required],
-      contrasena: ['', [Validators.required, Validators.minLength(6)]],
+      telefono: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
+      contrasena: ['', [Validators.minLength(6)]],
       estado: [true, Validators.required]
     });
   }
 
-   loadClient(client: any): void {
-    this.isEditMode = true;
-    this.clientForm.patchValue(client);
+  private updatePasswordValidation(): void {
+    const passwordControl = this.clientForm.get('contrasena');
+    if (this.isEditMode) {
+      passwordControl?.setValidators([Validators.minLength(6)]);
+    } else {
+      passwordControl?.setValidators([Validators.required, Validators.minLength(6)]);
+    }
+    passwordControl?.updateValueAndValidity();
   }
 
-  saveClient(): void {
-    console.log('Método saveClient invocado');
+  // === DATA LOADING ===
+  private loadClientes(): void {
+    this.isLoading = true;
+    this.errorMessage = null;
 
-    // Establecer formSubmitted a true para mostrar todas las validaciones
+    this.clienteService.getClientes().subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          this.clientes = this.mapClientesFromResponse(response.data);
+          this.applyFilter();
+        } else {
+          this.errorMessage = 'Error al cargar clientes: ' + (response.errors || 'Error desconocido');
+        }
+      },
+      error: () => {
+        this.errorMessage = 'Error al conectar con el servidor';
+      },
+      complete: () => {
+        this.isLoading = false;
+      }
+    });
+  }
+
+  private mapClientesFromResponse(data: ClienteDto[]): ClienteDto[] {
+    return data.map(cliente => ({
+      id: cliente.id,
+      nombre: cliente.nombre,
+      identificacion: cliente.identificacion,
+      direccion: cliente.direccion,
+      telefono: cliente.telefono,
+      edad: cliente.edad,
+      genero: cliente.genero,
+      estado: cliente.estado,
+      cuentas: cliente.cuentas || []
+    }));
+  }
+
+  // === SEARCH & PAGINATION ===
+  onSearch(): void {
+    this.currentPage = 1;
+    this.applyFilter();
+  }
+
+  private applyFilter(): void {
+    if (!this.searchTerm.trim()) {
+      this.filteredClientes = [...this.clientes];
+    } else {
+      const term = this.searchTerm.toLowerCase();
+      this.filteredClientes = this.clientes.filter(cliente =>
+        this.searchInCliente(cliente, term)
+      );
+    }
+    this.updatePagination();
+  }
+
+  private searchInCliente(cliente: ClienteDto, term: string): boolean {
+    return (
+      (cliente.nombre?.toLowerCase().includes(term) ?? false) ||
+      (cliente.identificacion?.toLowerCase().includes(term) ?? false) ||
+      (cliente.direccion?.toLowerCase().includes(term) ?? false) ||
+      (cliente.telefono?.toLowerCase().includes(term) ?? false) ||
+      (cliente.genero?.toLowerCase().includes(term) ?? false) ||
+      (cliente.edad?.toString().includes(term) ?? false)
+    );
+  }
+
+  private updatePagination(): void {
+    this.totalPages = Math.ceil(this.filteredClientes.length / this.pageSize);
+    this.generatePageNumbers();
+    this.updateCurrentPage();
+  }
+
+  private generatePageNumbers(): void {
+    this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  }
+
+  private updateCurrentPage(): void {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.paginatedClientes = this.filteredClientes.slice(startIndex, endIndex);
+  }
+
+  changePage(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.updateCurrentPage();
+    }
+  }
+
+  // === MODAL MANAGEMENT ===
+  openCreateModal(): void {
+    this.resetModal();
+    this.isEditMode = false;
+    this.updatePasswordValidation();
+    this.isModalVisible = true;
+  }
+
+  openEditModal(cliente: ClienteDto): void {
+    this.resetModal();
+    this.isEditMode = true;
+    this.updatePasswordValidation();
+    
+    // Load client data into form
+    this.clientForm.patchValue({
+      id: cliente.id,
+      nombre: cliente.nombre,
+      genero: cliente.genero,
+      edad: cliente.edad,
+      identificacion: cliente.identificacion,
+      direccion: cliente.direccion,
+      telefono: cliente.telefono,
+      contrasena: '', // Empty for security
+      estado: cliente.estado
+    });
+    
+    this.isModalVisible = true;
+  }
+
+  closeModal(): void {
+    this.isModalVisible = false;
+    this.resetModal();
+  }
+
+  private resetModal(): void {
+    this.clientForm.reset();
+    this.clientForm.patchValue({ estado: true });
+    this.formSubmitted = false;
+  }
+
+  // === CRUD OPERATIONS ===
+  saveCliente(): void {
     this.formSubmitted = true;
-
-    // Forzar la validación de todos los campos marcándolos como tocados
-    Object.keys(this.clientForm.controls).forEach(field => {
-      const control = this.clientForm.get(field);
-      control?.markAsTouched({ onlySelf: true });
+    
+    // Mark all fields as touched for validation display
+    Object.keys(this.clientForm.controls).forEach(key => {
+      this.clientForm.get(key)?.markAsTouched();
     });
 
-    console.log('Estado del formulario:', this.clientForm.valid ? 'Válido' : 'Inválido');
-
     if (this.clientForm.invalid) {
-      console.log('Formulario inválido. No se puede guardar.');
       return;
     }
 
-    console.log('Formulario válido. Guardando...');
-    const client = this.clientForm.value;
-    /*const action = this.isEditMode
-      ? this.clienteService.updateCliente(client)
-      : this.clienteService.createClient(client);*/
+    const formData = this.clientForm.value;
+    const clienteData = {
+      id: formData.id || 0,
+      estado: formData.estado,
+      nombre: formData.nombre,
+      genero: formData.genero,
+      edad: formData.edad,
+      identificacion: formData.identificacion,
+      direccion: formData.direccion,
+      telefono: formData.telefono,
+      contrasena: formData.contrasena,
+      cuentas: []
+    };
 
-    /*action.subscribe({
+    const operation = this.isEditMode 
+      ? this.clienteService.updateCliente(clienteData.id, clienteData)
+      : this.clienteService.createCliente(clienteData);
+
+    operation.subscribe({
       next: () => {
-        this.formSubmitted = false;
-        this.clientForm.reset();
-        this.isEditMode = false;
-        this.isDialogVisible = false;
+        this.closeModal();
+        this.loadClientes();
       },
-      error: (err) => console.error('Error:', err)
-    });*/
-
-    // Como el código de guardar está comentado, añadimos esto para simular un guardado exitoso
-    this.formSubmitted = false;
-    this.clientForm.reset();
-    this.isEditMode = false;
-    this.isDialogVisible = false;
-  }
-
-  // Método auxiliar para obtener todos los errores del formulario
-  getFormValidationErrors(): any {
-    const errors: any = {};
-    Object.keys(this.clientForm.controls).forEach(key => {
-      const control = this.clientForm.get(key);
-      if (control && control.errors) {
-        errors[key] = control.errors;
+      error: (error) => {
+        console.error('Error al guardar cliente:', error);
+        this.errorMessage = 'Error al guardar cliente';
       }
     });
-    return errors;
   }
 
-  cancelForm(): void {
-    this.formSubmitted = false; // Resetear la variable
-    this.clientForm.reset();
-    this.isEditMode = false;
-    this.isDialogVisible = false; // Cierra el modal
-  }
-
-  editClient(client: any): void {
-    console.log('Editando cliente:', client);
-
-    // Limpiar el formulario antes de cargar los datos
-    this.clientForm.reset();
-
-    // Resetear la variable de validación
-    this.formSubmitted = false;
-
-    // Mostrar el modal
-    this.isDialogVisible = true;
-
-    // Pequeño retraso para asegurar que el modal se haya abierto completamente
-    setTimeout(() => {
-      // Ajustar los datos para el formulario (mapear campos si es necesario)
-      const clientFormData = {
-        clienteid: client.id,
-        nombre: client.nombre,
-        genero: client.genero,
-        edad: client.edad,
-        identificacion: client.identificacion,
-        direccion: client.direccion,
-        telefono: client.telefono,
-        contrasena: client.contrasena || '', // Si no tiene contraseña, usar cadena vacía
-        estado: client.estado
-      };
-
-      // Cargar los datos en el formulario
-      this.loadClient(clientFormData);
-    }, 100);
-  }
-
-  // Variables para el modal de confirmación de eliminación
-  isDeleteModalVisible = false;
-  clientToDelete: any = null;
-
-  // Método para mostrar el modal de confirmación de eliminación
-  confirmDelete(client: any): void {
-    this.clientToDelete = client;
+  // === DELETE OPERATIONS ===
+  openDeleteModal(cliente: ClienteDto): void {
+    this.clienteToDelete = cliente;
     this.isDeleteModalVisible = true;
   }
 
-  // Método para cancelar la eliminación
-  cancelDelete(): void {
-    this.clientToDelete = null;
+  closeDeleteModal(): void {
+    this.clienteToDelete = null;
     this.isDeleteModalVisible = false;
   }
 
-  // Método para eliminar el cliente
-  deleteClient(): void {
-    if (this.clientToDelete) {
-      console.log('Eliminando cliente:', this.clientToDelete);
+  confirmDelete(): void {
+    if (!this.clienteToDelete) return;
 
-      // Aquí iría el código para eliminar el cliente a través del servicio
-      /*this.clienteService.deleteCliente(this.clientToDelete.id).subscribe({
-        next: () => {
-          console.log('Cliente eliminado con éxito');
-          // Actualizar la lista de clientes
-          this.cargarCuentas();
-          // Cerrar el modal de confirmación
-          this.cancelDelete();
-        },
-        error: (err) => {
-          console.error('Error al eliminar cliente:', err);
-          // Aquí podrías mostrar un mensaje de error
-        }
-      });*/
+    this.clienteService.deleteCliente(this.clienteToDelete.id!).subscribe({
+      next: () => {
+        this.closeDeleteModal();
+        this.loadClientes();
+      },
+      error: (error) => {
+        console.error('Error al eliminar cliente:', error);
+        this.errorMessage = 'Error al eliminar cliente';
+        this.closeDeleteModal();
+      }
+    });
+  }
 
-      // Como el código para eliminar está comentado, simulamos la eliminación
-      // Eliminamos el cliente de la lista local
-      this.filteredItems = this.filteredItems.filter(item => item.id !== this.clientToDelete.id);
-      this.clientes = this.clientes.filter(item => item.id !== this.clientToDelete.id);
+  // === UTILITY GETTERS ===
+  get startIndex(): number {
+    return this.filteredClientes.length > 0 ? (this.currentPage - 1) * this.pageSize + 1 : 0;
+  }
 
-      // Actualizamos la paginación y la vista
-      this.updatePagination();
-      this.updatePage();
+  get endIndex(): number {
+    return Math.min(this.currentPage * this.pageSize, this.filteredClientes.length);
+  }
 
-      // Cerramos el modal de confirmación
-      this.cancelDelete();
-    }
+  get hasData(): boolean {
+    return this.paginatedClientes.length > 0;
+  }
+
+  get showNoData(): boolean {
+    return !this.isLoading && !this.hasData;
   }
 }

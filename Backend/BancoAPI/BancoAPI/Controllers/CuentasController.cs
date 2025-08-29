@@ -1,5 +1,6 @@
 ﻿using BancoAPI.Application.DTOs;
 using BancoAPI.Application.Services;
+using BancoAPI.Domain.Entities;
 using BancoAPI.Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,48 +21,65 @@ namespace BancoAPI.Controllers
             _cuentaService = cuentaService;
         }
 
-        // GET: api/<ValuesController>
+        // GET: api/Cuentas
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CuentaDto>>> Get()
         {
-            try
-            {
-                var cuentas = await _cuentaService.ObtenerTodasAsync();
-                return Ok(cuentas);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { mensaje = ex.Message });
-            }
+            var cuentas = await _cuentaService.ObtenerTodasAsync();
+            return Ok(cuentas);
         }
 
-
-
-
-       /* // GET api/<ValuesController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        // GET: api/Cuentas/5
+        [HttpGet("{id:long}")]
+        public async Task<ActionResult<Cuenta>> Get(long id)
         {
-            return "value";
+            var cuenta = await _cuentaService.ObtenerPorIdAsync(id);
+            if (cuenta is null)
+                return NotFound();
+
+            return Ok(cuenta);
         }
 
-        // POST api/<ValuesController>
+        // POST: api/Cuentas
         [HttpPost]
-        public void Post([FromBody]string value)
+        public async Task<ActionResult<Cuenta>> Post([FromBody] CuentaDto cuenta)
         {
+            var nuevaCuenta = await _cuentaService.CrearAsync(cuenta);
+            return CreatedAtAction(nameof(Get), new { id = nuevaCuenta.id }, nuevaCuenta);
         }
 
-        // PUT api/<ValuesController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        // PUT: api/Cuentas/{id}/estado
+        [HttpPut("{id:long}/estado")]
+        public async Task<IActionResult> PutEstado(long id, [FromBody] bool nuevoEstado)
         {
+            var resultado = await _cuentaService.ActualizarEstadoAsync(id, nuevoEstado);
+            if (!resultado)
+                return NotFound();
+
+            return Ok();
         }
 
-        // DELETE api/<ValuesController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        // PUT: api/Cuentas/{id}/tipo
+        [HttpPut("{id:long}/tipo")]
+        public async Task<IActionResult> PutTipo(long id, [FromBody] string nuevoTipo)
         {
-        }*/
-    
+            var resultado = await _cuentaService.ActualizarTipoCuentaAsync(id, nuevoTipo);
+            if (!resultado)
+                return NotFound();
+
+            return Ok();
+        }
+
+        // DELETE: api/Cuentas/5
+        [HttpDelete("{id:long}")]
+        public async Task<IActionResult> Delete(long id)
+        {
+            var eliminado = await _cuentaService.EliminarAsync(id);
+            if (!eliminado)
+                return NotFound();
+
+            return NoContent();
+        }
+
     }
 }

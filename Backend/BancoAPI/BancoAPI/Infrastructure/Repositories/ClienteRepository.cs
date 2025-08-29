@@ -19,10 +19,29 @@ namespace BancoAPI.Infrastructure.Repositories
 
         async Task<Cliente> IClienteRepository.ActualizarAsync(Cliente cliente)
         {
+            // Desanexar el cliente si ya está siendo rastreado
+            var localCliente = _context.Clientes.Local.FirstOrDefault(e => e.Id == cliente.Id);
+            if (localCliente != null)
+            {
+                _context.Entry(localCliente).State = EntityState.Detached;
+            }
+
+            // Si se envía una instancia de Persona, desanexar también la que ya esté siendo rastreada
+            if (cliente.Persona != null)
+            {
+                var localPersona = _context.Personas.Local.FirstOrDefault(p => p.Id == cliente.Persona.Id);
+                if (localPersona != null)
+                {
+                    _context.Entry(localPersona).State = EntityState.Detached;
+                }
+            }
+
             _context.Clientes.Update(cliente);
             await _context.SaveChangesAsync();
             return cliente;
         }
+
+
 
         async Task<bool> IClienteRepository.ActualizarEstadoAsync(int clienteId, bool nuevoEstado)
         {
@@ -42,7 +61,7 @@ namespace BancoAPI.Infrastructure.Repositories
             return cliente;
         }
 
-        async Task<bool> IClienteRepository.EliminarAsync(int clienteId)
+        async Task<bool> IClienteRepository.EliminarAsync(long clienteId)
         {
             var cliente = await _context.Clientes.FindAsync(clienteId);
             if (cliente == null)
@@ -62,7 +81,7 @@ namespace BancoAPI.Infrastructure.Repositories
                .FirstOrDefaultAsync();
         }
 
-        async Task<Cliente> IClienteRepository.ObtenerPorIdAsync(int clienteId)
+        async Task<Cliente> IClienteRepository.ObtenerPorIdAsync(long clienteId)
         {
             return await _context.Clientes
                .Include(c => c.Persona)

@@ -5,30 +5,30 @@ namespace BancoAPI.Application.DTOs
 {
     public class MovimientoDto
     {
-        public long Id { get; set; }
+        public long id { get; set; }
 
         [Required(ErrorMessage = "La fecha es requerida")]
-        public DateTime Fecha { get; set; }
+        public DateTime fecha { get; set; }
 
         [Required(ErrorMessage = "El tipo de movimiento es requerido")]
         [StringLength(20, ErrorMessage = "El tipo de movimiento no debe exceder los 20 caracteres")]
-        public TipoMovimiento TipoMovimiento { get; set; } // "Debito" o "Credito"
+        public TipoMovimiento tipoMovimiento { get; set; } // "Debito" o "Credito"
 
         [Required(ErrorMessage = "El valor es requerido")]
-        public decimal Valor { get; set; }
+        public decimal valor { get; set; }
 
         [Required(ErrorMessage = "El saldo es requerido")]
-        public decimal Saldo { get; set; }
+        public decimal saldo { get; set; }
 
         [Required(ErrorMessage = "La cuenta es requerida")]
-        public CuentaResumida Cuenta { get; set; }
+        public CuentaResumida cuenta { get; set; }
         public class CuentaResumida
         {
-            public long Id { get; set; }
+            public long id { get; set; }
 
             [Required(ErrorMessage = "El número de cuenta es requerido")]
             [StringLength(50, ErrorMessage = "El número de cuenta no debe exceder los 50 caracteres")]
-            public string NumeroCuenta { get; set; }
+            public string numeroCuenta { get; set; }
         }
     }
 }

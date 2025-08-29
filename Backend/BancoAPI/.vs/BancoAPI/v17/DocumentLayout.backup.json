@@ -3,16 +3,8 @@
   "WorkspaceRootPath": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|c:\\users\\usuario\\documents\\github\\bank-devsu\\backend\\bancoapi\\bancoapi\\application\\exceptions\\cupodiarioexcedidoexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|solutionrelative:bancoapi\\application\\exceptions\\cupodiarioexcedidoexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|c:\\users\\usuario\\documents\\github\\bank-devsu\\backend\\bancoapi\\bancoapi\\application\\exceptions\\saldonodisponibleexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|solutionrelative:bancoapi\\application\\exceptions\\saldonodisponibleexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|c:\\users\\usuario\\documents\\github\\bank-devsu\\backend\\bancoapi\\bancoapi\\middlewares\\apiexceptionfilter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|solutionrelative:bancoapi\\middlewares\\apiexceptionfilter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|c:\\users\\usuario\\documents\\github\\bank-devsu\\backend\\bancoapi\\bancoapi\\controllers\\clientescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|solutionrelative:bancoapi\\controllers\\clientescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,45 +14,19 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "ApiExceptionFilter.cs",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Middlewares\\ApiExceptionFilter.cs",
-              "RelativeDocumentMoniker": "BancoAPI\\Middlewares\\ApiExceptionFilter.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Middlewares\\ApiExceptionFilter.cs",
-              "RelativeToolTip": "BancoAPI\\Middlewares\\ApiExceptionFilter.cs",
-              "ViewState": "AgIAAAQAAAAAAAAAAAAAABcAAAANAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-24T05:13:22.011Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "CupoDiarioExcedidoException.cs",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Application\\Exceptions\\CupoDiarioExcedidoException.cs",
-              "RelativeDocumentMoniker": "BancoAPI\\Application\\Exceptions\\CupoDiarioExcedidoException.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Application\\Exceptions\\CupoDiarioExcedidoException.cs",
-              "RelativeToolTip": "BancoAPI\\Application\\Exceptions\\CupoDiarioExcedidoException.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAJAAAAAAAAAA==",
+              "Title": "ClientesController.cs",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Controllers\\ClientesController.cs",
+              "RelativeDocumentMoniker": "BancoAPI\\Controllers\\ClientesController.cs",
+              "ToolTip": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Controllers\\ClientesController.cs",
+              "RelativeToolTip": "BancoAPI\\Controllers\\ClientesController.cs",
+              "ViewState": "AgIAAB8AAAAAAAAAAAAgwDAAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-24T05:09:49.765Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "SaldoNoDisponibleException.cs",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Application\\Exceptions\\SaldoNoDisponibleException.cs",
-              "RelativeDocumentMoniker": "BancoAPI\\Application\\Exceptions\\SaldoNoDisponibleException.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Application\\Exceptions\\SaldoNoDisponibleException.cs",
-              "RelativeToolTip": "BancoAPI\\Application\\Exceptions\\SaldoNoDisponibleException.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAA1AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-24T05:09:36.994Z",
+              "WhenOpened": "2025-08-24T15:45:11.884Z",
               "EditorCaption": ""
             }
           ]
