@@ -1,4 +1,5 @@
 ﻿using BancoAPI.Domain.Entities;
+using BancoAPI.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace BancoAPI.Infrastructure.Data
@@ -15,6 +16,8 @@ namespace BancoAPI.Infrastructure.Data
 
         public DbSet<Movimiento> Movimientos { get; set; }
 
+        public DbSet<Reporte> Reportes { get; set; }
+
         public DbSet<Persona> Personas { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -24,6 +27,16 @@ namespace BancoAPI.Infrastructure.Data
             // Configuración TPT: cada entidad en su propia tabla
             modelBuilder.Entity<Persona>().ToTable("Personas");
             modelBuilder.Entity<Cliente>().ToTable("Clientes");
+
+            // Configuración explícita para el enum TipoMovimiento
+            modelBuilder.Entity<Movimiento>()
+                .Property(e => e.TipoMovimiento)
+                .HasConversion<int>();
+
+            // Configuración explícita para el enum ReporteFormato
+            modelBuilder.Entity<Reporte>()
+                .Property(e => e.Formato)
+                .HasConversion<int>();
         }
     }
 }

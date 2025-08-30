@@ -52,6 +52,8 @@ builder.Services.AddScoped<ICuentaService, CuentaService>();
 builder.Services.AddScoped<ICuentaRepository, CuentaRepository>();
 builder.Services.AddScoped<IMovimientoService, MovimientoService>();
 builder.Services.AddScoped<IMovimientoRepository, MovimientoRepository>();
+builder.Services.AddScoped<IReporteService, ReporteService>();
+builder.Services.AddScoped<IReporteRepository, ReporteRepository>();
 
 // Add services to the container.
 
@@ -69,7 +71,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// Usa la política de CORS
+// Usa la polï¿½tica de CORS
 app.UseCors("PermitirTodo");
 
 app.UseHttpsRedirection();

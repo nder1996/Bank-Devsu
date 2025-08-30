@@ -25,17 +25,18 @@ export class MovimientoService implements IMovimientoService {
   }
 
   // Crear un nuevo movimiento
-  createMovimiento(movimientoDto: MovimientoDto): Observable<Movimiento> {
-    return this.http.post<Movimiento>(this.apiUrl, movimientoDto);
+  createMovimiento(movimientoDto: MovimientoDto): Observable<any> {
+    console.log('Service enviando:', movimientoDto);
+    return this.http.post<any>(this.apiUrl, movimientoDto);
   }
 
   // Actualizar un movimiento existente
-  updateMovimiento(id: number, movimientoDto: MovimientoDto): Observable<Movimiento> {
-    return this.http.put<Movimiento>(`${this.apiUrl}/${id}`, movimientoDto);
+  updateMovimiento(id: number, movimientoDto: MovimientoDto): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/${id}`, movimientoDto);
   }
 
   // Eliminar un movimiento
-  deleteMovimiento(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  deleteMovimiento(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/${id}`);
   }
 }

@@ -44,8 +44,12 @@ namespace BancoAPI.Middlewares
                     break;
                 default:
                     statusCode = StatusCodes.Status500InternalServerError;
-                    response = ApiResponse<object>.Fail(
-                        "Ha ocurrido un error interno. Por favor, inténtelo de nuevo más tarde.");
+                    // En desarrollo, mostrar más detalles del error
+                    var isDevelopment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development";
+                    var errorMessage = isDevelopment 
+                        ? $"Error: {context.Exception.Message}. Inner: {context.Exception.InnerException?.Message}"
+                        : "Ha ocurrido un error interno. Por favor, inténtelo de nuevo más tarde.";
+                    response = ApiResponse<object>.Fail(errorMessage);
                     break;
             }
 

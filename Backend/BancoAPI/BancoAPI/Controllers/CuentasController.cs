@@ -48,6 +48,17 @@ namespace BancoAPI.Controllers
             return CreatedAtAction(nameof(Get), new { id = nuevaCuenta.id }, nuevaCuenta);
         }
 
+        // PUT: api/Cuentas/5
+        [HttpPut("{id:long}")]
+        public async Task<ActionResult<CuentaDto>> Put(long id, [FromBody] CuentaDto cuentaDto)
+        {
+            var cuentaActualizada = await _cuentaService.ActualizarAsync(id, cuentaDto);
+            if (cuentaActualizada == null)
+                return NotFound();
+
+            return Ok(cuentaActualizada);
+        }
+
         // PUT: api/Cuentas/{id}/estado
         [HttpPut("{id:long}/estado")]
         public async Task<IActionResult> PutEstado(long id, [FromBody] bool nuevoEstado)

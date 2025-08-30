@@ -50,6 +50,27 @@ namespace BancoAPI.Infrastructure.Repositories
             return cuenta;
         }
 
+        async Task<Cuenta> ICuentaRepository.ActualizarAsync(Cuenta cuenta)
+        {
+            var cuentaExistente = await _context.Cuentas.FindAsync(cuenta.Id);
+            if (cuentaExistente == null)
+                return null;
+
+            cuentaExistente.NumeroCuenta = cuenta.NumeroCuenta;
+            cuentaExistente.TipoCuenta = cuenta.TipoCuenta;
+            cuentaExistente.SaldoInicial = cuenta.SaldoInicial;
+            cuentaExistente.Estado = cuenta.Estado;
+            cuentaExistente.ClienteId = cuenta.ClienteId;
+
+            _context.Cuentas.Update(cuentaExistente);
+            await _context.SaveChangesAsync();
+            
+            return await _context.Cuentas
+                .Include(c => c.ClienteNavigation)
+                    .ThenInclude(cliente => cliente.Persona)
+                .FirstOrDefaultAsync(c => c.Id == cuentaExistente.Id);
+        }
+
         async Task<bool> ICuentaRepository.EliminarAsync(long cuentaId)
         {
             var cuenta = await _context.Cuentas.FindAsync(cuentaId);

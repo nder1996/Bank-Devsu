@@ -2,10 +2,18 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CuentaDto } from 'src/app/core/dtos/cuenta.dto';
 import { ClienteDto } from 'src/app/core/dtos/cliente.dto';
-import { Cuenta } from 'src/app/core/models/Cuenta';
 import { CuentaService } from 'src/app/core/services/cuenta.service';
 import { ClienteService } from 'src/app/core/services/cliente.service';
+import { TipoCuenta } from 'src/app/core/enums/tipo-cuenta.enum';
 
+interface CuentaViewModel {
+  id: number;
+  cuentaId: string;
+  tipo: string;
+  saldo: number;
+  estado: boolean;
+  nombreCliente: string;
+}
 
 @Component({
   selector: 'app-cuentas',
@@ -13,273 +21,147 @@ import { ClienteService } from 'src/app/core/services/cliente.service';
   styleUrls: ['./cuentas.component.css']
 })
 export class CuentasComponent implements OnInit {
-  items = [
-    { fecha: '10/08/2025', cuenta: '478758', tipo: 'Crédito', valor: 2000, saldo: 4500 },
-    { fecha: '08/08/2025', cuenta: '225487', tipo: 'Débito', valor: -575, saldo: 2500 },
-    { fecha: '05/08/2025', cuenta: '495878', tipo: 'Crédito', valor: 600, saldo: 700 },
-    { fecha: '01/08/2025', cuenta: '496825', tipo: 'Débito', valor: -150, saldo: 0 },
-    { fecha: '30/07/2025', cuenta: '478758', tipo: 'Crédito', valor: 1500, saldo: 3000 },
-    { fecha: '28/07/2025', cuenta: '225487', tipo: 'Débito', valor: -800, saldo: 3075 },
-    { fecha: '26/07/2025', cuenta: '495878', tipo: 'Crédito', valor: 100, saldo: 100 },
-    { fecha: '20/07/2025', cuenta: '496825', tipo: 'Débito', valor: -250, saldo: 150 },
-    { fecha: '15/07/2025', cuenta: '478758', tipo: 'Crédito', valor: 1000, saldo: 1500 },
-    { fecha: '10/07/2025', cuenta: '225487', tipo: 'Débito', valor: -125, saldo: 3875 },
-    { fecha: '05/07/2025', cuenta: '495878', tipo: 'Crédito', valor: 900, saldo: 1000 },
-    { fecha: '01/07/2025', cuenta: '496825', tipo: 'Débito', valor: -300, saldo: 400 }
-  ];
 
-  cuentas: CuentaDto[] = [];
-  cuentasTransformadas: any[] = [];
-  clientes: ClienteDto[] = [];
+  // Propiedades del formulario
+  public accountForm!: FormGroup;
+  public formSubmitted = false;
+  public isEditMode = false;
+  public editingAccountId: number | null = null;
 
-  searchTerm: string = '';
-  filteredItems: any[] = [];
+  // Propiedades de datos
+  public cuentas: CuentaViewModel[] = [];
+  public clientes: ClienteDto[] = [];
+  public filteredCuentas: CuentaViewModel[] = [];
+  public paginatedCuentas: CuentaViewModel[] = [];
 
-  paginatedItems: any[] = [];
-  currentPage = 1;
-  pageSize = 5;
-  totalPages = 0;
-  pages: number[] = [];
-  startIndex = 0;
-  endIndex = 0;
+  // Propiedades de paginación y búsqueda
+  public searchTerm: string = '';
+  public currentPage = 1;
+  public pageSize = 5;
+  public totalPages = 0;
+  public pages: number[] = [];
+  public startIndex = 0;
+  public endIndex = 0;
 
-  constructor(private cuentaService: CuentaService, private clienteService: ClienteService, private fb: FormBuilder) { }
+  // Propiedades de modales
+  public isDialogVisible = false;
+  public isDeleteModalVisible = false;
+  public accountToDelete: CuentaViewModel | null = null;
 
-  clientForm!: FormGroup;
-  accountForm!: FormGroup;
-  isEditMode = false;
-  formSubmitted = false; // Variable para controlar si el formulario ha sido enviado
-  isDialogVisible = false;
-  isDeleteModalVisible = false;
-  clientToDelete: any = null;
-  accountToDelete: any = null;
+  constructor(
+    private cuentaService: CuentaService,
+    private clienteService: ClienteService,
+    private fb: FormBuilder
+  ) { }
 
-  saveClient(): void {
-    this.formSubmitted = true;
-    if (this.clientForm.valid) {
-      // Aquí iría el código para guardar el cliente
-      console.log('Formulario enviado:', this.clientForm.value);
-      this.isDialogVisible = false;
-      this.formSubmitted = false;
-      this.clientForm.reset();
-    }
-  }
-
-  saveAccount(): void {
-    this.formSubmitted = true;
-    if (this.accountForm.valid) {
-      // Crear el DTO con los datos del formulario
-      const cuentaDto: CuentaDto = {
-        numeroCuenta: this.accountForm.get('numeroCuenta')?.value,
-        tipoCuenta: this.accountForm.get('tipoCuenta')?.value,
-        saldoInicial: this.accountForm.get('saldoInicial')?.value,
-        estado: this.accountForm.get('estado')?.value,
-        cliente: {
-          id: this.accountForm.get('clienteId')?.value
-        }
-      };
-
-      console.log('Cuenta a guardar:', JSON.stringify(cuentaDto));
-
-      // Consumir el servicio para crear la cuenta
-      this.cuentaService.createCuenta(cuentaDto).subscribe(
-        (response: any) => {
-          console.log('Respuesta del servidor:', response);
-
-          // Verificar si la respuesta tiene el formato estándar
-          if (response.success || response.id || response.numeroCuenta) {
-            console.log('Cuenta creada exitosamente');
-
-            // Cerrar el modal y resetear el formulario
-            this.isDialogVisible = false;
-            this.formSubmitted = false;
-            this.accountForm.reset({
-              estado: true
-            });
-
-            // Recargar las cuentas después de guardar
-            this.cargarCuentas();
-
-            // Mostrar mensaje de éxito (opcional)
-            alert('Cuenta creada exitosamente');
-          } else {
-            console.error('Error en la respuesta del servidor:', response);
-            alert('Error al crear la cuenta. Verifique los datos e intente de nuevo.');
-          }
-        },
-        (error) => {
-          console.error('Error al crear la cuenta:', error);
-
-          // Mostrar mensaje de error más específico
-          let errorMessage = 'Error al crear la cuenta. Por favor intente de nuevo.';
-          if (error.error && error.error.message) {
-            errorMessage = error.error.message;
-          } else if (error.message) {
-            errorMessage = error.message;
-          }
-
-          alert(errorMessage);
-        }
-      );
-    } else {
-      console.log('Formulario inválido:', this.accountForm.errors);
-      // Marcar todos los campos como tocados para mostrar errores
-      Object.keys(this.accountForm.controls).forEach(key => {
-        this.accountForm.get(key)?.markAsTouched();
-      });
-    }
-  }
-
-  cancelForm(): void {
-    this.isDialogVisible = false;
-    this.formSubmitted = false;
-    this.clientForm.reset();
-    this.accountForm.reset();
-  }
-
-  ngOnInit() {
-    this.initForm();
+  ngOnInit(): void {
     this.initAccountForm();
-    this.cargarCuentas();
-    this.cargarClientes();
+    this.loadCuentas();
+    this.loadClientes();
   }
 
-  cargarCuentas(): void {
-    this.cuentaService.getCuentas().subscribe(
-      (response: any) => {
-        if (response.success) {
-          this.cuentas = response.data;
-          this.cuentasTransformadas = response.data.map((cuenta: CuentaDto) => ({
-            cuentaId: cuenta.numeroCuenta,
-            tipo: cuenta.tipoCuenta === 1 ? 'Crédito' : 'Débito',
-            //valor: cuenta.saldoInicial,
-            saldo: cuenta.saldoInicial,
-            estado: cuenta.estado,
-            nombreCliente: cuenta.cliente?.nombre || '',
-            /*fecha: new Date(cuenta.).toLocaleDateString('es-ES', {
-              year: 'numeric',
-              month: '2-digit',
-              day: '2-digit'
-            })*/
-          }));
-          console.log("json cuentas :", JSON.stringify(this.cuentasTransformadas));
-          this.filteredItems = [...this.cuentasTransformadas];
-          this.updatePagination();
-          this.updatePage();
-        } else {
-          console.error('Errores en la respuesta:', response.errors);
-        }
-      },
-      (error) => {
-        console.error('Error al cargar cuentas:', error);
-      }
-    );
-  }
+  // --- Métodos Públicos (Accesibles desde la plantilla) ---
 
-  cargarClientes(): void {
-    this.clienteService.getClientes().subscribe(
-      (response: any) => {
-        if (response.success) {
-          this.clientes = response.data;
-        } else {
-          console.error('Errores en la respuesta:', response.errors);
-        }
-      },
-      (error) => {
-        console.error('Error al cargar clientes:', error);
-      }
-    );
-  }
-
-  filterItems() {
-    if (!this.searchTerm.trim()) {
-      this.filteredItems = [...this.cuentasTransformadas];
-    } else {
-      const term = this.searchTerm.toLowerCase();
-      this.filteredItems = this.cuentasTransformadas.filter(item =>
-        (item.cuentaId && item.cuentaId.toString().toLowerCase().includes(term)) ||
-        (item.tipo && item.tipo.toString().toLowerCase().includes(term)) ||
-        (item.saldo && item.saldo.toString().includes(term)) ||
-        (item.estado !== undefined && item.estado.toString().toLowerCase().includes(term)) ||
-        (item.nombreCliente && item.nombreCliente.toString().toLowerCase().includes(term))
-      );
+  public saveAccount(): void {
+    this.formSubmitted = true;
+    if (this.accountForm.invalid) {
+      this.markFormGroupTouched(this.accountForm);
+      return;
     }
+
+    const cuentaDto = this.createCuentaDtoFromForm();
+    
+    if (this.isEditMode && this.editingAccountId) {
+      this.updateAccount(this.editingAccountId, cuentaDto);
+    } else {
+      this.createAccount(cuentaDto);
+    }
+  }
+
+  public deleteAccount(): void {
+    if (!this.accountToDelete) {
+      return;
+    }
+
+    this.cuentaService.deleteCuenta(this.accountToDelete.id).subscribe({
+      next: () => {
+        this.handleSuccess('Cuenta eliminada exitosamente');
+        this.isDeleteModalVisible = false;
+        this.accountToDelete = null;
+        this.loadCuentas();
+      },
+      error: (error) => {
+        this.handleError('Error al eliminar la cuenta', error);
+        this.isDeleteModalVisible = false;
+        this.accountToDelete = null;
+      }
+    });
+  }
+
+  public filterCuentas(): void {
+    const term = this.searchTerm.toLowerCase().trim();
+    this.filteredCuentas = term
+      ? this.cuentas.filter(cuenta =>
+        Object.values(cuenta).some(value =>
+          String(value).toLowerCase().includes(term)
+        )
+      )
+      : [...this.cuentas];
 
     this.currentPage = 1;
     this.updatePagination();
-    this.updatePage();
   }
 
-  updatePagination() {
-    this.totalPages = Math.ceil(this.filteredItems.length / this.pageSize);
-    this.generatePages();
-  }
-
-  generatePages() {
-    this.pages = [];
-    for (let i = 1; i <= this.totalPages; i++) {
-      this.pages.push(i);
-    }
-  }
-
-  changePage(page: number) {
+  public changePage(page: number): void {
     if (page >= 1 && page <= this.totalPages) {
       this.currentPage = page;
       this.updatePage();
     }
   }
 
-  updatePage() {
-    this.startIndex = (this.currentPage - 1) * this.pageSize;
-    this.endIndex = Math.min(this.startIndex + this.pageSize, this.filteredItems.length);
-    this.paginatedItems = this.filteredItems.slice(this.startIndex, this.endIndex);
-  }
-
-  showDialog(isEdit: boolean = false, clientData?: any): void {
+  public showAccountDialog(isEdit: boolean = false, accountData?: CuentaViewModel): void {
     this.isEditMode = isEdit;
     this.formSubmitted = false;
-
-    if (isEdit && clientData) {
-      this.clientForm.patchValue(clientData);
-    } else {
-      this.clientForm.reset({
-        estado: true
-      });
-    }
-
     this.isDialogVisible = true;
-  }
-
-  showAccountDialog(isEdit: boolean = false, accountData?: any): void {
-    this.isEditMode = isEdit;
-    this.formSubmitted = false;
 
     if (isEdit && accountData) {
-      this.accountForm.patchValue(accountData);
-    } else {
-      this.accountForm.reset({
-        estado: true
+      this.editingAccountId = accountData.id;
+      const clienteId = this.getClienteIdByName(accountData.nombreCliente);
+      
+      this.accountForm.patchValue({
+        numeroCuenta: accountData.cuentaId,
+        tipoCuenta: accountData.tipo,
+        saldoInicial: accountData.saldo,
+        clienteId: clienteId,
+        estado: accountData.estado
       });
+    } else {
+      this.editingAccountId = null;
+      this.accountForm.reset({ estado: true });
     }
-
-    this.isDialogVisible = true;
   }
 
-  initForm(): void {
-    this.clientForm = this.fb.group({
-      clienteid: [null],
-      nombre: ['', Validators.required],
-      genero: ['', Validators.required],
-      edad: ['', [Validators.required, Validators.min(18)]],
-      identificacion: ['', Validators.required],
-      direccion: ['', Validators.required],
-      telefono: ['', Validators.required],
-      contrasena: ['', [Validators.required, Validators.minLength(6)]],
-      estado: [true, Validators.required]
-    });
+  public showDeleteConfirmation(account: CuentaViewModel): void {
+    this.accountToDelete = account;
+    this.isDeleteModalVisible = true;
   }
 
-  initAccountForm(): void {
+  public cancelDelete(): void {
+    this.accountToDelete = null;
+    this.isDeleteModalVisible = false;
+  }
+
+  public cancelForm(): void {
+    this.isDialogVisible = false;
+    this.formSubmitted = false;
+    this.isEditMode = false;
+    this.editingAccountId = null;
+    this.accountForm.reset();
+  }
+
+  // --- Métodos Privados (Lógica interna del componente) ---
+
+  private initAccountForm(): void {
     this.accountForm = this.fb.group({
       numeroCuenta: ['', Validators.required],
       tipoCuenta: ['', Validators.required],
@@ -289,55 +171,127 @@ export class CuentasComponent implements OnInit {
     });
   }
 
-  // Métodos para el modal de eliminación
-  showDeleteConfirmation(client: any): void {
-    this.clientToDelete = client;
-    this.isDeleteModalVisible = true;
+  private loadCuentas(): void {
+    this.cuentaService.getCuentas().subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          this.cuentas = response.data.map(this.transformCuentaToViewModel);
+          this.filteredCuentas = [...this.cuentas];
+          this.updatePagination();
+        } else {
+          this.handleError('Errores en la respuesta al cargar cuentas', response.errors);
+        }
+      },
+      error: (error) => this.handleError('Error al cargar cuentas', error)
+    });
   }
 
-  showDeleteConfirmationAccount(account: any): void {
-    this.accountToDelete = account;
-    this.isDeleteModalVisible = true;
+  private loadClientes(): void {
+    this.clienteService.getClientes().subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          this.clientes = response.data;
+        } else {
+          this.handleError('Errores en la respuesta al cargar clientes', response.errors);
+        }
+      },
+      error: (error) => this.handleError('Error al cargar clientes', error)
+    });
   }
 
-  cancelDelete(): void {
-    this.clientToDelete = null;
-    this.accountToDelete = null;
-    this.isDeleteModalVisible = false;
+  private transformCuentaToViewModel(cuenta: any): CuentaViewModel {
+    return {
+      id: cuenta.id || 0,
+      cuentaId: cuenta.numeroCuenta || '',
+      tipo: cuenta.tipoCuenta === TipoCuenta.Ahorro ? 'Ahorro' : 'Corriente',
+      saldo: cuenta.saldoInicial || cuenta.saldo || 0,
+      estado: cuenta.estado || false,
+      nombreCliente: cuenta.cliente?.nombre || 'N/A',
+    };
   }
 
-  deleteClient(): void {
-    if (this.clientToDelete) {
-      // Aquí iría la lógica para eliminar el cliente
-      console.log('Eliminando cliente:', this.clientToDelete);
-
-      // Simulación de eliminación exitosa
-      this.isDeleteModalVisible = false;
-      this.clientToDelete = null;
-
-      // Actualizar la lista de clientes
-      this.cargarCuentas();
-    }
+  private createCuentaDtoFromForm(): CuentaDto {
+    const formValue = this.accountForm.value;
+    const clienteSeleccionado = this.clientes.find(c => c.id === formValue.clienteId);
+    
+    return {
+      numeroCuenta: formValue.numeroCuenta,
+      tipoCuenta: formValue.tipoCuenta === 'Ahorro' ? TipoCuenta.Ahorro : TipoCuenta.Corriente,
+      saldoInicial: formValue.saldoInicial,
+      estado: formValue.estado,
+      cliente: {
+        id: formValue.clienteId,
+        nombre: clienteSeleccionado?.nombre || 'Cliente no encontrado'
+      }
+    };
   }
 
-  deleteAccount(): void {
-    if (this.accountToDelete) {
-      // Aquí iría la lógica para eliminar la cuenta
-      console.log('Eliminando cuenta:', this.accountToDelete);
+  private updatePagination(): void {
+    this.totalPages = Math.ceil(this.filteredCuentas.length / this.pageSize);
+    this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
+    this.updatePage();
+  }
 
-      // Simulación de eliminación exitosa
-      this.isDeleteModalVisible = false;
-      this.accountToDelete = null;
+  private updatePage(): void {
+    this.startIndex = (this.currentPage - 1) * this.pageSize;
+    this.endIndex = Math.min(this.startIndex + this.pageSize, this.filteredCuentas.length);
+    this.paginatedCuentas = this.filteredCuentas.slice(this.startIndex, this.endIndex);
+  }
 
-      // Actualizar la lista de cuentas
-      this.cargarCuentas();
-    }
+  private markFormGroupTouched(formGroup: FormGroup) {
+    Object.values(formGroup.controls).forEach(control => {
+      control.markAsTouched();
+      if (control instanceof FormGroup) {
+        this.markFormGroupTouched(control);
+      }
+    });
+  }
+
+  private handleSuccess(message: string): void {
+    console.log(message);
+    alert(message); // Reemplazar con un servicio de notificaciones
+    this.isDialogVisible = false;
+    this.formSubmitted = false;
+    this.accountForm.reset({ estado: true });
+  }
+
+  private handleError(message: string, error?: any): void {
+    console.error(message, error);
+    const errorMessage = error?.error?.message || error?.message || 'Ocurrió un error inesperado.';
+    alert(errorMessage); // Reemplazar con un servicio de notificaciones
+  }
+
+  private createAccount(cuentaDto: CuentaDto): void {
+    this.cuentaService.createCuenta(cuentaDto).subscribe({
+      next: (response: any) => {
+        if (response.success || response.id || response.numeroCuenta) {
+          this.handleSuccess('Cuenta creada exitosamente');
+          this.loadCuentas();
+        } else {
+          this.handleError('Error en la respuesta del servidor', response);
+        }
+      },
+      error: (error) => this.handleError('Error al crear la cuenta', error)
+    });
+  }
+
+  private updateAccount(id: number, cuentaDto: CuentaDto): void {
+    this.cuentaService.updateCuenta(id, cuentaDto).subscribe({
+      next: (response: any) => {
+        if (response.success || response.id || response.numeroCuenta) {
+          this.handleSuccess('Cuenta actualizada exitosamente');
+          this.loadCuentas();
+        } else {
+          this.handleError('Error en la respuesta del servidor', response);
+        }
+      },
+      error: (error) => this.handleError('Error al actualizar la cuenta', error)
+    });
   }
 
 
-
-
-
-
-
+  private getClienteIdByName(nombreCliente: string): number | null {
+    const cliente = this.clientes.find(c => c.nombre === nombreCliente);
+    return cliente?.id || null;
+  }
 }

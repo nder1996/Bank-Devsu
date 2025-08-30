@@ -1,1 +1,303 @@
-<p>reportes works!</p>
+<!-- Header Section -->
+<div class="header-section d-flex justify-content-between align-items-center mb-4">
+  <h2>SISTEMA BANCARIO - MÓDULO DE REPORTES</h2>
+  <button class="btn btn-primary" (click)="openCreateModal()">
+    <i class="fas fa-plus me-2"></i>Nuevo Reporte
+  </button>
+</div>
+
+<!-- Filters Section -->
+<div class="filters-section mb-4">
+  <div class="card">
+    <div class="card-header">
+      <h5 class="mb-0">Filtros</h5>
+    </div>
+    <div class="card-body">
+      <div class="row g-3">
+        <div class="col-md-4">
+          <label for="clienteFilter" class="form-label">Cliente</label>
+          <select id="clienteFilter" class="form-select">
+            <option value="">Todos los clientes</option>
+            <option *ngFor="let cliente of clientes" [value]="cliente.id">
+              {{ cliente.nombre }}
+            </option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label for="fechaInicioFilter" class="form-label">Fecha Desde</label>
+          <input type="date" id="fechaInicioFilter" class="form-control">
+        </div>
+        <div class="col-md-3">
+          <label for="fechaFinFilter" class="form-label">Fecha Hasta</label>
+          <input type="date" id="fechaFinFilter" class="form-control">
+        </div>
+        <div class="col-md-2">
+          <label for="formatoFilter" class="form-label">Formato</label>
+          <select id="formatoFilter" class="form-select">
+            <option value="">Todos</option>
+            <option value="0">JSON</option>
+            <option value="1">PDF</option>
+          </select>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-md-6">
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Buscar reportes..." 
+                   [(ngModel)]="searchTerm" (keyup.enter)="onSearch()">
+            <button class="btn btn-outline-secondary" type="button" (click)="onSearch()">
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Results Section -->
+<div class="results-section">
+  <div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h5 class="mb-0">Reportes Generados</h5>
+      <span class="badge bg-secondary" *ngIf="!isLoading">
+        {{ filteredReportes.length }} reporte(s) encontrado(s)
+      </span>
+    </div>
+    <div class="card-body">
+      <!-- Loading State -->
+      <div *ngIf="isLoading" class="text-center py-4">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Cargando...</span>
+        </div>
+        <p class="mt-2">Cargando reportes...</p>
+      </div>
+
+      <!-- Error State -->
+      <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+        <i class="fas fa-exclamation-triangle me-2"></i>
+        {{ errorMessage }}
+      </div>
+
+      <!-- Data Table -->
+      <div *ngIf="!isLoading && !errorMessage">
+        <div class="table-responsive" *ngIf="hasData">
+          <table class="table table-striped table-hover">
+            <thead class="table-dark">
+              <tr>
+                <th>ID</th>
+                <th>Cliente</th>
+                <th>Fecha Inicio</th>
+                <th>Fecha Fin</th>
+                <th>Formato</th>
+                <th>Fecha Generación</th>
+                <th>Archivo</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let reporte of paginatedReportes">
+                <td>{{ reporte.id }}</td>
+                <td>{{ reporte.cliente.nombre }}</td>
+                <td>{{ reporte.fechaInicio | date:'short' }}</td>
+                <td>{{ reporte.fechaFin | date:'short' }}</td>
+                <td>
+                  <span class="badge" 
+                        [class]="reporte.formato === 0 ? 'bg-info' : 'bg-warning'">
+                    {{ getFormatoLabel(reporte.formato) }}
+                  </span>
+                </td>
+                <td>{{ reporte.fechaGeneracion | date:'short' }}</td>
+                <td>
+                  <small class="text-muted">{{ reporte.nombreArchivo }}</small>
+                </td>
+                <td>
+                  <span class="badge" 
+                        [class]="reporte.activo ? 'bg-success' : 'bg-secondary'">
+                    {{ reporte.activo ? 'Activo' : 'Inactivo' }}
+                  </span>
+                </td>
+                <td>
+                  <div class="btn-group btn-group-sm" role="group">
+                    <button type="button" class="btn btn-outline-info" 
+                            (click)="downloadReporte(reporte)"
+                            title="Descargar">
+                      <i class="fas fa-download"></i>
+                    </button>
+                    <button type="button" class="btn btn-outline-primary" 
+                            (click)="openEditModal(reporte)"
+                            title="Editar">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                    <button type="button" class="btn btn-outline-danger" 
+                            (click)="openDeleteModal(reporte)"
+                            title="Eliminar">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- No Data State -->
+        <div *ngIf="showNoData" class="text-center py-4">
+          <i class="fas fa-file-alt fa-3x text-muted mb-3"></i>
+          <h5 class="text-muted">No hay reportes para mostrar</h5>
+          <p class="text-muted">Genere un nuevo reporte para comenzar</p>
+          <button class="btn btn-primary" (click)="openCreateModal()">
+            <i class="fas fa-plus me-2"></i>Generar Reporte
+          </button>
+        </div>
+
+        <!-- Pagination -->
+        <nav *ngIf="hasData && totalPages > 1" aria-label="Paginación de reportes">
+          <div class="d-flex justify-content-between align-items-center">
+            <small class="text-muted">
+              Mostrando {{ startIndex }} - {{ endIndex }} de {{ filteredReportes.length }} registros
+            </small>
+            <ul class="pagination pagination-sm mb-0">
+              <li class="page-item" [class.disabled]="currentPage === 1">
+                <button class="page-link" (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">
+                  Anterior
+                </button>
+              </li>
+              <li *ngFor="let page of pages" class="page-item" [class.active]="page === currentPage">
+                <button class="page-link" (click)="changePage(page)">{{ page }}</button>
+              </li>
+              <li class="page-item" [class.disabled]="currentPage === totalPages">
+                <button class="page-link" (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">
+                  Siguiente
+                </button>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Create/Edit Modal -->
+<div class="modal fade" [class.show]="isModalVisible" [style.display]="isModalVisible ? 'block' : 'none'" 
+     tabindex="-1" role="dialog" [attr.aria-hidden]="!isModalVisible">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          <i class="fas fa-file-alt me-2"></i>
+          {{ isEditMode ? 'Editar Reporte' : 'Nuevo Reporte' }}
+        </h5>
+        <button type="button" class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <form [formGroup]="reporteForm" (ngSubmit)="saveReporte()">
+        <div class="modal-body">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label for="clienteId" class="form-label">Cliente *</label>
+              <select id="clienteId" class="form-control" formControlName="clienteId"
+                      [class.is-invalid]="formSubmitted && reporteForm.get('clienteId')?.invalid">
+                <option value="">Seleccione un cliente</option>
+                <option *ngFor="let cliente of clientes" [value]="cliente.id">
+                  {{ cliente.nombre }}
+                </option>
+              </select>
+              <div class="invalid-feedback" 
+                   *ngIf="formSubmitted && reporteForm.get('clienteId')?.hasError('required')">
+                El cliente es requerido
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label for="formato" class="form-label">Formato *</label>
+              <select id="formato" class="form-control" formControlName="formato"
+                      [class.is-invalid]="formSubmitted && reporteForm.get('formato')?.invalid">
+                <option [value]="ReporteFormato.JSON">JSON</option>
+                <option [value]="ReporteFormato.PDF">PDF</option>
+              </select>
+              <div class="invalid-feedback" 
+                   *ngIf="formSubmitted && reporteForm.get('formato')?.hasError('required')">
+                El formato es requerido
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label for="fechaInicio" class="form-label">Fecha Inicio *</label>
+              <input type="date" id="fechaInicio" class="form-control" formControlName="fechaInicio"
+                     [class.is-invalid]="formSubmitted && reporteForm.get('fechaInicio')?.invalid">
+              <div class="invalid-feedback" 
+                   *ngIf="formSubmitted && reporteForm.get('fechaInicio')?.hasError('required')">
+                La fecha de inicio es requerida
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label for="fechaFin" class="form-label">Fecha Fin *</label>
+              <input type="date" id="fechaFin" class="form-control" formControlName="fechaFin"
+                     [class.is-invalid]="formSubmitted && reporteForm.get('fechaFin')?.invalid">
+              <div class="invalid-feedback" 
+                   *ngIf="formSubmitted && reporteForm.get('fechaFin')?.hasError('required')">
+                La fecha de fin es requerida
+              </div>
+            </div>
+
+            <div class="col-md-6" *ngIf="isEditMode">
+              <label for="activo" class="form-label">Estado</label>
+              <select id="activo" class="form-control" formControlName="activo">
+                <option [value]="true">Activo</option>
+                <option [value]="false">Inactivo</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary" [disabled]="reporteForm.invalid && formSubmitted">
+            <i class="fas fa-save me-2"></i>
+            {{ isEditMode ? 'Actualizar' : 'Crear' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" [class.show]="isDeleteModalVisible" [style.display]="isDeleteModalVisible ? 'block' : 'none'" 
+     tabindex="-1" role="dialog" [attr.aria-hidden]="!isDeleteModalVisible">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          <i class="fas fa-exclamation-triangle text-warning me-2"></i>
+          Confirmar eliminación
+        </h5>
+        <button type="button" class="btn-close" (click)="closeDeleteModal()"></button>
+      </div>
+      <div class="modal-body">
+        <p>¿Está seguro que desea eliminar el siguiente reporte?</p>
+        <div class="alert alert-info" *ngIf="reporteToDelete">
+          <strong>Cliente:</strong> {{ reporteToDelete.cliente.nombre }}<br>
+          <strong>Archivo:</strong> {{ reporteToDelete.nombreArchivo }}<br>
+          <strong>Formato:</strong> {{ getFormatoLabel(reporteToDelete.formato) }}
+        </div>
+        <p class="text-danger">
+          <i class="fas fa-exclamation-triangle me-1"></i>
+          Esta acción no se puede deshacer.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeDeleteModal()">Cancelar</button>
+        <button type="button" class="btn btn-danger" (click)="confirmDelete()">
+          <i class="fas fa-trash me-2"></i>Eliminar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal backdrop -->
+<div class="modal-backdrop fade" [class.show]="isModalVisible || isDeleteModalVisible" 
+     *ngIf="isModalVisible || isDeleteModalVisible"></div>

@@ -3,6 +3,14 @@
   "WorkspaceRootPath": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|c:\\users\\usuario\\documents\\github\\bank-devsu\\backend\\bancoapi\\bancoapi\\controllers\\movimientoscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|solutionrelative:bancoapi\\controllers\\movimientoscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|c:\\users\\usuario\\documents\\github\\bank-devsu\\backend\\bancoapi\\bancoapi\\application\\dtos\\cuentadto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|solutionrelative:bancoapi\\application\\dtos\\cuentadto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|c:\\users\\usuario\\documents\\github\\bank-devsu\\backend\\bancoapi\\bancoapi\\controllers\\clientescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|solutionrelative:bancoapi\\controllers\\clientescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
@@ -19,12 +27,38 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "MovimientosController.cs",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Controllers\\MovimientosController.cs",
+              "RelativeDocumentMoniker": "BancoAPI\\Controllers\\MovimientosController.cs",
+              "ToolTip": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Controllers\\MovimientosController.cs",
+              "RelativeToolTip": "BancoAPI\\Controllers\\MovimientosController.cs",
+              "ViewState": "AgIAACgAAAAAAAAAAAAqwDsAAABhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-30T19:34:54.32Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "CuentaDto.cs",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Application\\DTOs\\CuentaDto.cs",
+              "RelativeDocumentMoniker": "BancoAPI\\Application\\DTOs\\CuentaDto.cs",
+              "ToolTip": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Application\\DTOs\\CuentaDto.cs",
+              "RelativeToolTip": "BancoAPI\\Application\\DTOs\\CuentaDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-29T23:17:45.652Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "ClientesController.cs",
               "DocumentMoniker": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Controllers\\ClientesController.cs",
               "RelativeDocumentMoniker": "BancoAPI\\Controllers\\ClientesController.cs",
               "ToolTip": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Controllers\\ClientesController.cs",
               "RelativeToolTip": "BancoAPI\\Controllers\\ClientesController.cs",
-              "ViewState": "AgIAAB8AAAAAAAAAAAAgwDAAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAABcAAAAAAAAAAAAqwDAAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-08-24T15:45:11.884Z",
               "EditorCaption": ""

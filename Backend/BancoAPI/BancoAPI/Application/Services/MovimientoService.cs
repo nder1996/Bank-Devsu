@@ -56,9 +56,13 @@ namespace BancoAPI.Application.Services
                 if (movimiento.TipoMovimiento == TipoMovimiento.Debito)
                 {
                     movimiento.Valor = -Math.Abs(movimiento.Valor);
-                    // Validar saldo suficiente
+                    // Validar saldo suficiente (incluyendo saldo cero)
                     if (saldoActual + movimiento.Valor < 0)
-                        throw new SaldoNoDisponibleException("Saldo insuficiente para realizar el débito.");
+                        throw new SaldoNoDisponibleException("Saldo no disponible");
+
+                    // Validar si saldo actual es cero y se intenta hacer débito
+                    if (saldoActual == 0)
+                        throw new SaldoNoDisponibleException("Saldo no disponible");
 
                     // Validar límite diario
                     var hoy = DateTime.Today;
@@ -66,7 +70,7 @@ namespace BancoAPI.Application.Services
                     decimal totalRetiradoHoy = debitos.Sum(m => Math.Abs(m.Valor));
 
                     if (totalRetiradoHoy + Math.Abs(movimiento.Valor) > AppConstants.LIMITE_DIARIO_RETIRO)
-                        throw new CupoDiarioExcedidoException("Se ha excedido el cupo diario de retiro.");
+                        throw new CupoDiarioExcedidoException("Cupo diario Excedido");
                 }
                 else if (movimiento.TipoMovimiento == TipoMovimiento.Credito)
                 {
@@ -94,7 +98,7 @@ namespace BancoAPI.Application.Services
             }
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(long id)
         {
             try
             {
@@ -122,7 +126,7 @@ namespace BancoAPI.Application.Services
             }
         }
 
-        public async Task<MovimientoDto?> GetByIdAsync(int id)
+        public async Task<MovimientoDto?> GetByIdAsync(long id)
         {
             try
             {
@@ -142,6 +146,9 @@ namespace BancoAPI.Application.Services
         {
             if (movimientoDto == null)
                 throw new ArgumentNullException(nameof(movimientoDto), "El movimiento no puede ser nulo.");
+
+            if (movimientoDto.cuenta == null)
+                throw new ArgumentNullException(nameof(movimientoDto.cuenta), "La cuenta del movimiento no puede ser nula.");
 
             try
             {

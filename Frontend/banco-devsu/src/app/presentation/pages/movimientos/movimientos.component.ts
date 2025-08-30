@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MovimientoService } from 'src/app/core/services/movimiento.service';
+import { CuentaService } from 'src/app/core/services/cuenta.service';
 import { Movimiento } from 'src/app/core/models/Movimiento';
 import { TipoMovimiento } from '../../../core/enums/tipo-movimiento.enum';
 import { MovimientoDto } from 'src/app/core/dtos/movimiento.dto';
+import { CuentaDto } from 'src/app/core/dtos/cuenta.dto';
 
 
 @Component({
@@ -11,52 +14,66 @@ import { MovimientoDto } from 'src/app/core/dtos/movimiento.dto';
   styleUrls: ['./movimientos.component.css']
 })
 export class MovimientosComponent implements OnInit {
-  // Datos quemados
-  items = [
-    { fecha: '10/08/2025', cuenta: '478758', tipo: 'Crédito', valor: 2000, saldo: 4500 },
-    { fecha: '08/08/2025', cuenta: '225487', tipo: 'Débito', valor: -575, saldo: 2500 },
-    { fecha: '05/08/2025', cuenta: '495878', tipo: 'Crédito', valor: 600, saldo: 700 },
-    { fecha: '01/08/2025', cuenta: '496825', tipo: 'Débito', valor: -150, saldo: 0 },
-    { fecha: '30/07/2025', cuenta: '478758', tipo: 'Crédito', valor: 1500, saldo: 3000 },
-    { fecha: '28/07/2025', cuenta: '225487', tipo: 'Débito', valor: -800, saldo: 3075 },
-    { fecha: '26/07/2025', cuenta: '495878', tipo: 'Crédito', valor: 100, saldo: 100 },
-    { fecha: '20/07/2025', cuenta: '496825', tipo: 'Débito', valor: -250, saldo: 150 },
-    { fecha: '15/07/2025', cuenta: '478758', tipo: 'Crédito', valor: 1000, saldo: 1500 },
-    { fecha: '10/07/2025', cuenta: '225487', tipo: 'Débito', valor: -125, saldo: 3875 },
-    { fecha: '05/07/2025', cuenta: '495878', tipo: 'Crédito', valor: 900, saldo: 1000 },
-    { fecha: '01/07/2025', cuenta: '496825', tipo: 'Débito', valor: -300, saldo: 400 }
-  ];
+  // Propiedades del formulario
+  public movimientoForm!: FormGroup;
+  public formSubmitted = false;
+  public isEditMode = false;
+  public editingMovimientoId: number | null = null;
 
-  movimientos: MovimientoDto[] = [];
+  // Propiedades de datos
+  public movimientos: MovimientoDto[] = [];
+  public cuentas: CuentaDto[] = [];
+  public filteredItems: MovimientoDto[] = [];
+  public paginatedItems: MovimientoDto[] = [];
 
   // Variables de búsqueda y filtrado
-  searchTerm: string = '';
-  filteredItems: any[] = [];
+  public searchTerm: string = '';
 
   // Variables de paginación
-  paginatedItems: any[] = [];
-  currentPage = 1;
-  pageSize = 5;
-  totalPages = 0;
-  pages: number[] = [];
-  startIndex = 0;
-  endIndex = 0;
+  public currentPage = 1;
+  public pageSize = 5;
+  public totalPages = 0;
+  public pages: number[] = [];
+  public startIndex = 0;
+  public endIndex = 0;
 
-  constructor(private movimientoService: MovimientoService) { }
+  // Modal states
+  public isModalVisible = false;
+  public isDeleteModalVisible = false;
+  public movimientoToDelete: MovimientoDto | null = null;
 
-  ngOnInit() {
+  // Enums para el template
+  public TipoMovimiento = TipoMovimiento;
+
+  constructor(
+    private movimientoService: MovimientoService,
+    private cuentaService: CuentaService,
+    private fb: FormBuilder
+  ) { }
+
+  ngOnInit(): void {
+    this.initMovimientoForm();
     this.cargarMovimientos();
+    this.cargarCuentas();
   }
 
-  cargarMovimientos(): void {
-    this.movimientoService.getMovimientos().subscribe(
-      (response: any) => {
+  // === FORM SETUP ===
+  private initMovimientoForm(): void {
+    this.movimientoForm = this.fb.group({
+      id: [null],
+      cuentaId: ['', [Validators.required]],
+      tipoMovimiento: ['', [Validators.required]],
+      valor: ['', [Validators.required, Validators.min(0.01)]]
+    });
+  }
+
+  // --- Métodos de carga de datos ---
+
+  private cargarMovimientos(): void {
+    this.movimientoService.getMovimientos().subscribe({
+      next: (response: any) => {
         if (response.success) {
-          this.movimientos = response.data.map((mov: MovimientoDto) => ({
-            ...mov,
-            numeroCuenta: mov.cuenta?.numeroCuenta || ''
-          }));
-          console.log("json movimientos :", JSON.stringify(this.movimientos));
+          this.movimientos = response.data;
           this.filteredItems = [...this.movimientos];
           this.updatePagination();
           this.updatePage();
@@ -64,28 +81,262 @@ export class MovimientosComponent implements OnInit {
           console.error('Errores en la respuesta:', response.errors);
         }
       },
-      (error) => {
+      error: (error) => {
         console.error('Error al cargar movimientos:', error);
       }
-    );
+    });
+  }
+
+  private cargarCuentas(): void {
+    this.cuentaService.getCuentas().subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          this.cuentas = response.data;
+          console.log('Cuentas cargadas:', this.cuentas);
+        } else {
+          console.error('Error al cargar cuentas:', response.errors);
+        }
+      },
+      error: (error) => {
+        console.error('Error al cargar cuentas:', error);
+      }
+    });
+  }
+
+  // --- Métodos CRUD ---
+
+  public saveMovimiento(): void {
+    console.log('=== INICIANDO saveMovimiento ===');
+    this.formSubmitted = true;
+    
+    console.log('Formulario válido:', this.movimientoForm.valid);
+    console.log('Valores del formulario:', this.movimientoForm.value);
+    
+    if (this.movimientoForm.invalid) {
+      console.log('Formulario inválido, errores:', this.movimientoForm.errors);
+      this.markFormGroupTouched(this.movimientoForm);
+      return;
+    }
+
+    try {
+      console.log('Creando DTO...');
+      const movimientoDto = this.createMovimientoDtoFromForm();
+      console.log('DTO creado exitosamente:', movimientoDto);
+      
+      if (this.isEditMode && this.editingMovimientoId) {
+        console.log('Modo edición');
+        this.updateMovimiento(this.editingMovimientoId, movimientoDto);
+      } else {
+        console.log('Modo creación');
+        this.createMovimiento(movimientoDto);
+      }
+    } catch (error: any) {
+      console.error('Error capturado en saveMovimiento:', error);
+      this.handleError('Error en el formulario', { error: { message: error.message } });
+    }
+  }
+
+  private createMovimiento(movimientoDto: MovimientoDto): void {
+    console.log('Enviando movimiento:', JSON.stringify(movimientoDto, null, 2));
+    this.movimientoService.createMovimiento(movimientoDto).subscribe({
+      next: (response: any) => {
+        console.log('Respuesta del servidor:', response);
+        if (response.success) {
+          this.handleSuccess('Movimiento creado exitosamente');
+          this.resetForm();
+          this.cargarMovimientos();
+        } else {
+          this.handleError('Error al crear el movimiento', response);
+        }
+      },
+      error: (error) => {
+        console.error('Error completo:', error);
+        this.handleError('Error al crear el movimiento', error);
+      }
+    });
+  }
+
+  private updateMovimiento(id: number, movimientoDto: MovimientoDto): void {
+    this.movimientoService.updateMovimiento(id, movimientoDto).subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          this.handleSuccess('Movimiento actualizado exitosamente');
+          this.resetForm();
+          this.cargarMovimientos();
+        } else {
+          this.handleError('Error al actualizar el movimiento', response);
+        }
+      },
+      error: (error) => {
+        this.handleError('Error al actualizar el movimiento', error);
+      }
+    });
+  }
+
+  private deleteMovimiento(): void {
+    if (!this.movimientoToDelete || !this.movimientoToDelete.id) {
+      return;
+    }
+
+    this.movimientoService.deleteMovimiento(this.movimientoToDelete.id).subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          this.handleSuccess('Movimiento eliminado exitosamente');
+          this.closeDeleteModal();
+          this.cargarMovimientos();
+        } else {
+          this.handleError('Error al eliminar el movimiento', response);
+          this.closeDeleteModal();
+        }
+      },
+      error: (error) => {
+        this.handleError('Error al eliminar el movimiento', error);
+        this.closeDeleteModal();
+      }
+    });
+  }
+
+  // === MODAL METHODS ===
+  public openCreateModal(): void {
+    this.isModalVisible = true;
+    this.isEditMode = false;
+    this.editingMovimientoId = null;
+    this.formSubmitted = false;
+    this.movimientoForm.reset();
+    this.movimientoForm.patchValue({
+      id: null,
+      cuentaId: '',
+      tipoMovimiento: '',
+      valor: ''
+    });
+  }
+
+  public openEditModal(movimiento: MovimientoDto): void {
+    if (movimiento && movimiento.id && movimiento.cuenta && movimiento.valor !== undefined) {
+      this.isModalVisible = true;
+      this.isEditMode = true;
+      this.editingMovimientoId = movimiento.id;
+      this.formSubmitted = false;
+      this.movimientoForm.patchValue({
+        id: movimiento.id,
+        cuentaId: movimiento.cuenta.id,
+        tipoMovimiento: movimiento.tipoMovimiento,
+        valor: Math.abs(movimiento.valor)
+      });
+    }
+  }
+
+  public closeModal(): void {
+    this.isModalVisible = false;
+    this.resetForm();
+  }
+
+  public openDeleteModal(movimiento: MovimientoDto): void {
+    this.movimientoToDelete = movimiento;
+    this.isDeleteModalVisible = true;
+  }
+
+  public closeDeleteModal(): void {
+    this.isDeleteModalVisible = false;
+    this.movimientoToDelete = null;
+  }
+
+  public confirmDelete(): void {
+    this.deleteMovimiento();
+  }
+
+  // --- Métodos auxiliares ---
+
+  private resetForm(): void {
+    this.isModalVisible = false;
+    this.isEditMode = false;
+    this.editingMovimientoId = null;
+    this.formSubmitted = false;
+    this.movimientoForm.reset();
+  }
+
+  private createMovimientoDtoFromForm(): MovimientoDto {
+    const formValue = this.movimientoForm.value;
+    console.log('Form value:', formValue);
+    console.log('Cuentas disponibles:', this.cuentas);
+    
+    const cuentaId = parseInt(formValue.cuentaId);
+    console.log('CuentaId parseado:', cuentaId);
+    
+    const selectedCuenta = this.cuentas.find(c => c.id === cuentaId);
+    console.log('Cuenta encontrada:', selectedCuenta);
+    
+    if (!selectedCuenta) {
+      throw new Error(`No se encontró la cuenta con ID: ${cuentaId}`);
+    }
+    
+    const movimientoDto = new MovimientoDto();
+    
+    // ID del movimiento (0 para crear, el ID actual para editar)
+    movimientoDto.id = this.isEditMode ? this.editingMovimientoId! : 0;
+    
+    // Fecha actual
+    movimientoDto.fecha = new Date();
+    
+    // Tipo de movimiento (enum)
+    movimientoDto.tipoMovimiento = parseInt(formValue.tipoMovimiento) as TipoMovimiento;
+    
+    // Valor del movimiento (siempre positivo desde el form)
+    movimientoDto.valor = parseFloat(formValue.valor);
+    
+    // Saldo inicial en 0 - el backend lo calculará
+    movimientoDto.saldo = 0;
+    
+    // Información de la cuenta
+    movimientoDto.cuenta = new MovimientoDto.CuentaResumida();
+    movimientoDto.cuenta.id = selectedCuenta.id!;
+    movimientoDto.cuenta.numeroCuenta = selectedCuenta.numeroCuenta!;
+    
+    console.log('DTO final antes de enviar:', JSON.stringify(movimientoDto, null, 2));
+    
+    return movimientoDto;
+  }
+
+  private markFormGroupTouched(formGroup: FormGroup): void {
+    Object.keys(formGroup.controls).forEach(key => {
+      const control = formGroup.get(key);
+      control?.markAsTouched();
+      if (control instanceof FormGroup) {
+        this.markFormGroupTouched(control);
+      }
+    });
+  }
+
+  private handleSuccess(message: string): void {
+    console.log(message);
+    // Aquí podrías agregar una notificación toast
+  }
+
+  private handleError(message: string, error: any): void {
+    console.error(message, error);
+    let errorMessage = message;
+    if (error?.error?.message) {
+      errorMessage = error.error.message;
+    }
+    // Aquí podrías agregar una notificación toast de error
+    alert(errorMessage);
   }
 
   // Filtrar elementos según término de búsqueda
-  filterItems() {
+  public filterItems(): void {
     if (!this.searchTerm.trim()) {
-      this.filteredItems = [...this.items];
+      this.filteredItems = [...this.movimientos];
     } else {
       const term = this.searchTerm.toLowerCase();
-      this.filteredItems = this.items.filter(item =>
-        item.cuenta.toLowerCase().includes(term) ||
-        item.tipo.toLowerCase().includes(term) ||
-        item.fecha.includes(term) ||
-        item.valor.toString().includes(term) ||
-        item.saldo.toString().includes(term)
+      this.filteredItems = this.movimientos.filter(item =>
+        (item.cuenta?.numeroCuenta || '').toLowerCase().includes(term) ||
+        (item.tipoMovimiento === TipoMovimiento.Credito ? 'crédito' : 'débito').includes(term) ||
+        (item.valor || 0).toString().includes(term) ||
+        (item.saldo || 0).toString().includes(term)
       );
     }
 
-    this.currentPage = 1; // Volver a primera página
+    this.currentPage = 1;
     this.updatePagination();
     this.updatePage();
   }

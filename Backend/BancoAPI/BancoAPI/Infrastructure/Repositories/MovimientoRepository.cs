@@ -23,9 +23,15 @@ namespace BancoAPI.Infrastructure.Repositories
             return movimiento;
         }
 
-        Task<bool> IMovimientoRepository.DeleteAsync(int id)
+        async Task<bool> IMovimientoRepository.DeleteAsync(long id)
         {
-            throw new NotImplementedException();
+            var movimiento = await _context.Movimientos.FindAsync(id);
+            if (movimiento == null)
+                return false;
+
+            _context.Movimientos.Remove(movimiento);
+            await _context.SaveChangesAsync();
+            return true;
         }  
 
         async Task<IEnumerable<Movimiento>> IMovimientoRepository.GetAllAsync()
@@ -42,7 +48,7 @@ namespace BancoAPI.Infrastructure.Repositories
             .ToListAsync();
         }
 
-        async Task<Movimiento?> IMovimientoRepository.GetByIdAsync(int id)
+        async Task<Movimiento?> IMovimientoRepository.GetByIdAsync(long id)
         {
             return await _context.Movimientos
                 .Include(m => m.Cuenta)
@@ -78,6 +84,17 @@ namespace BancoAPI.Infrastructure.Repositories
             _context.Movimientos.Update(existingMovimiento);
             await _context.SaveChangesAsync();
             return existingMovimiento;
+        }
+
+        public async Task<IEnumerable<Movimiento>> GetByClienteIdAndDateRangeAsync(long clienteId, DateTime fechaInicio, DateTime fechaFin)
+        {
+            return await _context.Movimientos
+                .Include(m => m.Cuenta)
+                .Where(m => m.Cuenta.ClienteId == clienteId &&
+                           m.Fecha >= fechaInicio &&
+                           m.Fecha <= fechaFin)
+                .OrderBy(m => m.Fecha)
+                .ToListAsync();
         }
     }
 }

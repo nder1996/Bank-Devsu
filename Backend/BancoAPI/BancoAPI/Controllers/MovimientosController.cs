@@ -1,4 +1,5 @@
 ﻿using BancoAPI.Application.DTOs;
+using BancoAPI.Application.Exceptions;
 using BancoAPI.Application.Services;
 using BancoAPI.Domain.Entities;
 using BancoAPI.Domain.Interfaces.Services;
@@ -23,49 +24,95 @@ namespace BancoAPI.Controllers
 
         // GET: api/Movimientos
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<MovimientoDto>>> Get()
+        public async Task<ActionResult<ApiResponse<IEnumerable<MovimientoDto>>>> Get()
         {
-            var movimientos = await _movimientoService.GetAllAsync();
-            return Ok(movimientos);
+            try
+            {
+                var movimientos = await _movimientoService.GetAllAsync();
+                return Ok(ApiResponse<IEnumerable<MovimientoDto>>.CreateSuccess(movimientos, "Movimientos obtenidos exitosamente"));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ApiResponse<IEnumerable<MovimientoDto>>.Fail($"Error al obtener movimientos: {ex.Message}"));
+            }
         }
 
         // GET: api/Movimientos/5
-        [HttpGet("{id:int}")]
-        public async Task<ActionResult<Movimiento>> Get(int id)
+        [HttpGet("{id:long}")]
+        public async Task<ActionResult<ApiResponse<MovimientoDto>>> Get(long id)
         {
-            var movimiento = await _movimientoService.GetByIdAsync(id);
-            if (movimiento == null)
-                return NotFound();
-            return Ok(movimiento);
+            try
+            {
+                var movimiento = await _movimientoService.GetByIdAsync(id);
+                if (movimiento == null)
+                    return NotFound(ApiResponse<MovimientoDto>.Fail("Movimiento no encontrado"));
+                
+                return Ok(ApiResponse<MovimientoDto>.CreateSuccess(movimiento, "Movimiento obtenido exitosamente"));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ApiResponse<MovimientoDto>.Fail($"Error al obtener movimiento: {ex.Message}"));
+            }
         }
 
         // POST: api/Movimientos
         [HttpPost]
-        public async Task<ActionResult<Movimiento>> Post([FromBody] MovimientoDto movimiento)
+        public async Task<ActionResult<ApiResponse<MovimientoDto>>> Post([FromBody] MovimientoDto movimiento)
         {
-            var nuevoMovimiento = await _movimientoService.CreateAsync(movimiento);
-            return CreatedAtAction(nameof(Get), new { id = nuevoMovimiento.id }, nuevoMovimiento);
+            try
+            {
+                var nuevoMovimiento = await _movimientoService.CreateAsync(movimiento);
+                return CreatedAtAction(nameof(Get), new { id = nuevoMovimiento.id }, 
+                    ApiResponse<MovimientoDto>.CreateSuccess(nuevoMovimiento, "Movimiento creado exitosamente"));
+            }
+            catch (SaldoNoDisponibleException ex)
+            {
+                return BadRequest(ex.ToApiResponse());
+            }
+            catch (CupoDiarioExcedidoException ex)
+            {
+                return BadRequest(ex.ToApiResponse());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ApiResponse<MovimientoDto>.Fail($"Error al crear movimiento: {ex.Message}"));
+            }
         }
 
         // PUT: api/Movimientos/5
-        [HttpPut("{id:int}")]
-        public async Task<ActionResult<Movimiento>> Put(int id, [FromBody] MovimientoDto movimiento)
+        [HttpPut("{id:long}")]
+        public async Task<ActionResult<ApiResponse<MovimientoDto>>> Put(long id, [FromBody] MovimientoDto movimiento)
         {
-            if (id != movimiento.id)
-                return BadRequest("El ID del movimiento no coincide.");
+            try
+            {
+                if (id != movimiento.id)
+                    return BadRequest(ApiResponse<MovimientoDto>.Fail("El ID del movimiento no coincide"));
 
-            var movimientoActualizado = await _movimientoService.UpdateAsync(movimiento);
-            return Ok(movimientoActualizado);
+                var movimientoActualizado = await _movimientoService.UpdateAsync(movimiento);
+                return Ok(ApiResponse<MovimientoDto>.CreateSuccess(movimientoActualizado, "Movimiento actualizado exitosamente"));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ApiResponse<MovimientoDto>.Fail($"Error al actualizar movimiento: {ex.Message}"));
+            }
         }
 
         // DELETE: api/Movimientos/5
-        [HttpDelete("{id:int}")]
-        public async Task<IActionResult> Delete(int id)
+        [HttpDelete("{id:long}")]
+        public async Task<ActionResult<ApiResponse<object>>> Delete(long id)
         {
-            var resultado = await _movimientoService.DeleteAsync(id);
-            if (!resultado)
-                return NotFound();
-            return NoContent();
+            try
+            {
+                var resultado = await _movimientoService.DeleteAsync(id);
+                if (!resultado)
+                    return NotFound(ApiResponse<object>.Fail("Movimiento no encontrado"));
+                
+                return Ok(ApiResponse<object>.CreateSuccess(null, "Movimiento eliminado exitosamente"));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ApiResponse<object>.Fail($"Error al eliminar movimiento: {ex.Message}"));
+            }
         }
     }
 }

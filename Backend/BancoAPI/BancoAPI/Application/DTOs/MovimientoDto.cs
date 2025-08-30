@@ -11,13 +11,11 @@ namespace BancoAPI.Application.DTOs
         public DateTime fecha { get; set; }
 
         [Required(ErrorMessage = "El tipo de movimiento es requerido")]
-        [StringLength(20, ErrorMessage = "El tipo de movimiento no debe exceder los 20 caracteres")]
         public TipoMovimiento tipoMovimiento { get; set; } // "Debito" o "Credito"
 
         [Required(ErrorMessage = "El valor es requerido")]
         public decimal valor { get; set; }
 
-        [Required(ErrorMessage = "El saldo es requerido")]
         public decimal saldo { get; set; }
 
         [Required(ErrorMessage = "La cuenta es requerida")]

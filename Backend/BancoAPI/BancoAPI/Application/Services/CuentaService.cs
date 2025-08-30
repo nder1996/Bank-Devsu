@@ -77,6 +77,36 @@ namespace BancoAPI.Application.Services
             }
         }
 
+        public async Task<CuentaDto> ActualizarAsync(long cuentaId, CuentaDto cuentaDto)
+        {
+            try
+            {
+                if (cuentaId <= 0)
+                    throw new ArgumentException("El id de la cuenta debe ser mayor a cero.", nameof(cuentaId));
+                if (cuentaDto is null)
+                    throw new ArgumentNullException(nameof(cuentaDto), "La cuenta no puede ser nula.");
+                if (string.IsNullOrWhiteSpace(cuentaDto.numeroCuenta))
+                    throw new ArgumentException("El número de cuenta es requerido.", nameof(cuentaDto.numeroCuenta));
+                if (cuentaDto.saldoInicial < 0)
+                    throw new ArgumentException("El saldo inicial debe ser mayor o igual a cero.", nameof(cuentaDto.saldoInicial));
+
+                // Mapeo de DTO a entidad
+                var cuentaEntity = _mapper.Map<Cuenta>(cuentaDto);
+                cuentaEntity.Id = cuentaId;
+                
+                var cuentaActualizada = await _cuentaRepository.ActualizarAsync(cuentaEntity);
+                if (cuentaActualizada == null)
+                    throw new Exception("No se pudo actualizar la cuenta.");
+
+                // Mapeo de entidad a DTO
+                return _mapper.Map<CuentaDto>(cuentaActualizada);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al actualizar la cuenta.", ex);
+            }
+        }
+
         public async Task<bool> EliminarAsync(long cuentaId)
         {
             try

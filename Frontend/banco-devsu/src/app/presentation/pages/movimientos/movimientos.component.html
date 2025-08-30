@@ -9,7 +9,9 @@
         placeholder="Buscar movimiento..."
         [(ngModel)]="searchTerm"
         (input)="filterItems()">
-      <button class="btn-add">Nuevo</button>
+      <button class="btn-add" (click)="openCreateModal()">
+        Agregar Movimiento +
+      </button>
     </div>
   </div>
 
@@ -27,18 +29,18 @@
     </thead>
     <tbody>
       <tr *ngFor="let item of paginatedItems">
-        <td>{{item.numeroCuenta}}</td>
-        <td [ngClass]="item.tipoMovimiento == 1 ? 'tipo-credito' : 'tipo-debito'">
-          {{item.tipoMovimiento == 1 ? 'Crédito' : 'Débito'}}
+        <td>{{item.cuenta.numeroCuenta || 'N/A'}}</td>
+        <td [ngClass]="item.tipoMovimiento == TipoMovimiento.Credito ? 'tipo-credito' : 'tipo-debito'">
+          {{item.tipoMovimiento == TipoMovimiento.Credito ? 'Crédito' : 'Débito'}}
         </td>
-        <td [ngClass]="item.valor > 0 ? 'valor-positivo' : 'valor-negativo'">
+        <td [ngClass]="(item.valor || 0) > 0 ? 'valor-positivo' : 'valor-negativo'">
           {{item.valor | currency}}
         </td>
         <td>{{item.saldo | currency}}</td>
         <td style="display: none;">{{item.fecha | date:'dd/MM/yyyy'}}</td>
         <td class="actions">
-          <button class="btn-edit">Editar</button>
-          <button class="btn-delete">Eliminar</button>
+          <button class="btn-edit" (click)="openEditModal(item)">Editar</button>
+          <button class="btn-delete" (click)="openDeleteModal(item)">Eliminar</button>
         </td>
       </tr>
       <tr *ngIf="paginatedItems.length === 0">
@@ -67,6 +69,116 @@
 
       <button class="page-btn" [disabled]="currentPage === totalPages" (click)="changePage(currentPage + 1)">
         Siguiente
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Create/Edit Modal -->
+<div class="modal" [class.show]="isModalVisible">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>{{ isEditMode ? 'Editar Movimiento' : 'Nuevo Movimiento' }}</h3>
+    </div>
+    
+    <form [formGroup]="movimientoForm" (ngSubmit)="saveMovimiento()">
+      <div class="container-form">
+        
+        <!-- Row 1: Cuenta y Tipo -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="cuentaId">Cuenta *</label>
+            <select 
+              id="cuentaId" 
+              formControlName="cuentaId" 
+              class="form-control"
+              [class.is-invalid]="formSubmitted && movimientoForm.get('cuentaId')?.invalid">
+              <option value="" disabled>Seleccione una cuenta</option>
+              <option *ngFor="let cuenta of cuentas" [value]="cuenta.id">
+                {{cuenta.numeroCuenta}} - {{cuenta.cliente?.nombre || 'Cliente'}}
+              </option>
+            </select>
+            <div class="error-message" 
+                 *ngIf="(formSubmitted || movimientoForm.get('cuentaId')?.touched) && movimientoForm.get('cuentaId')?.invalid">
+              La cuenta es requerida
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="tipoMovimiento">Tipo de Movimiento *</label>
+            <select 
+              id="tipoMovimiento" 
+              formControlName="tipoMovimiento" 
+              class="form-control"
+              [class.is-invalid]="formSubmitted && movimientoForm.get('tipoMovimiento')?.invalid">
+              <option value="" disabled>Seleccione un tipo</option>
+              <option [value]="TipoMovimiento.Credito">Crédito</option>
+              <option [value]="TipoMovimiento.Debito">Débito</option>
+            </select>
+            <div class="error-message" 
+                 *ngIf="(formSubmitted || movimientoForm.get('tipoMovimiento')?.touched) && movimientoForm.get('tipoMovimiento')?.invalid">
+              El tipo de movimiento es requerido
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 2: Valor -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="valor">Valor *</label>
+            <input 
+              type="number" 
+              id="valor" 
+              formControlName="valor" 
+              class="form-control" 
+              min="0.01" 
+              step="0.01" 
+              placeholder="Ingrese el valor"
+              [class.is-invalid]="formSubmitted && movimientoForm.get('valor')?.invalid">
+            <div class="error-message" 
+                 *ngIf="(formSubmitted || movimientoForm.get('valor')?.touched) && movimientoForm.get('valor')?.errors?.['required']">
+              El valor es requerido
+            </div>
+            <div class="error-message" 
+                 *ngIf="(formSubmitted || movimientoForm.get('valor')?.touched) && movimientoForm.get('valor')?.errors?.['min']">
+              El valor debe ser mayor a 0
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Actions -->
+      <div class="form-actions fixed-bottom">
+        <button type="button" class="btn btn-secondary" (click)="closeModal()">
+          Cancelar
+        </button>
+        <button type="submit" class="btn btn-primary">
+          Guardar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal" [class.show]="isDeleteModalVisible">
+  <div class="modal-content confirmation">
+    <div class="modal-header">
+      <h3>Confirmar eliminación</h3>
+    </div>
+    <div class="modal-body">
+      <p>¿Está seguro de que desea eliminar este movimiento?</p>
+      <p *ngIf="movimientoToDelete">
+        <strong>Cuenta:</strong> {{movimientoToDelete.cuenta.numeroCuenta || 'N/A'}}<br>
+        <strong>Valor:</strong> {{movimientoToDelete.valor | currency}}
+      </p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="closeDeleteModal()">
+        Cancelar
+      </button>
+      <button type="button" class="btn btn-danger" (click)="confirmDelete()">
+        Eliminar
       </button>
     </div>
   </div>

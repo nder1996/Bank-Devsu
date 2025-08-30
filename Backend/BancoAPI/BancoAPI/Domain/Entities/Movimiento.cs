@@ -13,7 +13,6 @@ namespace BancoAPI.Domain.Entities
         public DateTime Fecha { get; set; } = DateTime.Now;
 
         [Required(ErrorMessage = "El tipo de movimiento es requerido")]
-        [StringLength(20, ErrorMessage = "El tipo de movimiento no debe exceder los 20 caracteres")]
         public TipoMovimiento TipoMovimiento { get; set; }
 
         [Required(ErrorMessage = "El valor es requerido")]

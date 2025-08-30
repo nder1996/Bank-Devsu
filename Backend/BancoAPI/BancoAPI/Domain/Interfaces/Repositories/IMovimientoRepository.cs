@@ -5,11 +5,12 @@ namespace BancoAPI.Domain.Interfaces.Repositories
     public interface IMovimientoRepository
     {
         Task<Movimiento> CreateAsync(Movimiento movimiento);
-        Task<Movimiento?> GetByIdAsync(int id);
+        Task<Movimiento?> GetByIdAsync(long id);
         Task<IEnumerable<Movimiento>> GetAllAsync();
         Task<Movimiento> UpdateAsync(Movimiento movimiento);
-        Task<bool> DeleteAsync(int id);
+        Task<bool> DeleteAsync(long id);
         Task<IEnumerable<Movimiento>> GetByCuentaIdAsync(long cuentaId);
         Task<IEnumerable<Movimiento>> GetDebitosDiariosByCuentaIdAsync(long cuentaId, DateTime fechaInicio, DateTime fechaFin);
+        Task<IEnumerable<Movimiento>> GetByClienteIdAndDateRangeAsync(long clienteId, DateTime fechaInicio, DateTime fechaFin);
     }
 }

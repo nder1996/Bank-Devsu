@@ -8,6 +8,7 @@ namespace BancoAPI.Domain.Interfaces.Repositories
         Task<IEnumerable<Cuenta>> ObtenerTodasAsync();
         Task<Cuenta> ObtenerPorIdAsync(long cuentaId);
         Task<Cuenta> CrearAsync(Cuenta cuenta);
+        Task<Cuenta> ActualizarAsync(Cuenta cuenta);
         Task<bool> EliminarAsync(long cuentaId);
         Task<bool> ActualizarEstadoAsync(long cuentaId, bool nuevoEstado);
         Task<bool> ActualizarTipoCuentaAsync(long cuentaId, string nuevoTipo);

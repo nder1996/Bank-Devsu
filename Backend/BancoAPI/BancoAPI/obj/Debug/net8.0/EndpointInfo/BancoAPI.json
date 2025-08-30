@@ -253,6 +253,63 @@
           }
         }
       },
+      "put": {
+        "tags": [
+          "Cuentas"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CuentaDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CuentaDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CuentaDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CuentaDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CuentaDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CuentaDto"
+                }
+              }
+            }
+          }
+        }
+      },
       "delete": {
         "tags": [
           "Cuentas"
@@ -370,26 +427,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/MovimientoDto"
-                  }
+                  "$ref": "#/components/schemas/MovimientoDtoIEnumerableApiResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/MovimientoDto"
-                  }
+                  "$ref": "#/components/schemas/MovimientoDtoIEnumerableApiResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/MovimientoDto"
-                  }
+                  "$ref": "#/components/schemas/MovimientoDtoIEnumerableApiResponse"
                 }
               }
             }
@@ -425,17 +473,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Movimiento"
+                  "$ref": "#/components/schemas/MovimientoDtoApiResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Movimiento"
+                  "$ref": "#/components/schemas/MovimientoDtoApiResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Movimiento"
+                  "$ref": "#/components/schemas/MovimientoDtoApiResponse"
                 }
               }
             }
@@ -455,7 +503,7 @@
             "required": true,
             "schema": {
               "type": "integer",
-              "format": "int32"
+              "format": "int64"
             }
           }
         ],
@@ -465,17 +513,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Movimiento"
+                  "$ref": "#/components/schemas/MovimientoDtoApiResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Movimiento"
+                  "$ref": "#/components/schemas/MovimientoDtoApiResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Movimiento"
+                  "$ref": "#/components/schemas/MovimientoDtoApiResponse"
                 }
               }
             }
@@ -493,7 +541,7 @@
             "required": true,
             "schema": {
               "type": "integer",
-              "format": "int32"
+              "format": "int64"
             }
           }
         ],
@@ -522,17 +570,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Movimiento"
+                  "$ref": "#/components/schemas/MovimientoDtoApiResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Movimiento"
+                  "$ref": "#/components/schemas/MovimientoDtoApiResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Movimiento"
+                  "$ref": "#/components/schemas/MovimientoDtoApiResponse"
                 }
               }
             }
@@ -550,13 +598,30 @@
             "required": true,
             "schema": {
               "type": "integer",
-              "format": "int32"
+              "format": "int64"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -669,9 +734,6 @@
         "additionalProperties": false
       },
       "ClienteResumido": {
-        "required": [
-          "nombre"
-        ],
         "type": "object",
         "properties": {
           "id": {
@@ -679,9 +741,8 @@
             "format": "int64"
           },
           "nombre": {
-            "maxLength": 100,
-            "minLength": 0,
-            "type": "string"
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -830,7 +891,6 @@
         "required": [
           "cuenta",
           "fecha",
-          "saldo",
           "tipoMovimiento",
           "valor"
         ],
@@ -857,6 +917,91 @@
           },
           "cuenta": {
             "$ref": "#/components/schemas/CuentaResumida"
+          }
+        },
+        "additionalProperties": false
+      },
+      "MovimientoDtoApiResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/MovimientoDto"
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "MovimientoDtoIEnumerableApiResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MovimientoDto"
+            },
+            "nullable": true
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ObjectApiResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "nullable": true
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
           }
         },
         "additionalProperties": false

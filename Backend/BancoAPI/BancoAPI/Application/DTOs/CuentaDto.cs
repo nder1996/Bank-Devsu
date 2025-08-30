@@ -12,7 +12,6 @@ namespace BancoAPI.Application.DTOs
         public string numeroCuenta { get; set; }
 
         [Required(ErrorMessage = "El tipo de cuenta es requerido")]
-        [StringLength(20, ErrorMessage = "El tipo de cuenta no debe exceder los 20 caracteres")]
         public TipoCuenta tipoCuenta { get; set; }
 
         [Required(ErrorMessage = "El saldo inicial es requerido")]
@@ -29,9 +28,7 @@ namespace BancoAPI.Application.DTOs
         {
             public long id { get; set; }
 
-            [Required(ErrorMessage = "El nombre es requerido")]
-            [StringLength(100, ErrorMessage = "El nombre no debe exceder los 100 caracteres")]
-            public string nombre { get; set; }
+            public string? nombre { get; set; }
         }
     }
 }
