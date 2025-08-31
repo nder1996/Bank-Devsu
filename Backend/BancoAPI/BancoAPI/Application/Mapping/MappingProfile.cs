@@ -76,7 +76,16 @@ namespace BancoAPI.Application.Mapping
 
             // Mapeo Reporte -> ReporteDto
             CreateMap<Reporte, ReporteDto>()
-                .ForMember(dest => dest.cliente, opt => opt.MapFrom(src => new ReporteDto.ClienteResumido
+                .ForMember(dest => dest.id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.clienteId, opt => opt.MapFrom(src => src.ClienteId))
+                .ForMember(dest => dest.fechaInicio, opt => opt.MapFrom(src => src.FechaInicio))
+                .ForMember(dest => dest.fechaFin, opt => opt.MapFrom(src => src.FechaFin))
+                .ForMember(dest => dest.formato, opt => opt.MapFrom(src => src.Formato))
+                .ForMember(dest => dest.fechaGeneracion, opt => opt.MapFrom(src => src.FechaGeneracion))
+                .ForMember(dest => dest.rutaArchivo, opt => opt.MapFrom(src => src.RutaArchivo))
+                .ForMember(dest => dest.nombreArchivo, opt => opt.MapFrom(src => src.NombreArchivo))
+                .ForMember(dest => dest.activo, opt => opt.MapFrom(src => src.Activo))
+                .ForMember(dest => dest.cliente, opt => opt.MapFrom(src => new ReporteDto.ReporteClienteResumido
                 {
                     id = src.ClienteId,
                     nombre = src.Cliente != null && src.Cliente.Persona != null ? src.Cliente.Persona.Nombre : "Sin cliente"

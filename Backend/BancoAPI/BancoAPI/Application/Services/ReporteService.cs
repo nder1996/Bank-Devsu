@@ -14,7 +14,6 @@ namespace BancoAPI.Application.Services
         private readonly IClienteRepository _clienteRepository;
         private readonly IMovimientoRepository _movimientoRepository;
         private readonly IMapper _mapper;
-        private readonly string _reportesDirectory;
 
         public ReporteService(
             IReporteRepository reporteRepository,
@@ -26,208 +25,115 @@ namespace BancoAPI.Application.Services
             _clienteRepository = clienteRepository;
             _movimientoRepository = movimientoRepository;
             _mapper = mapper;
-            _reportesDirectory = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "reportes");
-
-            if (!Directory.Exists(_reportesDirectory))
-            {
-                Directory.CreateDirectory(_reportesDirectory);
-            }
         }
 
         public async Task<ReporteDto> CreateAsync(ReporteRequestDto reporteRequest)
         {
-            var cliente = await _clienteRepository.GetByIdAsync(reporteRequest.ClienteId);
-            if (cliente == null)
-            {
-                throw new ArgumentException("El cliente especificado no existe");
-            }
-
-            if (reporteRequest.FechaInicio >= reporteRequest.FechaFin)
-            {
-                throw new ArgumentException("La fecha de inicio debe ser menor a la fecha de fin");
-            }
-
-            var reporte = new Reporte
-            {
-                ClienteId = reporteRequest.ClienteId,
-                FechaInicio = reporteRequest.FechaInicio,
-                FechaFin = reporteRequest.FechaFin,
-                Formato = reporteRequest.Formato,
-                FechaGeneracion = DateTime.Now,
-                Activo = true
-            };
-
-            var nombreArchivo = GenerarNombreArchivo(cliente.Persona?.Nombre ?? "Cliente", reporte.Formato, reporte.FechaGeneracion);
-            var rutaArchivo = Path.Combine(_reportesDirectory, nombreArchivo);
-
-            reporte.NombreArchivo = nombreArchivo;
-            reporte.RutaArchivo = rutaArchivo;
-
-            await GenerarArchivoReporte(reporte);
-
-            var reporteCreado = await _reporteRepository.CreateAsync(reporte);
-            return _mapper.Map<ReporteDto>(reporteCreado);
+            // No crear reportes ya que la tabla no existe
+            throw new NotImplementedException("La tabla Reportes no existe en la base de datos");
         }
 
         public async Task<bool> DeleteAsync(long id)
         {
-            var reporte = await _reporteRepository.GetByIdAsync(id);
-            if (reporte == null)
-            {
-                return false;
-            }
-
-            if (!string.IsNullOrEmpty(reporte.RutaArchivo) && File.Exists(reporte.RutaArchivo))
-            {
-                File.Delete(reporte.RutaArchivo);
-            }
-
-            return await _reporteRepository.DeleteAsync(id);
+            // No eliminar reportes ya que la tabla no existe
+            return false;
         }
 
         public async Task<IEnumerable<ReporteDto>> GetAllAsync()
         {
-            var reportes = await _reporteRepository.GetAllAsync();
-            return _mapper.Map<IEnumerable<ReporteDto>>(reportes);
+            // Devolver una lista vacía ya que la tabla no existe
+            return new List<ReporteDto>();
         }
 
         public async Task<IEnumerable<ReporteDto>> GetByClienteIdAsync(long clienteId)
         {
-            var reportes = await _reporteRepository.GetByClienteIdAsync(clienteId);
-            return _mapper.Map<IEnumerable<ReporteDto>>(reportes);
+            // Devolver una lista vacía ya que la tabla no existe
+            return new List<ReporteDto>();
         }
 
         public async Task<ReporteDto?> GetByIdAsync(long id)
         {
-            var reporte = await _reporteRepository.GetByIdAsync(id);
-            return reporte == null ? null : _mapper.Map<ReporteDto>(reporte);
+            // Devolver null ya que la tabla no existe
+            return null;
         }
 
         public async Task<ReporteDto> UpdateAsync(ReporteDto reporteDto)
         {
-            var reporteExistente = await _reporteRepository.GetByIdAsync(reporteDto.id);
-            if (reporteExistente == null)
-            {
-                throw new ArgumentException("El reporte especificado no existe");
-            }
-
-            var cliente = await _clienteRepository.GetByIdAsync(reporteDto.clienteId);
-            if (cliente == null)
-            {
-                throw new ArgumentException("El cliente especificado no existe");
-            }
-
-            if (reporteDto.fechaInicio >= reporteDto.fechaFin)
-            {
-                throw new ArgumentException("La fecha de inicio debe ser menor a la fecha de fin");
-            }
-
-            var reporte = _mapper.Map<Reporte>(reporteDto);
-            
-            bool necesitaRegeneracion = reporteExistente.ClienteId != reporteDto.clienteId ||
-                                      reporteExistente.FechaInicio != reporteDto.fechaInicio ||
-                                      reporteExistente.FechaFin != reporteDto.fechaFin ||
-                                      reporteExistente.Formato != reporteDto.formato;
-
-            if (necesitaRegeneracion)
-            {
-                if (!string.IsNullOrEmpty(reporteExistente.RutaArchivo) && File.Exists(reporteExistente.RutaArchivo))
-                {
-                    File.Delete(reporteExistente.RutaArchivo);
-                }
-
-                var nombreArchivo = GenerarNombreArchivo(cliente.Persona?.Nombre ?? "Cliente", reporte.Formato, DateTime.Now);
-                var rutaArchivo = Path.Combine(_reportesDirectory, nombreArchivo);
-
-                reporte.NombreArchivo = nombreArchivo;
-                reporte.RutaArchivo = rutaArchivo;
-                reporte.FechaGeneracion = DateTime.Now;
-
-                await GenerarArchivoReporte(reporte);
-            }
-
-            var reporteActualizado = await _reporteRepository.UpdateAsync(reporte);
-            return _mapper.Map<ReporteDto>(reporteActualizado);
+            // No actualizar reportes ya que la tabla no existe
+            throw new NotImplementedException("La tabla Reportes no existe en la base de datos");
         }
 
         public async Task<byte[]> GenerateReportContentAsync(long reporteId)
         {
-            var reporte = await _reporteRepository.GetByIdAsync(reporteId);
-            if (reporte == null || string.IsNullOrEmpty(reporte.RutaArchivo) || !File.Exists(reporte.RutaArchivo))
-            {
-                throw new FileNotFoundException("El archivo del reporte no existe");
-            }
-
-            return await File.ReadAllBytesAsync(reporte.RutaArchivo);
+            // No generar contenido de reportes ya que la tabla no existe
+            throw new NotImplementedException("La tabla Reportes no existe en la base de datos");
         }
 
         public async Task<string> DownloadReportAsync(long reporteId)
         {
-            var reporte = await _reporteRepository.GetByIdAsync(reporteId);
-            if (reporte == null || string.IsNullOrEmpty(reporte.RutaArchivo) || !File.Exists(reporte.RutaArchivo))
-            {
-                throw new FileNotFoundException("El archivo del reporte no existe");
-            }
-
-            return reporte.RutaArchivo;
+            // No descargar reportes ya que la tabla no existe
+            throw new NotImplementedException("La tabla Reportes no existe en la base de datos");
         }
-
-        private async Task GenerarArchivoReporte(Reporte reporte)
+        
+        // Nuevo método para obtener datos de reportes basados en cuentas y movimientos existentes
+        public async Task<IEnumerable<ReporteListadoDto>> GetReportesFromExistingDataAsync()
         {
-            var movimientos = await _movimientoRepository.GetByClienteIdAndDateRangeAsync(
-                reporte.ClienteId, reporte.FechaInicio, reporte.FechaFin);
-
-            var movimientosDto = _mapper.Map<IEnumerable<MovimientoDto>>(movimientos);
-
-            var reporteData = new
-            {
-                Cliente = reporte.Cliente?.Persona?.Nombre ?? "Sin nombre",
-                ClienteId = reporte.ClienteId,
-                FechaInicio = reporte.FechaInicio,
-                FechaFin = reporte.FechaFin,
-                FechaGeneracion = reporte.FechaGeneracion,
-                Formato = reporte.Formato.ToString(),
-                TotalMovimientos = movimientosDto.Count(),
-                Movimientos = movimientosDto.Select(m => new
-                {
-                    Fecha = m.fecha,
-                    TipoMovimiento = m.tipoMovimiento.ToString(),
-                    Valor = m.valor,
-                    Saldo = m.saldo,
-                    NumeroCuenta = m.cuenta.numeroCuenta
-                }).OrderBy(m => m.Fecha)
-            };
-
-            switch (reporte.Formato)
-            {
-                case ReporteFormato.JSON:
-                    var jsonContent = JsonConvert.SerializeObject(reporteData, Formatting.Indented);
-                    await File.WriteAllTextAsync(reporte.RutaArchivo, jsonContent);
-                    break;
-
-                case ReporteFormato.PDF:
-                    await GenerarReportePDF(reporteData, reporte.RutaArchivo);
-                    break;
-
-                default:
-                    throw new NotSupportedException($"Formato de reporte no soportado: {reporte.Formato}");
-            }
-        }
-
-        private async Task GenerarReportePDF(object reporteData, string rutaArchivo)
-        {
-            var jsonContent = JsonConvert.SerializeObject(reporteData, Formatting.Indented);
-            var pdfContent = $"REPORTE BANCARIO\n\n{jsonContent}";
-            await File.WriteAllTextAsync(rutaArchivo.Replace(".pdf", ".txt"), pdfContent);
-        }
-
-        private static string GenerarNombreArchivo(string nombreCliente, ReporteFormato formato, DateTime fechaGeneracion)
-        {
-            var nombreLimpio = string.Join("_", nombreCliente.Split(Path.GetInvalidFileNameChars()));
-            var timestamp = fechaGeneracion.ToString("yyyyMMdd_HHmmss");
-            var extension = formato == ReporteFormato.PDF ? "pdf" : "json";
+            // Obtener todas las cuentas con sus movimientos y clientes
+            var cuentas = await _reporteRepository.GetCuentasConMovimientosAsync();
             
-            return $"Reporte_{nombreLimpio}_{timestamp}.{extension}";
+            // Crear una lista de reportes basados en los datos existentes
+            var reportes = new List<ReporteListadoDto>();
+            
+            foreach (var cuenta in cuentas)
+            {
+                if (cuenta.Movimientos.Any())
+                {
+                    // Obtener las fechas mínima y máxima de los movimientos
+                    var fechaMinima = cuenta.Movimientos.Min(m => m.Fecha);
+                    var fechaMaxima = cuenta.Movimientos.Max(m => m.Fecha);
+                    
+                    // Crear un reporte para esta cuenta
+                    reportes.Add(new ReporteListadoDto
+                    {
+                        Id = cuenta.Id,
+                        Cliente = cuenta.ClienteNavigation?.Persona?.Nombre ?? "Cliente desconocido",
+                        Periodo = $"{fechaMinima:dd/MM/yy} - {fechaMaxima:dd/MM/yy}",
+                        Formato = ReporteFormato.JSON // Por defecto JSON
+                    });
+                }
+            }
+            
+            return reportes;
+        }
+        
+        // Nuevo método para obtener movimientos de un cliente específico
+        public async Task<IEnumerable<MovimientoDto>> GetMovimientosByClienteAsync(long clienteId)
+        {
+            var movimientos = await _reporteRepository.GetMovimientosByClienteIdAsync(clienteId);
+            return _mapper.Map<IEnumerable<MovimientoDto>>(movimientos);
+        }
+        
+        // Nuevo método para obtener movimientos de un cliente en un rango de fechas
+        public async Task<IEnumerable<MovimientoDto>> GetMovimientosByClienteAndDateRangeAsync(long clienteId, DateTime fechaInicio, DateTime fechaFin)
+        {
+            var movimientos = await _reporteRepository.GetMovimientosByClienteIdAndDateRangeAsync(clienteId, fechaInicio, fechaFin);
+            return _mapper.Map<IEnumerable<MovimientoDto>>(movimientos);
+        }
+        
+        // Nuevos métodos con consultas avanzadas y filtros
+        public async Task<IEnumerable<dynamic>> GetResumenMovimientosPorClienteAsync()
+        {
+            return await _reporteRepository.GetResumenMovimientosPorClienteAsync();
+        }
+        
+        public async Task<IEnumerable<dynamic>> GetReporteEstadoCuentaPorClienteAsync(long clienteId, DateTime? fechaInicio = null, DateTime? fechaFin = null)
+        {
+            return await _reporteRepository.GetReporteEstadoCuentaPorClienteAsync(clienteId, fechaInicio, fechaFin);
+        }
+        
+        public async Task<IEnumerable<dynamic>> GetReporteResumenPorTipoCuentaAsync()
+        {
+            return await _reporteRepository.GetReporteResumenPorTipoCuentaAsync();
         }
     }
 }

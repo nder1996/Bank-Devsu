@@ -28,12 +28,6 @@ export class ReportesComponent implements OnInit {
   errorMessage: string | null = null;
   searchTerm = '';
 
-  // Filter properties
-  selectedClienteId: number | null = null;
-  filterFechaInicio: string = '';
-  filterFechaFin: string = '';
-  selectedFormato: number | null = null;
-
   // Modal states
   isModalVisible = false;
   isDeleteModalVisible = false;
@@ -336,10 +330,5 @@ export class ReportesComponent implements OnInit {
 
   getFormatoLabel(formato: ReporteFormato): string {
     return ReporteFormato[formato];
-  }
-
-  getClienteNombre(clienteId: number): string {
-    const cliente = this.clientes.find(c => c.id === clienteId);
-    return cliente?.nombre || 'Cliente no encontrado';
   }
 }

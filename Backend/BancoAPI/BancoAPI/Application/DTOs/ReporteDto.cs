@@ -27,9 +27,9 @@ namespace BancoAPI.Application.DTOs
 
         public bool activo { get; set; } = true;
 
-        public ClienteResumido cliente { get; set; } = new ClienteResumido();
+        public ReporteClienteResumido cliente { get; set; } = new ReporteClienteResumido();
 
-        public class ClienteResumido
+        public class ReporteClienteResumido
         {
             public long id { get; set; }
             public string nombre { get; set; } = "";

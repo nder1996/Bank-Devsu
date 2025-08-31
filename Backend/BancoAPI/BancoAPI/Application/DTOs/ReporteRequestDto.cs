@@ -1,4 +1,4 @@
-﻿using BancoAPI.Domain.Enums;
+using BancoAPI.Domain.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace BancoAPI.Application.DTOs
@@ -14,8 +14,7 @@ namespace BancoAPI.Application.DTOs
         [Required(ErrorMessage = "La fecha de fin es requerida")]
         public DateTime FechaFin { get; set; }
 
-        // Usando el enum para mayor seguridad
         [Required(ErrorMessage = "El formato es requerido")]
-        public ReporteFormato Formato { get; set; } = ReporteFormato.JSON;
+        public ReporteFormato Formato { get; set; }
     }
 }

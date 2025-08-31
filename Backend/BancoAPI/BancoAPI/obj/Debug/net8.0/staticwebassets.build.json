@@ -1,12 +1,20 @@
 {
   "Version": 1,
-  "Hash": "/6g5ci2fyhGXFNgtjWkhqhs/EUVk2aGL9u188izeq68=",
+  "Hash": "W85rgcivAGH51G/4N7V9WwBiJUF/3R+6MJ2H3JSAkwM=",
   "Source": "BancoAPI",
   "BasePath": "_content/BancoAPI",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "BancoAPI\\wwwroot",
+      "Source": "BancoAPI",
+      "ContentRoot": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\wwwroot\\",
+      "BasePath": "_content/BancoAPI",
+      "Pattern": "**"
+    }
+  ],
   "Assets": [],
   "Endpoints": []
 }

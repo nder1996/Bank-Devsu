@@ -1,5 +1,6 @@
 C:\Users\USUARIO\Documents\Github\Bank-Devsu\Backend\BancoAPI\BancoAPI\bin\Debug\net8.0\appsettings.Development.json
 C:\Users\USUARIO\Documents\Github\Bank-Devsu\Backend\BancoAPI\BancoAPI\bin\Debug\net8.0\appsettings.json
+C:\Users\USUARIO\Documents\Github\Bank-Devsu\Backend\BancoAPI\BancoAPI\bin\Debug\net8.0\BancoAPI.staticwebassets.runtime.json
 C:\Users\USUARIO\Documents\Github\Bank-Devsu\Backend\BancoAPI\BancoAPI\bin\Debug\net8.0\BancoAPI.staticwebassets.endpoints.json
 C:\Users\USUARIO\Documents\Github\Bank-Devsu\Backend\BancoAPI\BancoAPI\bin\Debug\net8.0\BancoAPI.exe
 C:\Users\USUARIO\Documents\Github\Bank-Devsu\Backend\BancoAPI\BancoAPI\bin\Debug\net8.0\BancoAPI.deps.json
@@ -34,6 +35,7 @@ C:\Users\USUARIO\Documents\Github\Bank-Devsu\Backend\BancoAPI\BancoAPI\bin\Debug
 C:\Users\USUARIO\Documents\Github\Bank-Devsu\Backend\BancoAPI\BancoAPI\bin\Debug\net8.0\Microsoft.OpenApi.dll
 C:\Users\USUARIO\Documents\Github\Bank-Devsu\Backend\BancoAPI\BancoAPI\bin\Debug\net8.0\Mono.TextTemplating.dll
 C:\Users\USUARIO\Documents\Github\Bank-Devsu\Backend\BancoAPI\BancoAPI\bin\Debug\net8.0\MySqlConnector.dll
+C:\Users\USUARIO\Documents\Github\Bank-Devsu\Backend\BancoAPI\BancoAPI\bin\Debug\net8.0\Newtonsoft.Json.dll
 C:\Users\USUARIO\Documents\Github\Bank-Devsu\Backend\BancoAPI\BancoAPI\bin\Debug\net8.0\Pomelo.EntityFrameworkCore.MySql.dll
 C:\Users\USUARIO\Documents\Github\Bank-Devsu\Backend\BancoAPI\BancoAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
 C:\Users\USUARIO\Documents\Github\Bank-Devsu\Backend\BancoAPI\BancoAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
