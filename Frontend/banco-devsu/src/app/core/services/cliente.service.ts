@@ -25,39 +25,13 @@ export class ClienteService implements IClienteService {
   }
 
   // Crear un nuevo cliente
-  createCliente(clienteData: any): Observable<any> {
-    // Simplificar estructura para coincidir con el DTO del backend
-    const clienteDto = {
-      id: clienteData.id || 0,
-      estado: clienteData.estado !== undefined ? clienteData.estado : true,
-      nombre: clienteData.persona?.nombre || clienteData.nombre,
-      identificacion: clienteData.persona?.identificacion || clienteData.identificacion,
-      direccion: clienteData.persona?.direccion || clienteData.direccion,
-      telefono: clienteData.persona?.telefono || clienteData.telefono,
-      edad: clienteData.persona?.edad || clienteData.edad,
-      genero: clienteData.persona?.genero || clienteData.genero,
-      cuentas: clienteData.cuentas || []
-    };
-
-    console.log('Datos a enviar:', clienteDto);
+  createCliente(clienteDto: ClienteDto): Observable<any> {
+    console.log('Datos a enviar:', JSON.stringify(clienteDto) );
     return this.http.post<any>(this.apiUrl, clienteDto);
   }
 
   // Actualizar un cliente existente
-  updateCliente(id: number, clienteData: any): Observable<any> {
-    // Simplificar estructura para coincidir con el DTO del backend
-    const clienteDto = {
-      id: clienteData.id || id,
-      estado: clienteData.estado !== undefined ? clienteData.estado : true,
-      nombre: clienteData.persona?.nombre || clienteData.nombre,
-      identificacion: clienteData.persona?.identificacion || clienteData.identificacion,
-      direccion: clienteData.persona?.direccion || clienteData.direccion,
-      telefono: clienteData.persona?.telefono || clienteData.telefono,
-      edad: clienteData.persona?.edad || clienteData.edad,
-      genero: clienteData.persona?.genero || clienteData.genero,
-      cuentas: clienteData.cuentas || []
-    };
-
+  updateCliente(id: number, clienteDto: ClienteDto): Observable<any> {
     console.log('Datos de actualización a enviar:', JSON.stringify(clienteDto));
     return this.http.put<any>(`${this.apiUrl}/${id}`, clienteDto);
   }

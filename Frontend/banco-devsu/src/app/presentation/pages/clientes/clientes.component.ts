@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ClienteDto } from 'src/app/core/dtos/cliente.dto';
 import { ClienteService } from '../../../core/services/cliente.service';
+import { NotificationService } from '../../../core/services/notification.service';
 
 @Component({
   selector: 'app-clientes',
@@ -12,7 +13,7 @@ export class ClientesComponent implements OnInit {
   // Data properties
   clientes: ClienteDto[] = [];
   filteredClientes: ClienteDto[] = [];
-  
+
   // Pagination
   paginatedClientes: ClienteDto[] = [];
   currentPage = 1;
@@ -36,8 +37,9 @@ export class ClientesComponent implements OnInit {
   formSubmitted = false;
 
   constructor(
-    private clienteService: ClienteService, 
-    private fb: FormBuilder
+    private clienteService: ClienteService,
+    private fb: FormBuilder,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -81,11 +83,13 @@ export class ClientesComponent implements OnInit {
           this.clientes = this.mapClientesFromResponse(response.data);
           this.applyFilter();
         } else {
-          this.errorMessage = 'Error al cargar clientes: ' + (response.errors || 'Error desconocido');
+          this.notificationService.showError(
+            'Error al cargar clientes: ' + (response.errors || 'Error desconocido')
+          );
         }
       },
       error: () => {
-        this.errorMessage = 'Error al conectar con el servidor';
+        this.notificationService.showError('Error al conectar con el servidor');
       },
       complete: () => {
         this.isLoading = false;
@@ -171,7 +175,7 @@ export class ClientesComponent implements OnInit {
     this.resetModal();
     this.isEditMode = true;
     this.updatePasswordValidation();
-    
+
     // Load client data into form
     this.clientForm.patchValue({
       id: cliente.id,
@@ -184,7 +188,7 @@ export class ClientesComponent implements OnInit {
       contrasena: '', // Empty for security
       estado: cliente.estado
     });
-    
+
     this.isModalVisible = true;
   }
 
@@ -202,42 +206,49 @@ export class ClientesComponent implements OnInit {
   // === CRUD OPERATIONS ===
   saveCliente(): void {
     this.formSubmitted = true;
-    
+
     // Mark all fields as touched for validation display
     Object.keys(this.clientForm.controls).forEach(key => {
       this.clientForm.get(key)?.markAsTouched();
     });
 
     if (this.clientForm.invalid) {
+      this.notificationService.showWarning('Por favor, complete todos los campos requeridos correctamente');
       return;
     }
 
     const formData = this.clientForm.value;
-    const clienteData = {
-      id: formData.id || 0,
-      estado: formData.estado,
-      nombre: formData.nombre,
-      genero: formData.genero,
-      edad: formData.edad,
-      identificacion: formData.identificacion,
-      direccion: formData.direccion,
-      telefono: formData.telefono,
-      contrasena: formData.contrasena,
-      cuentas: []
-    };
 
-    const operation = this.isEditMode 
-      ? this.clienteService.updateCliente(clienteData.id, clienteData)
-      : this.clienteService.createCliente(clienteData);
+    // Crear el DTO completo en el componente
+    const clienteDto = new ClienteDto(
+      formData.id || 0,
+      formData.estado,
+      formData.nombre,
+      formData.identificacion,
+      formData.direccion,
+      formData.telefono,
+      formData.edad,
+      formData.genero,
+      [],
+      formData.contrasena
+    );
+
+    const operation = this.isEditMode
+      ? this.clienteService.updateCliente(clienteDto.id!, clienteDto)
+      : this.clienteService.createCliente(clienteDto);
 
     operation.subscribe({
       next: () => {
         this.closeModal();
         this.loadClientes();
+        // Mostrar notificación de éxito
+        const action = this.isEditMode ? 'actualizado' : 'creado';
+        this.notificationService.showSuccess(`Cliente ${action} exitosamente`);
       },
       error: (error) => {
         console.error('Error al guardar cliente:', error);
-        this.errorMessage = 'Error al guardar cliente';
+        const action = this.isEditMode ? 'actualizar' : 'crear';
+        this.notificationService.showError(`Error al ${action} el cliente`);
       }
     });
   }
@@ -260,10 +271,11 @@ export class ClientesComponent implements OnInit {
       next: () => {
         this.closeDeleteModal();
         this.loadClientes();
+        this.notificationService.showSuccess('Cliente eliminado exitosamente');
       },
       error: (error) => {
         console.error('Error al eliminar cliente:', error);
-        this.errorMessage = 'Error al eliminar cliente';
+        this.notificationService.showError('Error al eliminar el cliente');
         this.closeDeleteModal();
       }
     });
@@ -284,5 +296,23 @@ export class ClientesComponent implements OnInit {
 
   get showNoData(): boolean {
     return !this.isLoading && !this.hasData;
+  }
+
+  // === NOTIFICATION EXAMPLES ===
+  // Métodos de ejemplo para demostrar el uso de las notificaciones
+  showSuccessExample(): void {
+    this.notificationService.showSuccess('¡Operación exitosa!');
+  }
+
+  showErrorExample(): void {
+    this.notificationService.showError('Ha ocurrido un error');
+  }
+
+  showWarningExample(): void {
+    this.notificationService.showWarning('Advertencia: revise los datos');
+  }
+
+  showInfoExample(): void {
+    this.notificationService.showWarning('Información importante');
   }
 }

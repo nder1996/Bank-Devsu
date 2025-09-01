@@ -16,7 +16,7 @@ namespace BancoAPI.Infrastructure.Data
 
         public DbSet<Movimiento> Movimientos { get; set; }
 
-        public DbSet<Reporte> Reportes { get; set; }
+       // public DbSet<Reporte> Reportes { get; set; }
 
         public DbSet<Persona> Personas { get; set; }
 
@@ -34,9 +34,9 @@ namespace BancoAPI.Infrastructure.Data
                 .HasConversion<int>();
 
             // Configuración explícita para el enum ReporteFormato
-            modelBuilder.Entity<Reporte>()
+           /* modelBuilder.Entity<Reporte>()
                 .Property(e => e.Formato)
-                .HasConversion<int>();
+                .HasConversion<int>();*/
         }
     }
 }

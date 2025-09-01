@@ -1,9 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ReporteDto, ReporteRequestDto, ReporteFormato } from 'src/app/core/dtos/reporte.dto';
+import {
+  EstadoCuentaDto,
+  ReporteEstadoCuentaResponseDto,
+  ReporteEstadoCuentaRequestDto
+} from 'src/app/core/dtos/reporte.dto';
 import { ClienteDto } from 'src/app/core/dtos/cliente.dto';
 import { ReporteService } from '../../../core/services/reporte.service';
 import { ClienteService } from '../../../core/services/cliente.service';
+import { NotificationService } from '../../../core/services/notification.service';
 
 @Component({
   selector: 'app-reportes',
@@ -11,89 +16,125 @@ import { ClienteService } from '../../../core/services/cliente.service';
   styleUrls: ['./reportes.component.css']
 })
 export class ReportesComponent implements OnInit {
-  // Data properties
-  reportes: ReporteDto[] = [];
-  filteredReportes: ReporteDto[] = [];
+  // ===== DATA PROPERTIES =====
   clientes: ClienteDto[] = [];
-  
-  // Pagination
-  paginatedReportes: ReporteDto[] = [];
+  estadoCuentaData: EstadoCuentaDto[] = [];
+  reporteResponse: ReporteEstadoCuentaResponseDto | null = null;
+
+  // ===== PAGINATION =====
+  paginatedData: EstadoCuentaDto[] = [];
   currentPage = 1;
-  pageSize = 5;
+  pageSize = 10;
   totalPages = 0;
   pages: number[] = [];
 
-  // UI State
+  // ===== UI STATE =====
   isLoading = false;
   errorMessage: string | null = null;
+  successMessage: string | null = null;
   searchTerm = '';
 
-  // Modal states
-  isModalVisible = false;
-  isDeleteModalVisible = false;
-  isEditMode = false;
-  reporteToDelete: ReporteDto | null = null;
-
-  // Form
+  // ===== FORMS =====
   reporteForm!: FormGroup;
   formSubmitted = false;
-
-  // Enums for template
-  ReporteFormato = ReporteFormato;
 
   constructor(
     private reporteService: ReporteService,
     private clienteService: ClienteService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
     this.initForm();
     this.loadClientes();
-    this.loadReportes();
   }
 
-  // === FORM SETUP ===
+  // ===== FORM SETUP =====
   private initForm(): void {
     this.reporteForm = this.fb.group({
-      id: [null],
       clienteId: ['', Validators.required],
       fechaInicio: ['', Validators.required],
-      fechaFin: ['', Validators.required],
-      formato: [ReporteFormato.JSON, Validators.required],
-      activo: [true, Validators.required]
+      fechaFin: ['', Validators.required]
     });
   }
 
-  // === DATA LOADING ===
+  // ===== DATA LOADING =====
   private loadClientes(): void {
     this.clienteService.getClientes().subscribe({
       next: (response: any) => {
-        if (response.success) {
-          this.clientes = response.data;
+        try {
+          if (response && response.success) {
+            this.clientes = response.data || [];
+          } else {
+            this.clientes = [];
+            console.warn('Error loading clients:', response?.errors || 'Unknown error');
+          }
+        } catch (error) {
+          console.error('Error processing clients response:', error);
+          this.clientes = [];
         }
       },
       error: (error) => {
         console.error('Error loading clients:', error);
+        this.clientes = [];
+        this.showError('Error al cargar clientes');
       }
     });
   }
 
-  private loadReportes(): void {
-    this.isLoading = true;
-    this.errorMessage = null;
+  // ===== GENERAR REPORTE =====
+  generarReporte(): void {
+    this.formSubmitted = true;
 
-    this.reporteService.getReportes().subscribe({
+    Object.keys(this.reporteForm.controls).forEach(key => {
+      this.reporteForm.get(key)?.markAsTouched();
+    });
+
+    if (this.reporteForm.invalid) {
+      this.showError('Por favor complete todos los campos requeridos');
+      return;
+    }
+
+    const formData = this.reporteForm.value;
+
+    // Validar fechas
+    const fechaInicio = new Date(formData.fechaInicio);
+    const fechaFin = new Date(formData.fechaFin);
+
+    if (fechaInicio > fechaFin) {
+      this.showError('La fecha de inicio no puede ser mayor que la fecha de fin');
+      return;
+    }
+
+    this.isLoading = true;
+    this.clearMessages();
+
+    this.reporteService.generarEstadoCuenta(
+      Number(formData.clienteId),
+      fechaInicio,
+      fechaFin,
+      'json'
+    ).subscribe({
       next: (response: any) => {
-        if (response.success) {
-          this.reportes = this.mapReportesFromResponse(response.data);
-          this.applyFilter();
-        } else {
-          this.errorMessage = 'Error al cargar reportes: ' + (response.errors || 'Error desconocido');
+        try {
+          if (response && response.success) {
+            this.reporteResponse = response.data;
+            this.estadoCuentaData = response.data.datos || [];
+            this.updatePagination();
+            this.showSuccess(`Estado de cuenta generado con ${this.estadoCuentaData.length} registros`);
+          } else {
+            const errorMsg = response?.errors || response?.message || 'Error desconocido';
+            this.showError('Error al generar estado de cuenta: ' + errorMsg);
+          }
+        } catch (error) {
+          console.error('Error processing response:', error);
+          this.showError('Error al procesar la respuesta del servidor');
         }
       },
-      error: () => {
-        this.errorMessage = 'Error al conectar con el servidor';
+      error: (error) => {
+        console.error('Error generating report:', error);
+        this.showError('Error al conectar con el servidor');
       },
       complete: () => {
         this.isLoading = false;
@@ -101,234 +142,160 @@ export class ReportesComponent implements OnInit {
     });
   }
 
-  private mapReportesFromResponse(data: ReporteDto[]): ReporteDto[] {
-    return data.map(reporte => ({
-      id: reporte.id,
-      clienteId: reporte.clienteId,
-      fechaInicio: new Date(reporte.fechaInicio),
-      fechaFin: new Date(reporte.fechaFin),
-      formato: reporte.formato,
-      fechaGeneracion: new Date(reporte.fechaGeneracion),
-      rutaArchivo: reporte.rutaArchivo,
-      nombreArchivo: reporte.nombreArchivo,
-      activo: reporte.activo,
-      cliente: reporte.cliente
-    }));
-  }
-
-  // === SEARCH & PAGINATION ===
+  // ===== SEARCH & PAGINATION =====
   onSearch(): void {
     this.currentPage = 1;
-    this.applyFilter();
-  }
-
-  private applyFilter(): void {
-    if (!this.searchTerm.trim()) {
-      this.filteredReportes = [...this.reportes];
-    } else {
-      const term = this.searchTerm.toLowerCase();
-      this.filteredReportes = this.reportes.filter(reporte =>
-        this.searchInReporte(reporte, term)
-      );
-    }
     this.updatePagination();
   }
 
-  private searchInReporte(reporte: ReporteDto, term: string): boolean {
-    return (
-      (reporte.cliente.nombre?.toLowerCase().includes(term) ?? false) ||
-      (reporte.nombreArchivo?.toLowerCase().includes(term) ?? false) ||
-      (ReporteFormato[reporte.formato]?.toLowerCase().includes(term) ?? false) ||
-      (reporte.fechaGeneracion.toLocaleDateString().includes(term) ?? false)
-    );
-  }
-
   private updatePagination(): void {
-    this.totalPages = Math.ceil(this.filteredReportes.length / this.pageSize);
+    let filteredData = [...this.estadoCuentaData];
+
+    if (this.searchTerm.trim()) {
+      const term = this.searchTerm.toLowerCase();
+      filteredData = this.estadoCuentaData.filter(item =>
+        item.cliente?.toLowerCase().includes(term) ||
+        item.numeroCuenta?.toLowerCase().includes(term) ||
+        item.tipo?.toLowerCase().includes(term)
+      );
+    }
+
+    this.totalPages = Math.ceil(filteredData.length / this.pageSize);
     this.generatePageNumbers();
-    this.updateCurrentPage();
+
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.paginatedData = filteredData.slice(startIndex, endIndex);
   }
 
   private generatePageNumbers(): void {
     this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
 
-  private updateCurrentPage(): void {
-    const startIndex = (this.currentPage - 1) * this.pageSize;
-    const endIndex = startIndex + this.pageSize;
-    this.paginatedReportes = this.filteredReportes.slice(startIndex, endIndex);
-  }
-
   changePage(page: number): void {
     if (page >= 1 && page <= this.totalPages) {
       this.currentPage = page;
-      this.updateCurrentPage();
+      this.updatePagination();
     }
   }
 
-  // === MODAL MANAGEMENT ===
-  openCreateModal(): void {
-    this.resetModal();
-    this.isEditMode = false;
-    this.isModalVisible = true;
-  }
-
-  openEditModal(reporte: ReporteDto): void {
-    this.resetModal();
-    this.isEditMode = true;
-    
-    this.reporteForm.patchValue({
-      id: reporte.id,
-      clienteId: reporte.clienteId,
-      fechaInicio: this.formatDateForInput(reporte.fechaInicio),
-      fechaFin: this.formatDateForInput(reporte.fechaFin),
-      formato: reporte.formato,
-      activo: reporte.activo
-    });
-    
-    this.isModalVisible = true;
-  }
-
-  closeModal(): void {
-    this.isModalVisible = false;
-    this.resetModal();
-  }
-
-  private resetModal(): void {
-    this.reporteForm.reset();
-    this.reporteForm.patchValue({ 
-      formato: ReporteFormato.JSON,
-      activo: true 
-    });
-    this.formSubmitted = false;
-  }
-
-  private formatDateForInput(date: Date): string {
-    return date.toISOString().split('T')[0];
-  }
-
-  // === CRUD OPERATIONS ===
-  saveReporte(): void {
-    this.formSubmitted = true;
-    
-    Object.keys(this.reporteForm.controls).forEach(key => {
-      this.reporteForm.get(key)?.markAsTouched();
-    });
-
-    if (this.reporteForm.invalid) {
+  // ===== DOWNLOAD OPERATIONS =====
+  downloadPdf(): void {
+    if (!this.reporteForm.valid) {
+      this.showError('Debe generar un reporte primero');
       return;
     }
 
     const formData = this.reporteForm.value;
+    const fechaInicio = new Date(formData.fechaInicio);
+    const fechaFin = new Date(formData.fechaFin);
 
-    if (this.isEditMode) {
-      const reporteData: ReporteDto = {
-        id: formData.id,
-        clienteId: Number(formData.clienteId),
-        fechaInicio: new Date(formData.fechaInicio),
-        fechaFin: new Date(formData.fechaFin),
-        formato: Number(formData.formato),
-        fechaGeneracion: new Date(),
-        rutaArchivo: null,
-        nombreArchivo: null,
-        activo: formData.activo,
-        cliente: { id: 0, nombre: '' }
-      };
+    this.isLoading = true;
 
-      this.reporteService.updateReporte(reporteData.id, reporteData).subscribe({
-        next: () => {
-          this.closeModal();
-          this.loadReportes();
-        },
-        error: (error) => {
-          console.error('Error updating report:', error);
-          this.errorMessage = 'Error al actualizar reporte';
-        }
-      });
-    } else {
-      const reporteRequestData: ReporteRequestDto = {
-        ClienteId: Number(formData.clienteId),
-        FechaInicio: new Date(formData.fechaInicio),
-        FechaFin: new Date(formData.fechaFin),
-        Formato: Number(formData.formato)
-      };
-
-      this.reporteService.createReporte(reporteRequestData).subscribe({
-        next: () => {
-          this.closeModal();
-          this.loadReportes();
-        },
-        error: (error) => {
-          console.error('Error creating report:', error);
-          this.errorMessage = 'Error al crear reporte';
-        }
-      });
-    }
-  }
-
-  // === DELETE OPERATIONS ===
-  openDeleteModal(reporte: ReporteDto): void {
-    this.reporteToDelete = reporte;
-    this.isDeleteModalVisible = true;
-  }
-
-  closeDeleteModal(): void {
-    this.reporteToDelete = null;
-    this.isDeleteModalVisible = false;
-  }
-
-  confirmDelete(): void {
-    if (!this.reporteToDelete) return;
-
-    this.reporteService.deleteReporte(this.reporteToDelete.id!).subscribe({
-      next: () => {
-        this.closeDeleteModal();
-        this.loadReportes();
-      },
-      error: (error) => {
-        console.error('Error deleting report:', error);
-        this.errorMessage = 'Error al eliminar reporte';
-        this.closeDeleteModal();
-      }
-    });
-  }
-
-  // === DOWNLOAD OPERATIONS ===
-  downloadReporte(reporte: ReporteDto): void {
-    this.reporteService.downloadReporte(reporte.id).subscribe({
+    this.reporteService.descargarEstadoCuentaPdf(
+      Number(formData.clienteId),
+      fechaInicio,
+      fechaFin
+    ).subscribe({
       next: (blob: Blob) => {
-        const url = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = reporte.nombreArchivo || 'reporte';
-        link.click();
-        window.URL.revokeObjectURL(url);
+        const fileName = `estado_cuenta_${formData.clienteId}_${formData.fechaInicio}_${formData.fechaFin}.pdf`;
+        this.downloadBlob(blob, fileName);
+        this.showSuccess('Reporte PDF descargado exitosamente');
       },
       error: (error) => {
-        console.error('Error downloading report:', error);
-        this.errorMessage = 'Error al descargar reporte';
+        console.error('Error downloading PDF:', error);
+        this.showError('Error al descargar reporte PDF');
+      },
+      complete: () => {
+        this.isLoading = false;
       }
     });
   }
 
-  // === UTILITY GETTERS ===
+  downloadJson(): void {
+    if (!this.reporteForm.valid) {
+      this.showError('Debe generar un reporte primero');
+      return;
+    }
+
+    const formData = this.reporteForm.value;
+    const fechaInicio = new Date(formData.fechaInicio);
+    const fechaFin = new Date(formData.fechaFin);
+
+    this.isLoading = true;
+
+    this.reporteService.descargarEstadoCuentaJson(
+      Number(formData.clienteId),
+      fechaInicio,
+      fechaFin
+    ).subscribe({
+      next: (blob: Blob) => {
+        const fileName = `estado_cuenta_${formData.clienteId}_${formData.fechaInicio}_${formData.fechaFin}.json`;
+        this.downloadBlob(blob, fileName);
+        this.showSuccess('Reporte JSON descargado exitosamente');
+      },
+      error: (error) => {
+        console.error('Error downloading JSON:', error);
+        this.showError('Error al descargar reporte JSON');
+      },
+      complete: () => {
+        this.isLoading = false;
+      }
+    });
+  }
+
+  private downloadBlob(blob: Blob, fileName: string): void {
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fileName;
+    link.click();
+    window.URL.revokeObjectURL(url);
+  }
+
+  // ===== MANEJO DE MENSAJES =====
+  private showError(message: string): void {
+    this.notificationService.showError(message);
+  }
+
+  private showSuccess(message: string): void {
+    this.notificationService.showSuccess(message);
+  }
+
+  private clearMessages(): void {
+    this.errorMessage = null;
+    this.successMessage = null;
+  }
+
+  private autoHideMessage(): void {
+    setTimeout(() => {
+      this.clearMessages();
+    }, 5000);
+  }
+
+  // ===== UTILITY GETTERS =====
   get startIndex(): number {
-    return this.filteredReportes.length > 0 ? (this.currentPage - 1) * this.pageSize + 1 : 0;
+    return this.estadoCuentaData.length > 0 ? (this.currentPage - 1) * this.pageSize + 1 : 0;
   }
 
   get endIndex(): number {
-    return Math.min(this.currentPage * this.pageSize, this.filteredReportes.length);
+    return Math.min(this.currentPage * this.pageSize, this.estadoCuentaData.length);
+  }
+
+  get totalItems(): number {
+    return this.estadoCuentaData.length;
   }
 
   get hasData(): boolean {
-    return this.paginatedReportes.length > 0;
+    return this.paginatedData.length > 0;
   }
 
   get showNoData(): boolean {
     return !this.isLoading && !this.hasData;
   }
 
-  getFormatoLabel(formato: ReporteFormato): string {
-    return ReporteFormato[formato];
+  getClienteNombre(clienteId: number): string {
+    const cliente = this.clientes.find(c => c.id === clienteId);
+    return cliente?.nombre || 'Cliente no encontrado';
   }
 }

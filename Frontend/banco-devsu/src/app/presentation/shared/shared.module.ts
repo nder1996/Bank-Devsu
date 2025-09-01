@@ -1,17 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SearchBarComponent } from './search-bar/search-bar.component';
-import { AlertsComponent } from './alerts/alerts.component';
-
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastNotificationComponent } from './toast-notification/toast-notification.component';
 
 @NgModule({
   declarations: [
-    SearchBarComponent,
-    AlertsComponent
+    ToastNotificationComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    BrowserAnimationsModule
+  ],
+  exports: [
+    ToastNotificationComponent
   ]
 })
 export class SharedModule { }

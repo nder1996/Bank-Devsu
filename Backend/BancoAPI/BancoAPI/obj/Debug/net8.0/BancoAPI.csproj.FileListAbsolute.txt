@@ -9,7 +9,9 @@ C:\Users\USUARIO\Documents\Github\Bank-Devsu\Backend\BancoAPI\BancoAPI\bin\Debug
 C:\Users\USUARIO\Documents\Github\Bank-Devsu\Backend\BancoAPI\BancoAPI\bin\Debug\net8.0\BancoAPI.pdb
 C:\Users\USUARIO\Documents\Github\Bank-Devsu\Backend\BancoAPI\BancoAPI\bin\Debug\net8.0\AutoMapper.dll
 C:\Users\USUARIO\Documents\Github\Bank-Devsu\Backend\BancoAPI\BancoAPI\bin\Debug\net8.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+C:\Users\USUARIO\Documents\Github\Bank-Devsu\Backend\BancoAPI\BancoAPI\bin\Debug\net8.0\BouncyCastle.Crypto.dll
 C:\Users\USUARIO\Documents\Github\Bank-Devsu\Backend\BancoAPI\BancoAPI\bin\Debug\net8.0\Humanizer.dll
+C:\Users\USUARIO\Documents\Github\Bank-Devsu\Backend\BancoAPI\BancoAPI\bin\Debug\net8.0\itextsharp.dll
 C:\Users\USUARIO\Documents\Github\Bank-Devsu\Backend\BancoAPI\BancoAPI\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
 C:\Users\USUARIO\Documents\Github\Bank-Devsu\Backend\BancoAPI\BancoAPI\bin\Debug\net8.0\Microsoft.Build.Locator.dll
 C:\Users\USUARIO\Documents\Github\Bank-Devsu\Backend\BancoAPI\BancoAPI\bin\Debug\net8.0\Microsoft.CodeAnalysis.dll

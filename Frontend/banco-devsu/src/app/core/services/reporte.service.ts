@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ReporteDto, ReporteRequestDto } from '../dtos/reporte.dto';
+import { ReporteEstadoCuentaResponseDto, ReporteEstadoCuentaRequestDto } from '../dtos/reporte.dto';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -12,32 +12,61 @@ export class ReporteService {
 
   constructor(private http: HttpClient) { }
 
-  getReportes(): Observable<any> {
-    return this.http.get(`${this.apiUrl}`);
+  /**
+   * Generar reporte de estado de cuenta especificando un rango de fechas y un cliente
+   * GET /api/reportes?clienteId=1&fechaInicio=2024-01-01&fechaFin=2024-12-31&formato=json
+   */
+  generarEstadoCuenta(
+    clienteId: number,
+    fechaInicio: Date,
+    fechaFin: Date,
+    formato: string = 'json'
+  ): Observable<any> {
+    let params = new HttpParams()
+      .set('clienteId', clienteId.toString())
+      .set('fechaInicio', fechaInicio.toISOString().split('T')[0])
+      .set('fechaFin', fechaFin.toISOString().split('T')[0])
+      .set('formato', formato);
+
+    return this.http.get(`${this.apiUrl}`, { params });
   }
 
-  getReporte(id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${id}`);
+  /**
+   * Descargar reporte de estado de cuenta en formato PDF
+   * GET /api/reportes/pdf?clienteId=1&fechaInicio=2024-01-01&fechaFin=2024-12-31
+   */
+  descargarEstadoCuentaPdf(
+    clienteId: number,
+    fechaInicio: Date,
+    fechaFin: Date
+  ): Observable<Blob> {
+    let params = new HttpParams()
+      .set('clienteId', clienteId.toString())
+      .set('fechaInicio', fechaInicio.toISOString().split('T')[0])
+      .set('fechaFin', fechaFin.toISOString().split('T')[0]);
+
+    return this.http.get(`${this.apiUrl}/pdf`, {
+      params,
+      responseType: 'blob'
+    });
   }
 
-  getReportesByCliente(clienteId: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/cliente/${clienteId}`);
-  }
+  /**
+   * Descargar reporte de estado de cuenta en formato JSON
+   * GET /api/reportes/json?clienteId=1&fechaInicio=2024-01-01&fechaFin=2024-12-31
+   */
+  descargarEstadoCuentaJson(
+    clienteId: number,
+    fechaInicio: Date,
+    fechaFin: Date
+  ): Observable<Blob> {
+    let params = new HttpParams()
+      .set('clienteId', clienteId.toString())
+      .set('fechaInicio', fechaInicio.toISOString().split('T')[0])
+      .set('fechaFin', fechaFin.toISOString().split('T')[0]);
 
-  createReporte(reporte: ReporteRequestDto): Observable<any> {
-    return this.http.post(`${this.apiUrl}`, reporte);
-  }
-
-  updateReporte(id: number, reporte: ReporteDto): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, reporte);
-  }
-
-  deleteReporte(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`);
-  }
-
-  downloadReporte(id: number): Observable<Blob> {
-    return this.http.get(`${this.apiUrl}/${id}/download`, {
+    return this.http.get(`${this.apiUrl}/json`, {
+      params,
       responseType: 'blob'
     });
   }

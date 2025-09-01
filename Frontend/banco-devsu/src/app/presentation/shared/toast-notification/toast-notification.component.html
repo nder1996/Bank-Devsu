@@ -1,0 +1,30 @@
+<!-- Toast Container -->
+<div class="toast-container">
+  <div
+    *ngIf="notification"
+    [ngClass]="'toast-notification toast-' + notification.type"
+    [@slideInOut]>
+
+    <!-- Notification Content -->
+    <div class="toast-content">
+      <!-- Icon -->
+      <div class="toast-icon">
+        <span [innerHTML]="getIcon(notification.type)"></span>
+      </div>
+
+      <!-- Message -->
+      <div class="toast-message">
+        <div class="toast-text">{{ notification.message }}</div>
+      </div>
+
+      <!-- Close Button -->
+      <button
+        class="toast-close"
+        (click)="close()"
+        type="button"
+        aria-label="Cerrar notificación">
+        <span>&times;</span>
+      </button>
+    </div>
+  </div>
+</div>

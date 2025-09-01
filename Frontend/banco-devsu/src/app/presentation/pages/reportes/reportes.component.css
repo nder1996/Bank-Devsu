@@ -1,2 +1,24 @@
-/* Inherit styles from global styles.css */
-/* Only add component-specific overrides here if needed */
+/* ===== REPORTES COMPONENT ===== */
+/* All styles are inherited from global styles.css */
+/* Use classes from global CSS: */
+/*   - .table-section (main container) */
+/*   - .table-header, .table-actions (header area) */
+/*   - .search-input, .btn-success, .btn-info (buttons) */
+/*   - .data-table (table styles) */
+/*   - .pagination, .page-btn (pagination) */
+/*   - .error-alert, .success-alert (alerts) */
+/*   - .report-form-card, .report-summary-card (special cards) */
+/*   - .summary-stats, .stat-item (statistics display) */
+/*   - .amount-positive, .amount-negative, .amount-balance (amounts) */
+/*   - .badge-info, .badge-active, .badge-inactive (badges) */
+/*   - .loading-state, .no-data-state (states) */
+/*   - .form-row, .form-group, .form-control (forms) */
+
+/* Add component-specific overrides only if absolutely necessary */
+
+/* Centrar el botón de generar reporte */
+.form-row.justify-center {
+  justify-content: center;
+  margin-top: 20px;
+  text-align: center !important;
+}

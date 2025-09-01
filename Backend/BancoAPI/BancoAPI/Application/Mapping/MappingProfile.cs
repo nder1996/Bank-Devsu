@@ -74,35 +74,6 @@ namespace BancoAPI.Application.Mapping
                 .ForMember(dest => dest.ClienteNavigation, opt => opt.Ignore())
                 .ForMember(dest => dest.Movimientos, opt => opt.Ignore());
 
-            // Mapeo Reporte -> ReporteDto
-            CreateMap<Reporte, ReporteDto>()
-                .ForMember(dest => dest.id, opt => opt.MapFrom(src => src.Id))
-                .ForMember(dest => dest.clienteId, opt => opt.MapFrom(src => src.ClienteId))
-                .ForMember(dest => dest.fechaInicio, opt => opt.MapFrom(src => src.FechaInicio))
-                .ForMember(dest => dest.fechaFin, opt => opt.MapFrom(src => src.FechaFin))
-                .ForMember(dest => dest.formato, opt => opt.MapFrom(src => src.Formato))
-                .ForMember(dest => dest.fechaGeneracion, opt => opt.MapFrom(src => src.FechaGeneracion))
-                .ForMember(dest => dest.rutaArchivo, opt => opt.MapFrom(src => src.RutaArchivo))
-                .ForMember(dest => dest.nombreArchivo, opt => opt.MapFrom(src => src.NombreArchivo))
-                .ForMember(dest => dest.activo, opt => opt.MapFrom(src => src.Activo))
-                .ForMember(dest => dest.cliente, opt => opt.MapFrom(src => new ReporteDto.ReporteClienteResumido
-                {
-                    id = src.ClienteId,
-                    nombre = src.Cliente != null && src.Cliente.Persona != null ? src.Cliente.Persona.Nombre : "Sin cliente"
-                }));
-
-            // Mapeo ReporteDto -> Reporte
-            CreateMap<ReporteDto, Reporte>()
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.id))
-                .ForMember(dest => dest.ClienteId, opt => opt.MapFrom(src => src.clienteId))
-                .ForMember(dest => dest.FechaInicio, opt => opt.MapFrom(src => src.fechaInicio))
-                .ForMember(dest => dest.FechaFin, opt => opt.MapFrom(src => src.fechaFin))
-                .ForMember(dest => dest.Formato, opt => opt.MapFrom(src => src.formato))
-                .ForMember(dest => dest.FechaGeneracion, opt => opt.MapFrom(src => src.fechaGeneracion))
-                .ForMember(dest => dest.RutaArchivo, opt => opt.MapFrom(src => src.rutaArchivo))
-                .ForMember(dest => dest.NombreArchivo, opt => opt.MapFrom(src => src.nombreArchivo))
-                .ForMember(dest => dest.Activo, opt => opt.MapFrom(src => src.activo))
-                .ForMember(dest => dest.Cliente, opt => opt.Ignore()); // Se maneja por separado
 
         }
     }

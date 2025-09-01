@@ -10,6 +10,7 @@ export class ClienteDto {
     public telefono?: string,
     public edad?: number,
     public genero?: string,
-    public cuentas?: CuentaDto[]
+    public cuentas?: CuentaDto[],
+    public contrasena?: string
   ) {}
 }

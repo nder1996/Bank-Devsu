@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MovimientoService } from 'src/app/core/services/movimiento.service';
 import { CuentaService } from 'src/app/core/services/cuenta.service';
+import { NotificationService } from 'src/app/core/services/notification.service';
 import { Movimiento } from 'src/app/core/models/Movimiento';
 import { TipoMovimiento } from '../../../core/enums/tipo-movimiento.enum';
 import { MovimientoDto } from 'src/app/core/dtos/movimiento.dto';
@@ -48,7 +49,8 @@ export class MovimientosComponent implements OnInit {
   constructor(
     private movimientoService: MovimientoService,
     private cuentaService: CuentaService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private notificationService: NotificationService
   ) { }
 
   ngOnInit(): void {
@@ -74,15 +76,16 @@ export class MovimientosComponent implements OnInit {
       next: (response: any) => {
         if (response.success) {
           this.movimientos = response.data;
+          this.enrichMovimientosConCuentas(); // Enriquecer con información de cuentas
           this.filteredItems = [...this.movimientos];
           this.updatePagination();
           this.updatePage();
         } else {
-          console.error('Errores en la respuesta:', response.errors);
+          this.notificationService.showError('Error al cargar movimientos: ' + (response.errors || 'Error desconocido'));
         }
       },
       error: (error) => {
-        console.error('Error al cargar movimientos:', error);
+        this.notificationService.showError('Error al conectar con el servidor para cargar movimientos');
       }
     });
   }
@@ -92,15 +95,29 @@ export class MovimientosComponent implements OnInit {
       next: (response: any) => {
         if (response.success) {
           this.cuentas = response.data;
-          console.log('Cuentas cargadas:', this.cuentas);
+          this.enrichMovimientosConCuentas(); // Enriquecer movimientos si ya están cargados
         } else {
-          console.error('Error al cargar cuentas:', response.errors);
+          this.notificationService.showError('Error al cargar cuentas: ' + (response.errors || 'Error desconocido'));
         }
       },
       error: (error) => {
-        console.error('Error al cargar cuentas:', error);
+        this.notificationService.showError('Error al conectar con el servidor para cargar cuentas');
       }
     });
+  }
+
+  // Método para enriquecer los movimientos con información completa de las cuentas
+  private enrichMovimientosConCuentas(): void {
+    if (this.movimientos.length > 0 && this.cuentas.length > 0) {
+      this.movimientos.forEach(movimiento => {
+        if (movimiento.cuenta && movimiento.cuenta.id) {
+          const cuentaCompleta = this.cuentas.find(c => c.id === movimiento.cuenta.id);
+          if (cuentaCompleta) {
+            movimiento.cuenta.numeroCuenta = cuentaCompleta.numeroCuenta || '';
+          }
+        }
+      });
+    }
   }
 
   // --- Métodos CRUD ---
@@ -108,12 +125,13 @@ export class MovimientosComponent implements OnInit {
   public saveMovimiento(): void {
     console.log('=== INICIANDO saveMovimiento ===');
     this.formSubmitted = true;
-    
+
     console.log('Formulario válido:', this.movimientoForm.valid);
     console.log('Valores del formulario:', this.movimientoForm.value);
-    
+
     if (this.movimientoForm.invalid) {
       console.log('Formulario inválido, errores:', this.movimientoForm.errors);
+      this.notificationService.showWarning('Por favor, complete todos los campos requeridos correctamente');
       this.markFormGroupTouched(this.movimientoForm);
       return;
     }
@@ -122,7 +140,7 @@ export class MovimientosComponent implements OnInit {
       console.log('Creando DTO...');
       const movimientoDto = this.createMovimientoDtoFromForm();
       console.log('DTO creado exitosamente:', movimientoDto);
-      
+
       if (this.isEditMode && this.editingMovimientoId) {
         console.log('Modo edición');
         this.updateMovimiento(this.editingMovimientoId, movimientoDto);
@@ -217,6 +235,7 @@ export class MovimientosComponent implements OnInit {
       this.isEditMode = true;
       this.editingMovimientoId = movimiento.id;
       this.formSubmitted = false;
+
       this.movimientoForm.patchValue({
         id: movimiento.id,
         cuentaId: movimiento.cuenta.id,
@@ -259,41 +278,41 @@ export class MovimientosComponent implements OnInit {
     const formValue = this.movimientoForm.value;
     console.log('Form value:', formValue);
     console.log('Cuentas disponibles:', this.cuentas);
-    
+
     const cuentaId = parseInt(formValue.cuentaId);
     console.log('CuentaId parseado:', cuentaId);
-    
+
     const selectedCuenta = this.cuentas.find(c => c.id === cuentaId);
     console.log('Cuenta encontrada:', selectedCuenta);
-    
+
     if (!selectedCuenta) {
       throw new Error(`No se encontró la cuenta con ID: ${cuentaId}`);
     }
-    
+
     const movimientoDto = new MovimientoDto();
-    
+
     // ID del movimiento (0 para crear, el ID actual para editar)
     movimientoDto.id = this.isEditMode ? this.editingMovimientoId! : 0;
-    
+
     // Fecha actual
     movimientoDto.fecha = new Date();
-    
+
     // Tipo de movimiento (enum)
     movimientoDto.tipoMovimiento = parseInt(formValue.tipoMovimiento) as TipoMovimiento;
-    
+
     // Valor del movimiento (siempre positivo desde el form)
     movimientoDto.valor = parseFloat(formValue.valor);
-    
+
     // Saldo inicial en 0 - el backend lo calculará
     movimientoDto.saldo = 0;
-    
+
     // Información de la cuenta
     movimientoDto.cuenta = new MovimientoDto.CuentaResumida();
     movimientoDto.cuenta.id = selectedCuenta.id!;
     movimientoDto.cuenta.numeroCuenta = selectedCuenta.numeroCuenta!;
-    
+
     console.log('DTO final antes de enviar:', JSON.stringify(movimientoDto, null, 2));
-    
+
     return movimientoDto;
   }
 
@@ -309,7 +328,7 @@ export class MovimientosComponent implements OnInit {
 
   private handleSuccess(message: string): void {
     console.log(message);
-    // Aquí podrías agregar una notificación toast
+    this.notificationService.showSuccess(message);
   }
 
   private handleError(message: string, error: any): void {
@@ -318,8 +337,7 @@ export class MovimientosComponent implements OnInit {
     if (error?.error?.message) {
       errorMessage = error.error.message;
     }
-    // Aquí podrías agregar una notificación toast de error
-    alert(errorMessage);
+    this.notificationService.showError(errorMessage);
   }
 
   // Filtrar elementos según término de búsqueda
@@ -368,5 +386,23 @@ export class MovimientosComponent implements OnInit {
     this.startIndex = (this.currentPage - 1) * this.pageSize;
     this.endIndex = Math.min(this.startIndex + this.pageSize, this.filteredItems.length);
     this.paginatedItems = this.filteredItems.slice(this.startIndex, this.endIndex);
+  }
+
+  // === NOTIFICATION EXAMPLES ===
+  // Métodos de ejemplo para demostrar el uso de las notificaciones
+  showSuccessExample(): void {
+    this.notificationService.showSuccess('¡Operación exitosa en movimientos!');
+  }
+
+  showErrorExample(): void {
+    this.notificationService.showError('Ha ocurrido un error en movimientos');
+  }
+
+  showWarningExample(): void {
+    this.notificationService.showWarning('Advertencia: revise los datos del movimiento');
+  }
+
+  showInfoExample(): void {
+    this.notificationService.showWarning('Información importante sobre movimientos');
   }
 }

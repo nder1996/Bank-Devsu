@@ -1,0 +1,14 @@
+/* ===== CLIENTES COMPONENT ===== */
+/* All styles are inherited from global styles.css */
+/* Use classes from global CSS: */
+/*   - .table-section (main container) */
+/*   - .table-header, .table-actions (header area) */
+/*   - .search-input, .btn-add (search and add button) */
+/*   - .data-table (table styles) */
+/*   - .btn-edit, .btn-delete (action buttons) */
+/*   - .pagination, .page-btn (pagination) */
+/*   - .modal, .modal-content (modals) */
+/*   - .form-row, .form-group, .form-control (forms) */
+/*   - .error-alert, .success-alert (alerts) */
+
+/* Add component-specific overrides only if absolutely necessary */

@@ -1,165 +1,56 @@
+<!-- ===== HEADER SECTION ===== -->
 <div class="table-section">
-  <!-- Header with search and add button -->
   <div class="table-header">
     <h2>Reportes</h2>
     <div class="table-actions">
-      <input 
-        type="text" 
-        class="search-input" 
-        placeholder="Buscar Reporte..." 
-        [(ngModel)]="searchTerm"
-        (input)="onSearch()">
-      <button class="btn-add" (click)="openCreateModal()">
-        Agregar Reporte +
+
+
+      <!-- Download buttons -->
+      <button class="btn btn-success" (click)="downloadPdf()" [disabled]="!hasData">
+        Descargar PDF
+      </button>
+
+      <button class="btn btn-info" (click)="downloadJson()" [disabled]="!hasData">
+        Descargar JSON
       </button>
     </div>
   </div>
 
-  <!-- Error message -->
-  <div *ngIf="errorMessage" class="error-alert">
-    {{ errorMessage }}
-    <button (click)="errorMessage = null" class="close-error">×</button>
-  </div>
 
-  <!-- Data table -->
-  <table class="data-table">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Cliente</th>
-        <th>Fecha Inicio</th>
-        <th>Fecha Fin</th>
-        <th>Formato</th>
-        <th>Fecha Generación</th>
-        <th>Archivo</th>
-        <th>Estado</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Loading state -->
-      <tr *ngIf="isLoading">
-        <td colspan="9" class="no-data">Cargando reportes...</td>
-      </tr>
-      
-      <!-- No data state -->
-      <tr *ngIf="showNoData">
-        <td colspan="9" class="no-data">No se encontraron reportes</td>
-      </tr>
-      
-      <!-- Data rows -->
-      <tr *ngFor="let reporte of paginatedReportes">
-        <td>{{ reporte.id }}</td>
-        <td>{{ reporte.cliente.nombre }}</td>
-        <td>{{ reporte.fechaInicio | date:'short' }}</td>
-        <td>{{ reporte.fechaFin | date:'short' }}</td>
-        <td>
-          <span [ngClass]="reporte.formato === 0 ? 'tipo-credito' : 'tipo-debito'">
-            {{ getFormatoLabel(reporte.formato) }}
-          </span>
-        </td>
-        <td>{{ reporte.fechaGeneracion | date:'short' }}</td>
-        <td>{{ reporte.nombreArchivo }}</td>
-        <td>{{ reporte.activo ? 'Activo' : 'Inactivo' }}</td>
-        <td class="actions">
-          <button class="btn-edit" (click)="downloadReporte(reporte)">Descargar</button>
-          <button class="btn-edit" (click)="openEditModal(reporte)">Editar</button>
-          <button class="btn-delete" (click)="openDeleteModal(reporte)">Eliminar</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <!-- ===== FORM SECTION ===== -->
+  <div class="report-form-card">
+    <h3>Generar Estado de Cuenta</h3>
 
-  <!-- Pagination -->
-  <div class="pagination" *ngIf="hasData">
-    <span class="page-info">
-      Mostrando {{ startIndex }}-{{ endIndex }} de {{ filteredReportes.length }}
-    </span>
-    <div class="page-controls">
-      <button 
-        class="page-btn" 
-        [disabled]="currentPage === 1" 
-        (click)="changePage(currentPage - 1)">
-        Anterior
-      </button>
-
-      <button 
-        *ngFor="let page of pages" 
-        class="page-btn" 
-        [class.active]="page === currentPage"
-        (click)="changePage(page)">
-        {{ page }}
-      </button>
-
-      <button 
-        class="page-btn" 
-        [disabled]="currentPage === totalPages" 
-        (click)="changePage(currentPage + 1)">
-        Siguiente
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- Create/Edit Modal -->
-<div class="modal" [class.show]="isModalVisible">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h3>{{ isEditMode ? 'Editar Reporte' : 'Nuevo Reporte' }}</h3>
-    </div>
-    
-    <form [formGroup]="reporteForm" (ngSubmit)="saveReporte()">
+    <form [formGroup]="reporteForm" (ngSubmit)="generarReporte()">
       <div class="container-form">
-        
-        <!-- Row 1: Cliente and Formato -->
         <div class="form-row">
           <div class="form-group">
             <label for="clienteId">Cliente *</label>
-            <select 
-              id="clienteId" 
-              formControlName="clienteId" 
+            <select
+              id="clienteId"
+              formControlName="clienteId"
               class="form-control"
               [class.is-invalid]="formSubmitted && reporteForm.get('clienteId')?.invalid">
-              <option value="" disabled>Seleccione...</option>
+              <option value="" disabled>Seleccione un cliente...</option>
               <option *ngFor="let cliente of clientes" [value]="cliente.id">
                 {{ cliente.nombre }}
               </option>
             </select>
-            <div class="error-message" 
+            <div class="error-message"
                  *ngIf="(formSubmitted || reporteForm.get('clienteId')?.touched) && reporteForm.get('clienteId')?.invalid">
               Cliente es requerido
             </div>
           </div>
 
           <div class="form-group">
-            <label for="formato">Formato *</label>
-            <select 
-              id="formato" 
-              formControlName="formato" 
-              class="form-control"
-              [class.is-invalid]="formSubmitted && reporteForm.get('formato')?.invalid">
-              <option value="" disabled>Seleccione...</option>
-              <option [value]="ReporteFormato.JSON">JSON</option>
-              <option [value]="ReporteFormato.PDF">PDF</option>
-            </select>
-            <div class="error-message" 
-                 *ngIf="(formSubmitted || reporteForm.get('formato')?.touched) && reporteForm.get('formato')?.invalid">
-              Formato es requerido
-            </div>
-          </div>
-        </div>
-
-        <!-- Row 2: Fecha Inicio and Fecha Fin -->
-        <div class="form-row">
-          <div class="form-group">
             <label for="fechaInicio">Fecha Inicio *</label>
-            <input 
-              type="date" 
-              id="fechaInicio" 
-              formControlName="fechaInicio" 
+            <input
+              type="date"
+              id="fechaInicio"
+              formControlName="fechaInicio"
               class="form-control"
               [class.is-invalid]="formSubmitted && reporteForm.get('fechaInicio')?.invalid">
-            <div class="error-message" 
+            <div class="error-message"
                  *ngIf="(formSubmitted || reporteForm.get('fechaInicio')?.touched) && reporteForm.get('fechaInicio')?.invalid">
               Fecha de inicio es requerida
             </div>
@@ -167,71 +58,133 @@
 
           <div class="form-group">
             <label for="fechaFin">Fecha Fin *</label>
-            <input 
-              type="date" 
-              id="fechaFin" 
-              formControlName="fechaFin" 
+            <input
+              type="date"
+              id="fechaFin"
+              formControlName="fechaFin"
               class="form-control"
               [class.is-invalid]="formSubmitted && reporteForm.get('fechaFin')?.invalid">
-            <div class="error-message" 
+            <div class="error-message"
                  *ngIf="(formSubmitted || reporteForm.get('fechaFin')?.touched) && reporteForm.get('fechaFin')?.invalid">
               Fecha de fin es requerida
             </div>
           </div>
         </div>
 
-        <!-- Row 3: Estado (solo en modo edición) -->
-        <div class="form-row" *ngIf="isEditMode">
+        <!-- Botón centrado -->
+        <div class="form-row justify-center">
           <div class="form-group">
-            <label for="activo">Estado *</label>
-            <select 
-              id="activo" 
-              formControlName="activo" 
-              class="form-control"
-              [class.is-invalid]="formSubmitted && reporteForm.get('activo')?.invalid">
-              <option [ngValue]="true">Activo</option>
-              <option [ngValue]="false">Inactivo</option>
-            </select>
-            <div class="error-message" 
-                 *ngIf="(formSubmitted || reporteForm.get('activo')?.touched) && reporteForm.get('activo')?.invalid">
-              Estado es requerido
-            </div>
+            <button type="submit" class="btn btn-primary" [disabled]="isLoading">
+              <span *ngIf="!isLoading">Generar Reporte</span>
+              <span *ngIf="isLoading">Generando...</span>
+            </button>
           </div>
         </div>
       </div>
-
-      <!-- Modal Actions -->
-      <div class="form-actions fixed-bottom">
-        <button type="button" class="btn btn-secondary" (click)="closeModal()">
-          Cancelar
-        </button>
-        <button type="submit" class="btn btn-primary">
-          Guardar
-        </button>
-      </div>
     </form>
   </div>
-</div>
 
-<!-- Delete Confirmation Modal -->
-<div class="modal" [class.show]="isDeleteModalVisible">
-  <div class="modal-content confirmation">
-    <div class="modal-header">
-      <h3>Confirmar eliminación</h3>
+  <!-- ===== RESUMEN SECTION ===== -->
+  <div *ngIf="reporteResponse" class="report-summary-card">
+    <h3>Resumen del Reporte</h3>
+    <div class="summary-stats">
+      <div class="stat-item">
+        <span class="label">Total Registros:</span>
+        <span class="value">{{ reporteResponse.totalMovimientos }}</span>
+      </div>
+      <div class="stat-item">
+        <span class="label">Total Débitos:</span>
+        <span class="value amount-negative">${{ reporteResponse.totalDebitos | number:'1.2-2' }}</span>
+      </div>
+      <div class="stat-item">
+        <span class="label">Total Créditos:</span>
+        <span class="value amount-positive">${{ reporteResponse.totalCreditos | number:'1.2-2' }}</span>
+      </div>
+      <div class="stat-item">
+        <span class="label">Fecha de Generación:</span>
+        <span class="value">{{ reporteResponse.fechaGeneracion | date:'dd/MM/yyyy HH:mm:ss' }}</span>
+      </div>
     </div>
-    <div class="modal-body">
-      <p>¿Está seguro de que desea eliminar este reporte?</p>
-      <p *ngIf="reporteToDelete">
-        <strong>{{ reporteToDelete.cliente.nombre }}</strong>
-      </p>
+  </div>
+
+  <!-- ===== DATA TABLE SECTION ===== -->
+  <div *ngIf="hasData">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Cliente</th>
+          <th>Número Cuenta</th>
+          <th>Tipo</th>
+          <th>Saldo Inicial</th>
+          <th>Estado</th>
+          <th>Movimiento</th>
+          <th>Saldo Disponible</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of paginatedData">
+          <td>{{ item.fecha }}</td>
+          <td>{{ item.cliente }}</td>
+          <td><strong>{{ item.numeroCuenta }}</strong></td>
+          <td>
+            <span class="badge badge-info">{{ item.tipo }}</span>
+          </td>
+          <td class="amount-balance">${{ item.saldoInicial | number:'1.2-2' }}</td>
+          <td>
+            <span [ngClass]="item.estado ? 'badge badge-active' : 'badge badge-inactive'">
+              {{ item.estado ? 'Activo' : 'Inactivo' }}
+            </span>
+          </td>
+          <td [ngClass]="item.movimiento >= 0 ? 'amount-positive' : 'amount-negative'">
+            ${{ item.movimiento | number:'1.2-2' }}
+          </td>
+          <td class="amount-balance">${{ item.saldoDisponible | number:'1.2-2' }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- ===== PAGINATION ===== -->
+    <div class="pagination" *ngIf="totalPages > 1">
+      <span class="page-info">
+        Mostrando {{ startIndex }}-{{ endIndex }} de {{ totalItems }} registros
+      </span>
+      <div class="page-controls">
+        <button
+          class="page-btn"
+          [disabled]="currentPage === 1"
+          (click)="changePage(currentPage - 1)">
+          Anterior
+        </button>
+
+        <button
+          *ngFor="let page of pages"
+          class="page-btn"
+          [class.active]="page === currentPage"
+          (click)="changePage(page)">
+          {{ page }}
+        </button>
+
+        <button
+          class="page-btn"
+          [disabled]="currentPage === totalPages"
+          (click)="changePage(currentPage + 1)">
+          Siguiente
+        </button>
+      </div>
     </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" (click)="closeDeleteModal()">
-        Cancelar
-      </button>
-      <button type="button" class="btn btn-danger" (click)="confirmDelete()">
-        Eliminar
-      </button>
-    </div>
+  </div>
+
+  <!-- ===== LOADING STATE ===== -->
+  <div *ngIf="isLoading" class="loading-state">
+    <div class="loader">Cargando...</div>
+    <p>Generando estado de cuenta...</p>
+  </div>
+
+  <!-- ===== NO DATA STATE ===== -->
+  <div *ngIf="showNoData" class="no-data-state">
+    <div class="no-data-icon">Sin datos</div>
+    <h3>No hay datos disponibles</h3>
+    <p>Complete el formulario anterior y haga clic en "Generar Reporte" para visualizar los datos.</p>
   </div>
 </div>

@@ -70,7 +70,7 @@ export class CuentasComponent implements OnInit {
     }
 
     const cuentaDto = this.createCuentaDtoFromForm();
-    
+
     if (this.isEditMode && this.editingAccountId) {
       this.updateAccount(this.editingAccountId, cuentaDto);
     } else {
@@ -127,7 +127,7 @@ export class CuentasComponent implements OnInit {
     if (isEdit && accountData) {
       this.editingAccountId = accountData.id;
       const clienteId = this.getClienteIdByName(accountData.nombreCliente);
-      
+
       this.accountForm.patchValue({
         numeroCuenta: accountData.cuentaId,
         tipoCuenta: accountData.tipo,
@@ -213,7 +213,7 @@ export class CuentasComponent implements OnInit {
   private createCuentaDtoFromForm(): CuentaDto {
     const formValue = this.accountForm.value;
     const clienteSeleccionado = this.clientes.find(c => c.id === formValue.clienteId);
-    
+
     return {
       numeroCuenta: formValue.numeroCuenta,
       tipoCuenta: formValue.tipoCuenta === 'Ahorro' ? TipoCuenta.Ahorro : TipoCuenta.Corriente,

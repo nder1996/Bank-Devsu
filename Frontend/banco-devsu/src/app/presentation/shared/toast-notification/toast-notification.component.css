@@ -1,0 +1,19 @@
+/* Toast Notification Component Styles */
+
+/* TrackBy function for better performance */
+:host {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.toast-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 400px;
+}
+
+/* Animation classes will be handled by global styles */

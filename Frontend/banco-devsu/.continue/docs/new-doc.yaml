@@ -1,0 +1,23 @@
+name: New doc
+version: 0.0.1
+schema: v1
+docs:
+  - name: New docs
+    startUrl: https://docs.continue.dev
+
+models:
+  - name: DeepSeek Coder
+    provider: ollama
+    model: "deepseek-coder:6.7b"
+
+tabAutocompleteModel:
+  name: DeepSeek Coder
+  provider: ollama
+  model: "deepseek-coder:6.7b"
+
+embeddingsProvider:
+  provider: "transformers.js"
+
+allowAnonymousTelemetry: false
+
+experimentalTools: false
