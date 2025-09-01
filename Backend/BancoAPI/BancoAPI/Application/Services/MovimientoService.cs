@@ -126,22 +126,6 @@ namespace BancoAPI.Application.Services
             }
         }
 
-        public async Task<MovimientoDto?> GetByIdAsync(long id)
-        {
-            try
-            {
-                if (id <= 0)
-                    throw new ArgumentException("El id del movimiento debe ser mayor a cero.", nameof(id));
-
-                var movimiento = await _movimientoRepository.GetByIdAsync(id);
-                return movimiento == null ? null : _mapper.Map<MovimientoDto>(movimiento);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error al obtener el movimiento por id.", ex);
-            }
-        }
-
         public async Task<MovimientoDto> UpdateAsync(MovimientoDto movimientoDto)
         {
             if (movimientoDto == null)

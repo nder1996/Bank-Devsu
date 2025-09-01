@@ -15,10 +15,7 @@ namespace BancoAPI.Controllers
             _reporteService = reporteService;
         }
 
-        /// <summary>
-        /// Generar reporte de estado de cuenta especificando un rango de fechas y un cliente
-        /// Example: /api/reportes?clienteId=1&fechaInicio=2024-01-01&fechaFin=2024-12-31&formato=json
-        /// </summary>
+
         [HttpGet]
         public async Task<ActionResult<ApiResponse<ReporteEstadoCuentaResponseDto>>> GenerarEstadoCuenta(
             [FromQuery] long clienteId,
@@ -49,10 +46,6 @@ namespace BancoAPI.Controllers
             }
         }
 
-        /// <summary>
-        /// Descargar reporte de estado de cuenta en formato PDF
-        /// Example: /api/reportes/pdf?clienteId=1&fechaInicio=2024-01-01&fechaFin=2024-12-31
-        /// </summary>
         [HttpGet("pdf")]
         public async Task<IActionResult> DescargarEstadoCuentaPdf(
             [FromQuery] long clienteId,
@@ -77,10 +70,6 @@ namespace BancoAPI.Controllers
             }
         }
 
-        /// <summary>
-        /// Descargar reporte de estado de cuenta en formato JSON
-        /// Example: /api/reportes/json?clienteId=1&fechaInicio=2024-01-01&fechaFin=2024-12-31
-        /// </summary>
         [HttpGet("json")]
         public async Task<IActionResult> DescargarEstadoCuentaJson(
             [FromQuery] long clienteId,

@@ -6,7 +6,6 @@ namespace BancoAPI.Domain.Interfaces.Services
     public interface IClienteService
     {
         Task<IEnumerable<ClienteDto>> ObtenerTodosAsync();
-        Task<ClienteDto> ObtenerPorIdAsync(int clienteId);
         Task<ClienteDto> CrearAsync(ClienteDto cliente);
         Task<ClienteDto> ActualizarAsync(ClienteDto cliente);
         Task<bool> EliminarAsync(long clienteId);

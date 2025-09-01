@@ -37,23 +37,6 @@ namespace BancoAPI.Controllers
             }
         }
 
-        // GET: api/Movimientos/5
-        [HttpGet("{id:long}")]
-        public async Task<ActionResult<ApiResponse<MovimientoDto>>> Get(long id)
-        {
-            try
-            {
-                var movimiento = await _movimientoService.GetByIdAsync(id);
-                if (movimiento == null)
-                    return NotFound(ApiResponse<MovimientoDto>.Fail("Movimiento no encontrado"));
-                
-                return Ok(ApiResponse<MovimientoDto>.CreateSuccess(movimiento, "Movimiento obtenido exitosamente"));
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ApiResponse<MovimientoDto>.Fail($"Error al obtener movimiento: {ex.Message}"));
-            }
-        }
 
         // POST: api/Movimientos
         [HttpPost]

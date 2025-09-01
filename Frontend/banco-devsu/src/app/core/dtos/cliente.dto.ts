@@ -1,16 +1,20 @@
+import { PersonaDto } from "./persona.dto";
 import { CuentaDto } from "./cuenta.dto";
 
-export class ClienteDto {
+export class ClienteDto extends PersonaDto {
   constructor(
-    public id?: number,
-    public estado?: boolean,
-    public nombre?: string,
-    public identificacion?: string,
-    public direccion?: string,
-    public telefono?: string,
-    public edad?: number,
-    public genero?: string,
-    public cuentas?: CuentaDto[],
-    public contrasena?: string
-  ) {}
+    id: number,
+    nombre: string,
+    genero: string,
+    edad: number,
+    identificacion: string,
+    direccion: string,
+    telefono: string,
+    public clienteId: number,
+    public contrasena: string,
+    public estado: boolean,
+    public cuentas?: CuentaDto[]
+  ) {
+    super(id, nombre, genero, edad, identificacion, direccion, telefono);
+  }
 }

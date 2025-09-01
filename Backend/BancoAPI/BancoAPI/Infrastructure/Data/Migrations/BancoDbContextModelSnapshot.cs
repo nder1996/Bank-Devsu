@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace BancoAPI.Migrations
+namespace BancoAPI.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(BancoDbContext))]
     partial class BancoDbContextModelSnapshot : ModelSnapshot
@@ -30,20 +30,49 @@ namespace BancoAPI.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
 
+                    b.Property<long>("ClienteId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("Contrasena")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
+                    b.Property<string>("Direccion")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int>("Edad")
+                        .HasColumnType("int");
+
                     b.Property<bool>("Estado")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<long>("PersonaId")
-                        .HasColumnType("bigint");
+                    b.Property<string>("Genero")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
+
+                    b.Property<string>("Identificacion")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("Telefono")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PersonaId");
+                    b.HasIndex("ClienteId")
+                        .IsUnique();
 
                     b.ToTable("Clientes", (string)null);
                 });
@@ -111,104 +140,12 @@ namespace BancoAPI.Migrations
                     b.ToTable("Movimientos");
                 });
 
-            modelBuilder.Entity("BancoAPI.Domain.Entities.Persona", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<string>("Direccion")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<int>("Edad")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Genero")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("varchar(20)");
-
-                    b.Property<string>("Identificacion")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("varchar(20)");
-
-                    b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
-
-                    b.Property<string>("Telefono")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("varchar(20)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Personas", (string)null);
-                });
-
-            modelBuilder.Entity("BancoAPI.Domain.Entities.Reporte", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<bool>("Activo")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<long>("ClienteId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("FechaFin")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateTime>("FechaGeneracion")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateTime>("FechaInicio")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<int>("Formato")
-                        .HasColumnType("int");
-
-                    b.Property<string>("NombreArchivo")
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
-
-                    b.Property<string>("RutaArchivo")
-                        .HasMaxLength(500)
-                        .HasColumnType("varchar(500)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ClienteId");
-
-                    b.ToTable("Reportes");
-                });
-
-            modelBuilder.Entity("BancoAPI.Domain.Entities.Cliente", b =>
-                {
-                    b.HasOne("BancoAPI.Domain.Entities.Persona", "Persona")
-                        .WithMany()
-                        .HasForeignKey("PersonaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Persona");
-                });
-
             modelBuilder.Entity("BancoAPI.Domain.Entities.Cuenta", b =>
                 {
                     b.HasOne("BancoAPI.Domain.Entities.Cliente", "ClienteNavigation")
                         .WithMany("Cuentas")
                         .HasForeignKey("ClienteId")
+                        .HasPrincipalKey("ClienteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -224,17 +161,6 @@ namespace BancoAPI.Migrations
                         .IsRequired();
 
                     b.Navigation("Cuenta");
-                });
-
-            modelBuilder.Entity("BancoAPI.Domain.Entities.Reporte", b =>
-                {
-                    b.HasOne("BancoAPI.Domain.Entities.Cliente", "Cliente")
-                        .WithMany()
-                        .HasForeignKey("ClienteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Cliente");
                 });
 
             modelBuilder.Entity("BancoAPI.Domain.Entities.Cliente", b =>

@@ -3,11 +3,7 @@
   <div class="table-header">
     <h2>Movimientos</h2>
     <div class="table-actions">
-      <input
-        type="text"
-        class="search-input"
-        placeholder="Buscar movimiento..."
-        [(ngModel)]="searchTerm"
+      <input type="text" class="search-input" placeholder="Buscar movimiento..." [(ngModel)]="searchTerm"
         (input)="filterItems()">
       <button class="btn-add" (click)="openCreateModal()">
         Agregar Movimiento +
@@ -20,10 +16,9 @@
     <thead>
       <tr>
         <th>Cuenta</th>
-         <th>Tipo de movimiento</th>
+        <th>Tipo de movimiento</th>
         <th>Valor</th>
         <th>Saldo</th>
-        <th style="display: none;">Fecha</th>
         <th>Acciones</th>
       </tr>
     </thead>
@@ -37,14 +32,13 @@
           {{item.valor | currency}}
         </td>
         <td>{{item.saldo | currency}}</td>
-        <td style="display: none;">{{item.fecha | date:'dd/MM/yyyy'}}</td>
         <td class="actions">
           <button class="btn-edit" (click)="openEditModal(item)">Editar</button>
           <button class="btn-delete" (click)="openDeleteModal(item)">Eliminar</button>
         </td>
       </tr>
       <tr *ngIf="paginatedItems.length === 0">
-        <td colspan="6" class="no-data">No se encontraron movimientos</td>
+        <td colspan="5" class="no-data">No se encontraron movimientos</td>
       </tr>
     </tbody>
   </table>
@@ -59,10 +53,7 @@
         Anterior
       </button>
 
-      <button
-        *ngFor="let page of pages"
-        class="page-btn"
-        [class.active]="page === currentPage"
+      <button *ngFor="let page of pages" class="page-btn" [class.active]="page === currentPage"
         (click)="changePage(page)">
         {{page}}
       </button>
@@ -83,40 +74,35 @@
 
     <form [formGroup]="movimientoForm" (ngSubmit)="saveMovimiento()">
       <div class="container-form">
-
         <!-- Row 1: Cuenta y Tipo -->
         <div class="form-row">
           <div class="form-group">
             <label for="cuentaId">Cuenta *</label>
-            <select
-              id="cuentaId"
-              formControlName="cuentaId"
-              class="form-control"
-              [class.is-invalid]="formSubmitted && movimientoForm.get('cuentaId')?.invalid">
+            <select id="cuentaId" formControlName="cuentaId" class="form-control"
+              [class.is-invalid]="formSubmitted && movimientoForm.get('cuentaId')?.invalid"
+              [class.disabled]="isEditMode"
+              [attr.disabled]="isEditMode ? true : null">
               <option value="" disabled>Seleccione una cuenta</option>
-              <option *ngFor="let cuenta of cuentas" [value]="cuenta.id">
-                {{cuenta.numeroCuenta}} - {{cuenta.cliente?.nombre || 'Cliente'}}
+              <option *ngFor="let cuenta of cuentas" [ngValue]="cuenta.id">
+                {{cuenta.numeroCuenta}}
               </option>
             </select>
             <div class="error-message"
-                 *ngIf="(formSubmitted || movimientoForm.get('cuentaId')?.touched) && movimientoForm.get('cuentaId')?.invalid">
+              *ngIf="(formSubmitted || movimientoForm.get('cuentaId')?.touched) && movimientoForm.get('cuentaId')?.invalid">
               La cuenta es requerida
             </div>
           </div>
 
           <div class="form-group">
             <label for="tipoMovimiento">Tipo de Movimiento *</label>
-            <select
-              id="tipoMovimiento"
-              formControlName="tipoMovimiento"
-              class="form-control"
+            <select id="tipoMovimiento" formControlName="tipoMovimiento" class="form-control"
               [class.is-invalid]="formSubmitted && movimientoForm.get('tipoMovimiento')?.invalid">
               <option value="" disabled>Seleccione un tipo</option>
               <option [value]="TipoMovimiento.Credito">Crédito</option>
               <option [value]="TipoMovimiento.Debito">Débito</option>
             </select>
             <div class="error-message"
-                 *ngIf="(formSubmitted || movimientoForm.get('tipoMovimiento')?.touched) && movimientoForm.get('tipoMovimiento')?.invalid">
+              *ngIf="(formSubmitted || movimientoForm.get('tipoMovimiento')?.touched) && movimientoForm.get('tipoMovimiento')?.invalid">
               El tipo de movimiento es requerido
             </div>
           </div>
@@ -126,21 +112,14 @@
         <div class="form-row">
           <div class="form-group">
             <label for="valor">Valor *</label>
-            <input
-              type="number"
-              id="valor"
-              formControlName="valor"
-              class="form-control"
-              min="0.01"
-              step="0.01"
-              placeholder="Ingrese el valor"
-              [class.is-invalid]="formSubmitted && movimientoForm.get('valor')?.invalid">
+            <input type="number" id="valor" formControlName="valor" class="form-control" min="0.01" step="0.01"
+              placeholder="Ingrese el valor" [class.is-invalid]="formSubmitted && movimientoForm.get('valor')?.invalid">
             <div class="error-message"
-                 *ngIf="(formSubmitted || movimientoForm.get('valor')?.touched) && movimientoForm.get('valor')?.errors?.['required']">
+              *ngIf="(formSubmitted || movimientoForm.get('valor')?.touched) && movimientoForm.get('valor')?.errors?.['required']">
               El valor es requerido
             </div>
             <div class="error-message"
-                 *ngIf="(formSubmitted || movimientoForm.get('valor')?.touched) && movimientoForm.get('valor')?.errors?.['min']">
+              *ngIf="(formSubmitted || movimientoForm.get('valor')?.touched) && movimientoForm.get('valor')?.errors?.['min']">
               El valor debe ser mayor a 0
             </div>
           </div>

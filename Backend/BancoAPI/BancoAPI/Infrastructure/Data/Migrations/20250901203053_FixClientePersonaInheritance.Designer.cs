@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace BancoAPI.Migrations
+namespace BancoAPI.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(BancoDbContext))]
-    [Migration("20250821215452_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250901203053_FixClientePersonaInheritance")]
+    partial class FixClientePersonaInheritance
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,20 +33,49 @@ namespace BancoAPI.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
 
+                    b.Property<long>("ClienteId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("Contrasena")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
+                    b.Property<string>("Direccion")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int>("Edad")
+                        .HasColumnType("int");
+
                     b.Property<bool>("Estado")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<long>("PersonaId")
-                        .HasColumnType("bigint");
+                    b.Property<string>("Genero")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
+
+                    b.Property<string>("Identificacion")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("Telefono")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PersonaId");
+                    b.HasIndex("ClienteId")
+                        .IsUnique();
 
                     b.ToTable("Clientes", (string)null);
                 });
@@ -102,7 +131,6 @@ namespace BancoAPI.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("TipoMovimiento")
-                        .HasMaxLength(20)
                         .HasColumnType("int");
 
                     b.Property<decimal>("Valor")
@@ -115,63 +143,12 @@ namespace BancoAPI.Migrations
                     b.ToTable("Movimientos");
                 });
 
-            modelBuilder.Entity("BancoAPI.Domain.Entities.Persona", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<string>("Direccion")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<int>("Edad")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Genero")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("varchar(20)");
-
-                    b.Property<string>("Identificacion")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("varchar(20)");
-
-                    b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
-
-                    b.Property<string>("Telefono")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("varchar(20)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Personas", (string)null);
-                });
-
-            modelBuilder.Entity("BancoAPI.Domain.Entities.Cliente", b =>
-                {
-                    b.HasOne("BancoAPI.Domain.Entities.Persona", "Persona")
-                        .WithMany()
-                        .HasForeignKey("PersonaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Persona");
-                });
-
             modelBuilder.Entity("BancoAPI.Domain.Entities.Cuenta", b =>
                 {
                     b.HasOne("BancoAPI.Domain.Entities.Cliente", "ClienteNavigation")
                         .WithMany("Cuentas")
                         .HasForeignKey("ClienteId")
+                        .HasPrincipalKey("ClienteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

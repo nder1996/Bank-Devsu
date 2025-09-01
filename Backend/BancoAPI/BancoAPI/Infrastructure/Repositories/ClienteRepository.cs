@@ -26,16 +26,6 @@ namespace BancoAPI.Infrastructure.Repositories
                 _context.Entry(localCliente).State = EntityState.Detached;
             }
 
-            // Si se envía una instancia de Persona, desanexar también la que ya esté siendo rastreada
-            if (cliente.Persona != null)
-            {
-                var localPersona = _context.Personas.Local.FirstOrDefault(p => p.Id == cliente.Persona.Id);
-                if (localPersona != null)
-                {
-                    _context.Entry(localPersona).State = EntityState.Detached;
-                }
-            }
-
             _context.Clientes.Update(cliente);
             await _context.SaveChangesAsync();
             return cliente;
@@ -45,7 +35,7 @@ namespace BancoAPI.Infrastructure.Repositories
 
         async Task<bool> IClienteRepository.ActualizarEstadoAsync(int clienteId, bool nuevoEstado)
         {
-            var cliente = await _context.Clientes.FindAsync(clienteId);
+            var cliente = await _context.Clientes.FirstOrDefaultAsync(c => c.Id == clienteId);
             if (cliente == null)
                 return false;
 
@@ -75,7 +65,6 @@ namespace BancoAPI.Infrastructure.Repositories
         {
             return await _context.Clientes
                .Where(c => c.Id == clienteId)
-               .Include(c => c.Persona)
                .Include(c => c.Cuentas)
                    .ThenInclude(cuenta => cuenta.Movimientos.Where(m => m.Fecha >= fechaInicio && m.Fecha <= fechaFin))
                .FirstOrDefaultAsync();
@@ -84,7 +73,6 @@ namespace BancoAPI.Infrastructure.Repositories
         async Task<Cliente> IClienteRepository.ObtenerPorIdAsync(long clienteId)
         {
             return await _context.Clientes
-               .Include(c => c.Persona)
                .Include(c => c.Cuentas)
                .FirstOrDefaultAsync(c => c.Id == clienteId);
         }
@@ -92,16 +80,14 @@ namespace BancoAPI.Infrastructure.Repositories
         async Task<Cliente> IClienteRepository.ObtenerPorIdentificacionAsync(string identificacion)
         {
             return await _context.Clientes
-                .Include(c => c.Persona)
                 .Include(c => c.Cuentas)
-                .FirstOrDefaultAsync(c => c.Persona.Identificacion == identificacion);
+                .FirstOrDefaultAsync(c => c.Identificacion == identificacion);
         }
 
         async Task<IEnumerable<Cliente>> IClienteRepository.ObtenerTodosAsync()
         {
             return await _context.Clientes
             .Where(c => c.Estado == true)
-            .Include(c => c.Persona)
             .Include(c => c.Cuentas)
             .AsNoTracking()
             .ToListAsync();

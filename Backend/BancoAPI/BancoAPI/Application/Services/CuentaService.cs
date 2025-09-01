@@ -122,21 +122,6 @@ namespace BancoAPI.Application.Services
             }
         }
 
-        public async Task<IEnumerable<CuentaDto>> ObtenerPorClienteIdAsync(long clienteId)
-        {
-            try
-            {
-                if (clienteId <= 0)
-                    throw new ArgumentException("El id del cliente debe ser mayor a cero.", nameof(clienteId));
-
-                var cuentas = await _cuentaRepository.ObtenerPorClienteIdAsync(clienteId);
-                return _mapper.Map<IEnumerable<CuentaDto>>(cuentas);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error al obtener las cuentas del cliente.", ex);
-            }
-        }
 
         public async Task<CuentaDto> ObtenerPorIdAsync(long cuentaId)
         {

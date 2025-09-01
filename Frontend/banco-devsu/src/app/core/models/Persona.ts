@@ -1,9 +1,9 @@
 export interface Persona {
-  id?: number | null;
-  nombre?: string | null;
-  genero?: string | null;
-  edad?: number | null;
-  identificacion?: string | null;
-  direccion?: string | null;
-  telefono?: string | null;
+  id: number;
+  nombre: string;
+  genero: string;
+  edad: number;
+  identificacion: string;
+  direccion: string;
+  telefono: string;
 }

@@ -3,20 +3,20 @@
   "WorkspaceRootPath": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|c:\\users\\usuario\\documents\\github\\bank-devsu\\backend\\bancoapi\\bancoapi\\application\\services\\reporteservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|solutionrelative:bancoapi\\application\\services\\reporteservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|c:\\users\\usuario\\documents\\github\\bank-devsu\\backend\\bancoapi\\bancoapi\\application\\services\\movimientoservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|solutionrelative:bancoapi\\application\\services\\movimientoservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|c:\\users\\usuario\\documents\\github\\bank-devsu\\backend\\bancoapi\\bancoapi\\application\\mapping\\mappingprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|solutionrelative:bancoapi\\application\\mapping\\mappingprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|c:\\users\\usuario\\documents\\github\\bank-devsu\\backend\\bancoapi\\bancoapi\\domain\\constants\\appconstants.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|solutionrelative:bancoapi\\domain\\constants\\appconstants.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|c:\\users\\usuario\\documents\\github\\bank-devsu\\backend\\bancoapi\\bancoapi\\application\\dtos\\clientedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|solutionrelative:bancoapi\\application\\dtos\\clientedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|c:\\users\\usuario\\documents\\github\\bank-devsu\\backend\\bancoapi\\bancoapi\\domain\\interfaces\\services\\imovimientoservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|solutionrelative:bancoapi\\domain\\interfaces\\services\\imovimientoservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|c:\\users\\usuario\\documents\\github\\bank-devsu\\backend\\bancoapi\\bancoapi\\infrastructure\\data\\bancodbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|solutionrelative:bancoapi\\infrastructure\\data\\bancodbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|c:\\users\\usuario\\documents\\github\\bank-devsu\\backend\\bancoapi\\bancoapi\\domain\\interfaces\\services\\icuentaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{41CD6104-84D2-4362-B4AB-467082E2BCA3}|BancoAPI\\BancoAPI.csproj|solutionrelative:bancoapi\\domain\\interfaces\\services\\icuentaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,57 +26,58 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "ClienteDto.cs",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Application\\DTOs\\ClienteDto.cs",
-              "RelativeDocumentMoniker": "BancoAPI\\Application\\DTOs\\ClienteDto.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Application\\DTOs\\ClienteDto.cs",
-              "RelativeToolTip": "BancoAPI\\Application\\DTOs\\ClienteDto.cs",
-              "ViewState": "AgIAAA4AAAAAAAAAAAA9wAAAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "AppConstants.cs",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Domain\\Constants\\AppConstants.cs",
+              "RelativeDocumentMoniker": "BancoAPI\\Domain\\Constants\\AppConstants.cs",
+              "ToolTip": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Domain\\Constants\\AppConstants.cs",
+              "RelativeToolTip": "BancoAPI\\Domain\\Constants\\AppConstants.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAxAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-01T01:05:04.06Z",
+              "WhenOpened": "2025-09-01T21:10:40.947Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "BancoDbContext.cs",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Infrastructure\\Data\\BancoDbContext.cs",
-              "RelativeDocumentMoniker": "BancoAPI\\Infrastructure\\Data\\BancoDbContext.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Infrastructure\\Data\\BancoDbContext.cs",
-              "RelativeToolTip": "BancoAPI\\Infrastructure\\Data\\BancoDbContext.cs",
-              "ViewState": "AgIAABoAAAAAAAAAAAAIwCYAAAAoAAAAAAAAAA==",
+              "DocumentIndex": 2,
+              "Title": "IMovimientoService.cs",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Domain\\Interfaces\\Services\\IMovimientoService.cs",
+              "RelativeDocumentMoniker": "BancoAPI\\Domain\\Interfaces\\Services\\IMovimientoService.cs",
+              "ToolTip": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Domain\\Interfaces\\Services\\IMovimientoService.cs",
+              "RelativeToolTip": "BancoAPI\\Domain\\Interfaces\\Services\\IMovimientoService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAABCAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-31T04:07:16.977Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "MappingProfile.cs",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Application\\Mapping\\MappingProfile.cs",
-              "RelativeDocumentMoniker": "BancoAPI\\Application\\Mapping\\MappingProfile.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Application\\Mapping\\MappingProfile.cs",
-              "RelativeToolTip": "BancoAPI\\Application\\Mapping\\MappingProfile.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEsAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-31T02:51:21.453Z",
+              "WhenOpened": "2025-09-01T21:09:05.109Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "ReporteService.cs",
-              "DocumentMoniker": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Application\\Services\\ReporteService.cs",
-              "RelativeDocumentMoniker": "BancoAPI\\Application\\Services\\ReporteService.cs",
-              "ToolTip": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Application\\Services\\ReporteService.cs",
-              "RelativeToolTip": "BancoAPI\\Application\\Services\\ReporteService.cs",
-              "ViewState": "AgIAADgBAAAAAAAAAAAiwEsBAAAeAAAAAAAAAA==",
+              "Title": "MovimientoService.cs",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Application\\Services\\MovimientoService.cs",
+              "RelativeDocumentMoniker": "BancoAPI\\Application\\Services\\MovimientoService.cs",
+              "ToolTip": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Application\\Services\\MovimientoService.cs",
+              "RelativeToolTip": "BancoAPI\\Application\\Services\\MovimientoService.cs",
+              "ViewState": "AgIAAHQAAAAAAAAAAAAAAEcAAABqAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-30T22:28:22.582Z",
+              "WhenOpened": "2025-09-01T21:08:55.201Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ICuentaService.cs",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Domain\\Interfaces\\Services\\ICuentaService.cs",
+              "RelativeDocumentMoniker": "BancoAPI\\Domain\\Interfaces\\Services\\ICuentaService.cs",
+              "ToolTip": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Domain\\Interfaces\\Services\\ICuentaService.cs",
+              "RelativeToolTip": "BancoAPI\\Domain\\Interfaces\\Services\\ICuentaService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAA5AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-01T21:08:10.837Z",
               "EditorCaption": ""
             }
           ]

@@ -1,0 +1,864 @@
+{
+	"info": {
+		"_postman_id": "b4ab69bc-8308-4509-bb9b-3f5751a42170",
+		"name": "Bank-Devsu",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "28222845"
+	},
+	"item": [
+		{
+			"name": "Reportes",
+			"item": [
+				{
+					"name": "Get All Reports",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUri}}/Reportes?clienteId=2&fechaInicio=2025-08-01&fechaFin=2025-08-31&formato=json",
+							"host": [
+								"{{baseUri}}"
+							],
+							"path": [
+								"Reportes"
+							],
+							"query": [
+								{
+									"key": "clienteId",
+									"value": "2"
+								},
+								{
+									"key": "fechaInicio",
+									"value": "2025-08-01"
+								},
+								{
+									"key": "fechaFin",
+									"value": "2025-08-31"
+								},
+								{
+									"key": "formato",
+									"value": "json"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get All Reports",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUri}}/Reportes?clienteId=2&fechaInicio=2025-08-01&fechaFin=2025-08-31&formato=json",
+									"host": [
+										"{{baseUri}}"
+									],
+									"path": [
+										"Reportes"
+									],
+									"query": [
+										{
+											"key": "clienteId",
+											"value": "2"
+										},
+										{
+											"key": "fechaInicio",
+											"value": "2025-08-01"
+										},
+										{
+											"key": "fechaFin",
+											"value": "2025-08-31"
+										},
+										{
+											"key": "formato",
+											"value": "json"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 01 Sep 2025 03:46:45 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "Kestrel"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"message\": \"Estado de cuenta generado exitosamente\",\n    \"data\": {\n        \"datos\": [\n            {\n                \"fecha\": \"2025-08-21\",\n                \"cliente\": \"Ana Gómez\",\n                \"numeroCuenta\": \"200003\",\n                \"tipo\": \"Ahorro\",\n                \"saldoInicial\": 800,\n                \"estado\": true,\n                \"movimiento\": 200,\n                \"saldoDisponible\": 1000\n            },\n            {\n                \"fecha\": \"2025-08-21\",\n                \"cliente\": \"Ana Gómez\",\n                \"numeroCuenta\": \"200002\",\n                \"tipo\": \"Corriente\",\n                \"saldoInicial\": 3000,\n                \"estado\": true,\n                \"movimiento\": -500,\n                \"saldoDisponible\": 2500\n            },\n            {\n                \"fecha\": \"2025-08-21\",\n                \"cliente\": \"Ana Gómez\",\n                \"numeroCuenta\": \"200001\",\n                \"tipo\": \"Ahorro\",\n                \"saldoInicial\": 1200,\n                \"estado\": true,\n                \"movimiento\": 300,\n                \"saldoDisponible\": 1500\n            },\n            {\n                \"fecha\": \"2025-08-21\",\n                \"cliente\": \"Ana Gómez\",\n                \"numeroCuenta\": \"100003\",\n                \"tipo\": \"Ahorro\",\n                \"saldoInicial\": 500,\n                \"estado\": false,\n                \"movimiento\": -50,\n                \"saldoDisponible\": 450\n            },\n            {\n                \"fecha\": \"2025-08-22\",\n                \"cliente\": \"Ana Gómez\",\n                \"numeroCuenta\": \"100003\",\n                \"tipo\": \"Ahorro\",\n                \"saldoInicial\": 500,\n                \"estado\": false,\n                \"movimiento\": 100,\n                \"saldoDisponible\": 550\n            },\n            {\n                \"fecha\": \"2025-08-22\",\n                \"cliente\": \"Ana Gómez\",\n                \"numeroCuenta\": \"200001\",\n                \"tipo\": \"Ahorro\",\n                \"saldoInicial\": 1200,\n                \"estado\": true,\n                \"movimiento\": -200,\n                \"saldoDisponible\": 1300\n            },\n            {\n                \"fecha\": \"2025-08-22\",\n                \"cliente\": \"Ana Gómez\",\n                \"numeroCuenta\": \"200002\",\n                \"tipo\": \"Corriente\",\n                \"saldoInicial\": 3000,\n                \"estado\": true,\n                \"movimiento\": 1000,\n                \"saldoDisponible\": 3500\n            },\n            {\n                \"fecha\": \"2025-08-22\",\n                \"cliente\": \"Ana Gómez\",\n                \"numeroCuenta\": \"200003\",\n                \"tipo\": \"Ahorro\",\n                \"saldoInicial\": 800,\n                \"estado\": true,\n                \"movimiento\": -100,\n                \"saldoDisponible\": 900\n            },\n            {\n                \"fecha\": \"2025-08-23\",\n                \"cliente\": \"Ana Gómez\",\n                \"numeroCuenta\": \"200003\",\n                \"tipo\": \"Ahorro\",\n                \"saldoInicial\": 800,\n                \"estado\": true,\n                \"movimiento\": 50,\n                \"saldoDisponible\": 950\n            },\n            {\n                \"fecha\": \"2025-08-23\",\n                \"cliente\": \"Ana Gómez\",\n                \"numeroCuenta\": \"200002\",\n                \"tipo\": \"Corriente\",\n                \"saldoInicial\": 3000,\n                \"estado\": true,\n                \"movimiento\": -250,\n                \"saldoDisponible\": 3250\n            },\n            {\n                \"fecha\": \"2025-08-23\",\n                \"cliente\": \"Ana Gómez\",\n                \"numeroCuenta\": \"200001\",\n                \"tipo\": \"Ahorro\",\n                \"saldoInicial\": 1200,\n                \"estado\": true,\n                \"movimiento\": 100,\n                \"saldoDisponible\": 1400\n            },\n            {\n                \"fecha\": \"2025-08-23\",\n                \"cliente\": \"Ana Gómez\",\n                \"numeroCuenta\": \"100003\",\n                \"tipo\": \"Ahorro\",\n                \"saldoInicial\": 500,\n                \"estado\": false,\n                \"movimiento\": -25,\n                \"saldoDisponible\": 525\n            },\n            {\n                \"fecha\": \"2025-08-30\",\n                \"cliente\": \"Ana Gómez\",\n                \"numeroCuenta\": \"100003\",\n                \"tipo\": \"Ahorro\",\n                \"saldoInicial\": 500,\n                \"estado\": false,\n                \"movimiento\": 500,\n                \"saldoDisponible\": 175\n            },\n            {\n                \"fecha\": \"2025-08-30\",\n                \"cliente\": \"Ana Gómez\",\n                \"numeroCuenta\": \"100003\",\n                \"tipo\": \"Ahorro\",\n                \"saldoInicial\": 500,\n                \"estado\": false,\n                \"movimiento\": 100,\n                \"saldoDisponible\": 75\n            },\n            {\n                \"fecha\": \"2025-08-30\",\n                \"cliente\": \"Ana Gómez\",\n                \"numeroCuenta\": \"100003\",\n                \"tipo\": \"Ahorro\",\n                \"saldoInicial\": 500,\n                \"estado\": false,\n                \"movimiento\": 1000000,\n                \"saldoDisponible\": 1000075\n            }\n        ],\n        \"pdfBase64\": null,\n        \"totalDebitos\": 525,\n        \"totalCreditos\": 1001750,\n        \"totalMovimientos\": 15,\n        \"fechaGeneracion\": \"2025-08-31T22:46:46.4052673-05:00\"\n    },\n    \"errors\": [],\n    \"timestamp\": \"2025-09-01T03:46:46.405278Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Download Report as PDF",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "content-length",
+								"value": "4787",
+								"type": "text"
+							},
+							{
+								"key": "content-type",
+								"value": "application/pdf",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUri}}/Reportes/pdf?clienteId=2&fechaInicio=2025-08-01&fechaFin=2025-08-31",
+							"host": [
+								"{{baseUri}}"
+							],
+							"path": [
+								"Reportes",
+								"pdf"
+							],
+							"query": [
+								{
+									"key": "clienteId",
+									"value": "2"
+								},
+								{
+									"key": "fechaInicio",
+									"value": "2025-08-01"
+								},
+								{
+									"key": "fechaFin",
+									"value": "2025-08-31"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Report Data in JSON",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUri}}/Reportes/json?clienteId=2&fechaInicio=2025-08-01&fechaFin=2025-08-31",
+							"host": [
+								"{{baseUri}}"
+							],
+							"path": [
+								"Reportes",
+								"json"
+							],
+							"query": [
+								{
+									"key": "clienteId",
+									"value": "2"
+								},
+								{
+									"key": "fechaInicio",
+									"value": "2025-08-01"
+								},
+								{
+									"key": "fechaFin",
+									"value": "2025-08-31"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get Report Data in JSON",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUri}}/Reportes/json?clienteId=2&fechaInicio=2025-08-01&fechaFin=2025-08-31",
+									"host": [
+										"{{baseUri}}"
+									],
+									"path": [
+										"Reportes",
+										"json"
+									],
+									"query": [
+										{
+											"key": "clienteId",
+											"value": "2"
+										},
+										{
+											"key": "fechaInicio",
+											"value": "2025-08-01"
+										},
+										{
+											"key": "fechaFin",
+											"value": "2025-08-31"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Content-Length",
+									"value": "3993"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 01 Sep 2025 03:47:47 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "Kestrel"
+								},
+								{
+									"key": "Content-Disposition",
+									"value": "attachment; filename=estado_cuenta_2_20250801_20250831.json; filename*=UTF-8''estado_cuenta_2_20250801_20250831.json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"Datos\": [\n        {\n            \"Fecha\": \"2025-08-21\",\n            \"Cliente\": \"Ana Gómez\",\n            \"NumeroCuenta\": \"200003\",\n            \"Tipo\": \"Ahorro\",\n            \"SaldoInicial\": 800,\n            \"Estado\": true,\n            \"Movimiento\": 200,\n            \"SaldoDisponible\": 1000\n        },\n        {\n            \"Fecha\": \"2025-08-21\",\n            \"Cliente\": \"Ana Gómez\",\n            \"NumeroCuenta\": \"200002\",\n            \"Tipo\": \"Corriente\",\n            \"SaldoInicial\": 3000,\n            \"Estado\": true,\n            \"Movimiento\": -500,\n            \"SaldoDisponible\": 2500\n        },\n        {\n            \"Fecha\": \"2025-08-21\",\n            \"Cliente\": \"Ana Gómez\",\n            \"NumeroCuenta\": \"200001\",\n            \"Tipo\": \"Ahorro\",\n            \"SaldoInicial\": 1200,\n            \"Estado\": true,\n            \"Movimiento\": 300,\n            \"SaldoDisponible\": 1500\n        },\n        {\n            \"Fecha\": \"2025-08-21\",\n            \"Cliente\": \"Ana Gómez\",\n            \"NumeroCuenta\": \"100003\",\n            \"Tipo\": \"Ahorro\",\n            \"SaldoInicial\": 500,\n            \"Estado\": false,\n            \"Movimiento\": -50,\n            \"SaldoDisponible\": 450\n        },\n        {\n            \"Fecha\": \"2025-08-22\",\n            \"Cliente\": \"Ana Gómez\",\n            \"NumeroCuenta\": \"100003\",\n            \"Tipo\": \"Ahorro\",\n            \"SaldoInicial\": 500,\n            \"Estado\": false,\n            \"Movimiento\": 100,\n            \"SaldoDisponible\": 550\n        },\n        {\n            \"Fecha\": \"2025-08-22\",\n            \"Cliente\": \"Ana Gómez\",\n            \"NumeroCuenta\": \"200001\",\n            \"Tipo\": \"Ahorro\",\n            \"SaldoInicial\": 1200,\n            \"Estado\": true,\n            \"Movimiento\": -200,\n            \"SaldoDisponible\": 1300\n        },\n        {\n            \"Fecha\": \"2025-08-22\",\n            \"Cliente\": \"Ana Gómez\",\n            \"NumeroCuenta\": \"200002\",\n            \"Tipo\": \"Corriente\",\n            \"SaldoInicial\": 3000,\n            \"Estado\": true,\n            \"Movimiento\": 1000,\n            \"SaldoDisponible\": 3500\n        },\n        {\n            \"Fecha\": \"2025-08-22\",\n            \"Cliente\": \"Ana Gómez\",\n            \"NumeroCuenta\": \"200003\",\n            \"Tipo\": \"Ahorro\",\n            \"SaldoInicial\": 800,\n            \"Estado\": true,\n            \"Movimiento\": -100,\n            \"SaldoDisponible\": 900\n        },\n        {\n            \"Fecha\": \"2025-08-23\",\n            \"Cliente\": \"Ana Gómez\",\n            \"NumeroCuenta\": \"200003\",\n            \"Tipo\": \"Ahorro\",\n            \"SaldoInicial\": 800,\n            \"Estado\": true,\n            \"Movimiento\": 50,\n            \"SaldoDisponible\": 950\n        },\n        {\n            \"Fecha\": \"2025-08-23\",\n            \"Cliente\": \"Ana Gómez\",\n            \"NumeroCuenta\": \"200002\",\n            \"Tipo\": \"Corriente\",\n            \"SaldoInicial\": 3000,\n            \"Estado\": true,\n            \"Movimiento\": -250,\n            \"SaldoDisponible\": 3250\n        },\n        {\n            \"Fecha\": \"2025-08-23\",\n            \"Cliente\": \"Ana Gómez\",\n            \"NumeroCuenta\": \"200001\",\n            \"Tipo\": \"Ahorro\",\n            \"SaldoInicial\": 1200,\n            \"Estado\": true,\n            \"Movimiento\": 100,\n            \"SaldoDisponible\": 1400\n        },\n        {\n            \"Fecha\": \"2025-08-23\",\n            \"Cliente\": \"Ana Gómez\",\n            \"NumeroCuenta\": \"100003\",\n            \"Tipo\": \"Ahorro\",\n            \"SaldoInicial\": 500,\n            \"Estado\": false,\n            \"Movimiento\": -25,\n            \"SaldoDisponible\": 525\n        },\n        {\n            \"Fecha\": \"2025-08-30\",\n            \"Cliente\": \"Ana Gómez\",\n            \"NumeroCuenta\": \"100003\",\n            \"Tipo\": \"Ahorro\",\n            \"SaldoInicial\": 500,\n            \"Estado\": false,\n            \"Movimiento\": 500,\n            \"SaldoDisponible\": 175\n        },\n        {\n            \"Fecha\": \"2025-08-30\",\n            \"Cliente\": \"Ana Gómez\",\n            \"NumeroCuenta\": \"100003\",\n            \"Tipo\": \"Ahorro\",\n            \"SaldoInicial\": 500,\n            \"Estado\": false,\n            \"Movimiento\": 100,\n            \"SaldoDisponible\": 75\n        },\n        {\n            \"Fecha\": \"2025-08-30\",\n            \"Cliente\": \"Ana Gómez\",\n            \"NumeroCuenta\": \"100003\",\n            \"Tipo\": \"Ahorro\",\n            \"SaldoInicial\": 500,\n            \"Estado\": false,\n            \"Movimiento\": 1000000,\n            \"SaldoDisponible\": 1000075\n        }\n    ],\n    \"PdfBase64\": null,\n    \"TotalDebitos\": 525,\n    \"TotalCreditos\": 1001750,\n    \"TotalMovimientos\": 15,\n    \"FechaGeneracion\": \"2025-08-31T22:47:47.9059161-05:00\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Clientes",
+			"item": [
+				{
+					"name": "Get All Clients",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUri}}/Clientes"
+					},
+					"response": [
+						{
+							"name": "Get All Clients",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": "{{baseUri}}/Clientes"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 01 Sep 2025 03:52:09 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "Kestrel"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"message\": \"Operación exitosa\",\n    \"data\": [\n        {\n            \"id\": 2,\n            \"estado\": true,\n            \"nombre\": \"Ana Gómez\",\n            \"identificacion\": \"0987654321\",\n            \"direccion\": \"Calle Falsa 456\",\n            \"telefono\": \"0888888888\",\n            \"edad\": 28,\n            \"genero\": \"Femenino\",\n            \"contrasena\": \"passAna\",\n            \"cuentas\": [\n                {\n                    \"id\": 3,\n                    \"numeroCuenta\": \"100003\",\n                    \"tipoCuenta\": 0,\n                    \"saldoInicial\": 500,\n                    \"estado\": false,\n                    \"cliente\": {\n                        \"id\": 2,\n                        \"nombre\": \"Ana Gómez\"\n                    }\n                },\n                {\n                    \"id\": 4,\n                    \"numeroCuenta\": \"200001\",\n                    \"tipoCuenta\": 0,\n                    \"saldoInicial\": 1200,\n                    \"estado\": true,\n                    \"cliente\": {\n                        \"id\": 2,\n                        \"nombre\": \"Ana Gómez\"\n                    }\n                },\n                {\n                    \"id\": 5,\n                    \"numeroCuenta\": \"200002\",\n                    \"tipoCuenta\": 1,\n                    \"saldoInicial\": 3000,\n                    \"estado\": true,\n                    \"cliente\": {\n                        \"id\": 2,\n                        \"nombre\": \"Ana Gómez\"\n                    }\n                },\n                {\n                    \"id\": 6,\n                    \"numeroCuenta\": \"200003\",\n                    \"tipoCuenta\": 0,\n                    \"saldoInicial\": 800,\n                    \"estado\": true,\n                    \"cliente\": {\n                        \"id\": 2,\n                        \"nombre\": \"Ana Gómez\"\n                    }\n                },\n                {\n                    \"id\": 11,\n                    \"numeroCuenta\": \"0000112\",\n                    \"tipoCuenta\": 0,\n                    \"saldoInicial\": 123,\n                    \"estado\": false,\n                    \"cliente\": {\n                        \"id\": 2,\n                        \"nombre\": \"Ana Gómez\"\n                    }\n                }\n            ]\n        },\n        {\n            \"id\": 3,\n            \"estado\": true,\n            \"nombre\": \"Juan Pérez Actualizado\",\n            \"identificacion\": \"123456789\",\n            \"direccion\": \"Nueva Av. Siempre Viva 456\",\n            \"telefono\": \"5559876543\",\n            \"edad\": 35,\n            \"genero\": \"Masculino\",\n            \"contrasena\": \"NuevaContraSegura2025\",\n            \"cuentas\": [\n                {\n                    \"id\": 7,\n                    \"numeroCuenta\": \"300001\",\n                    \"tipoCuenta\": 1,\n                    \"saldoInicial\": 5000,\n                    \"estado\": true,\n                    \"cliente\": {\n                        \"id\": 3,\n                        \"nombre\": \"Juan Pérez Actualizado\"\n                    }\n                },\n                {\n                    \"id\": 8,\n                    \"numeroCuenta\": \"300002\",\n                    \"tipoCuenta\": 0,\n                    \"saldoInicial\": 600,\n                    \"estado\": true,\n                    \"cliente\": {\n                        \"id\": 3,\n                        \"nombre\": \"Juan Pérez Actualizado\"\n                    }\n                },\n                {\n                    \"id\": 9,\n                    \"numeroCuenta\": \"300003\",\n                    \"tipoCuenta\": 1,\n                    \"saldoInicial\": 250,\n                    \"estado\": false,\n                    \"cliente\": {\n                        \"id\": 3,\n                        \"nombre\": \"Juan Pérez Actualizado\"\n                    }\n                }\n            ]\n        },\n        {\n            \"id\": 4,\n            \"estado\": true,\n            \"nombre\": \"Juan Pérez\",\n            \"identificacion\": \"123456789\",\n            \"direccion\": \"Av. Siempre Viva 123\",\n            \"telefono\": \"5551234567\",\n            \"edad\": 30,\n            \"genero\": \"Masculino\",\n            \"contrasena\": \"MiPasswordSegura2025\",\n            \"cuentas\": []\n        },\n        {\n            \"id\": 5,\n            \"estado\": true,\n            \"nombre\": \"Juan Pérez\",\n            \"identificacion\": \"123456789\",\n            \"direccion\": \"Av. Siempre Viva 123\",\n            \"telefono\": \"5551234567\",\n            \"edad\": 30,\n            \"genero\": \"Masculino\",\n            \"contrasena\": \"MiPasswordSegura2025\",\n            \"cuentas\": []\n        },\n        {\n            \"id\": 6,\n            \"estado\": true,\n            \"nombre\": \"Pruebas Andersons\",\n            \"identificacion\": \"123456789\",\n            \"direccion\": \"Av. Siempre Viva 123\",\n            \"telefono\": \"5551234567\",\n            \"edad\": 30,\n            \"genero\": \"Masculino\",\n            \"contrasena\": \"MiPasswordSegura2025\",\n            \"cuentas\": []\n        },\n        {\n            \"id\": 7,\n            \"estado\": true,\n            \"nombre\": \"Pruebas Andersons 123\",\n            \"identificacion\": \"123456789\",\n            \"direccion\": \"Av. Siempre Viva 123\",\n            \"telefono\": \"5551234567\",\n            \"edad\": 30,\n            \"genero\": \"Masculino\",\n            \"contrasena\": \"MiPasswordSegura2025\",\n            \"cuentas\": [\n                {\n                    \"id\": 10,\n                    \"numeroCuenta\": \"0000111\",\n                    \"tipoCuenta\": 1,\n                    \"saldoInicial\": 100000000,\n                    \"estado\": true,\n                    \"cliente\": {\n                        \"id\": 7,\n                        \"nombre\": \"Pruebas Andersons 123\"\n                    }\n                }\n            ]\n        },\n        {\n            \"id\": 8,\n            \"estado\": true,\n            \"nombre\": \"prueba user\",\n            \"identificacion\": \"1234567890\",\n            \"direccion\": \"0000000000000\",\n            \"telefono\": \"3016277911\",\n            \"edad\": 25,\n            \"genero\": \"Masculino\",\n            \"contrasena\": \"1234567890\",\n            \"cuentas\": []\n        }\n    ],\n    \"errors\": [],\n    \"timestamp\": \"2025-09-01T03:52:09.2779484Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Create Client",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 0,\r\n    \"estado\": true,\r\n    \"nombre\": \"4 Septiembre\",\r\n    \"identificacion\": \"1234567890\",\r\n    \"direccion\": \"0000000000000\",\r\n    \"telefono\": \"3016277911\",\r\n    \"edad\": 23,\r\n    \"genero\": \"Masculino\",\r\n    \"cuentas\": [],\r\n    \"contrasena\": \"1234567890'\"\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUri}}/Clientes"
+					},
+					"response": [
+						{
+							"name": "Create Client",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": 0,\r\n    \"estado\": true,\r\n    \"nombre\": \"4 Septiembre\",\r\n    \"identificacion\": \"1234567890\",\r\n    \"direccion\": \"0000000000000\",\r\n    \"telefono\": \"3016277911\",\r\n    \"edad\": 23,\r\n    \"genero\": \"Masculino\",\r\n    \"cuentas\": [],\r\n    \"contrasena\": \"1234567890'\"\r\n  }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUri}}/Clientes"
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 01 Sep 2025 04:05:43 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "Kestrel"
+								},
+								{
+									"key": "Location",
+									"value": "https://localhost:7221/api/Clientes/11"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"message\": \"Operación exitosa\",\n    \"data\": {\n        \"id\": 11,\n        \"estado\": true,\n        \"nombre\": \"4 Septiembre\",\n        \"identificacion\": \"1234567890\",\n        \"direccion\": \"0000000000000\",\n        \"telefono\": \"3016277911\",\n        \"edad\": 23,\n        \"genero\": \"Masculino\",\n        \"contrasena\": \"1234567890'\",\n        \"cuentas\": []\n    },\n    \"errors\": [],\n    \"timestamp\": \"2025-09-01T04:05:43.3352311Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Update Client",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 2,\r\n  \"estado\": true,\r\n  \"nombre\": \"Ana Gómez\",\r\n  \"identificacion\": \"0987654321\",\r\n  \"direccion\": \"Calle Falsa 456 2 Septiembre\",\r\n  \"telefono\": \"0888888888\",\r\n  \"edad\": 28,\r\n  \"genero\": \"Femenino\",\r\n  \"cuentas\": [],\r\n  \"contrasena\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUri}}/Clientes/2"
+					},
+					"response": [
+						{
+							"name": "Update Client",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"id\": 2,\r\n  \"estado\": true,\r\n  \"nombre\": \"Ana Gómez\",\r\n  \"identificacion\": \"0987654321\",\r\n  \"direccion\": \"Calle Falsa 456 2 Septiembre\",\r\n  \"telefono\": \"0888888888\",\r\n  \"edad\": 28,\r\n  \"genero\": \"Femenino\",\r\n  \"cuentas\": [],\r\n  \"contrasena\": \"\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUri}}/Clientes/2"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 01 Sep 2025 04:04:57 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "Kestrel"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"message\": \"Operación exitosa\",\n    \"data\": {\n        \"id\": 2,\n        \"estado\": true,\n        \"nombre\": \"Ana Gómez\",\n        \"identificacion\": \"0987654321\",\n        \"direccion\": \"Calle Falsa 456 2 Septiembre\",\n        \"telefono\": \"0888888888\",\n        \"edad\": 28,\n        \"genero\": \"Femenino\",\n        \"contrasena\": \"passAna\",\n        \"cuentas\": [\n            {\n                \"id\": 3,\n                \"numeroCuenta\": \"100003\",\n                \"tipoCuenta\": 0,\n                \"saldoInicial\": 500,\n                \"estado\": false,\n                \"cliente\": {\n                    \"id\": 2,\n                    \"nombre\": \"Ana Gómez\"\n                }\n            },\n            {\n                \"id\": 4,\n                \"numeroCuenta\": \"200001\",\n                \"tipoCuenta\": 0,\n                \"saldoInicial\": 1200,\n                \"estado\": true,\n                \"cliente\": {\n                    \"id\": 2,\n                    \"nombre\": \"Ana Gómez\"\n                }\n            },\n            {\n                \"id\": 5,\n                \"numeroCuenta\": \"200002\",\n                \"tipoCuenta\": 1,\n                \"saldoInicial\": 3000,\n                \"estado\": true,\n                \"cliente\": {\n                    \"id\": 2,\n                    \"nombre\": \"Ana Gómez\"\n                }\n            },\n            {\n                \"id\": 6,\n                \"numeroCuenta\": \"200003\",\n                \"tipoCuenta\": 0,\n                \"saldoInicial\": 800,\n                \"estado\": true,\n                \"cliente\": {\n                    \"id\": 2,\n                    \"nombre\": \"Ana Gómez\"\n                }\n            },\n            {\n                \"id\": 11,\n                \"numeroCuenta\": \"0000112\",\n                \"tipoCuenta\": 0,\n                \"saldoInicial\": 123,\n                \"estado\": false,\n                \"cliente\": {\n                    \"id\": 2,\n                    \"nombre\": \"Ana Gómez\"\n                }\n            }\n        ]\n    },\n    \"errors\": [],\n    \"timestamp\": \"2025-09-01T04:04:58.0613192Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete Client",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "content-length",
+								"value": "4787",
+								"type": "text"
+							},
+							{
+								"key": "content-type",
+								"value": "application/pdf",
+								"type": "text"
+							}
+						],
+						"url": "{{baseUri}}/Clientes/2"
+					},
+					"response": [
+						{
+							"name": "Delete Client",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "content-length",
+										"value": "4787",
+										"type": "text"
+									},
+									{
+										"key": "content-type",
+										"value": "application/pdf",
+										"type": "text"
+									}
+								],
+								"url": "{{baseUri}}/Clientes/2"
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Date",
+									"value": "Mon, 01 Sep 2025 04:02:04 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "Kestrel"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Cuentas",
+			"item": [
+				{
+					"name": "Get All Accounts",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": "{{baseUri}}/Clientes"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Account",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"numeroCuenta\": \"1223\",\r\n  \"tipoCuenta\": 0,\r\n  \"saldoInicial\": 23222,\r\n  \"estado\": true,\r\n  \"cliente\": {\r\n    \"id\": 4,\r\n    \"nombre\": \"Juan Pérez\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUri}}/Cuentas"
+					},
+					"response": [
+						{
+							"name": "Create Account",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"numeroCuenta\": \"1223\",\r\n  \"tipoCuenta\": 0,\r\n  \"saldoInicial\": 23222,\r\n  \"estado\": true,\r\n  \"cliente\": {\r\n    \"id\": 4,\r\n    \"nombre\": \"Juan Pérez\"\r\n  }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUri}}/Cuentas"
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 01 Sep 2025 04:22:43 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "Kestrel"
+								},
+								{
+									"key": "Location",
+									"value": "https://localhost:7221/api/Cuentas?id=13"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"message\": \"Operación exitosa\",\n    \"data\": {\n        \"id\": 13,\n        \"numeroCuenta\": \"1223\",\n        \"tipoCuenta\": 0,\n        \"saldoInicial\": 23222,\n        \"estado\": true,\n        \"cliente\": {\n            \"id\": 0,\n            \"nombre\": \"Sin cliente\"\n        }\n    },\n    \"errors\": [],\n    \"timestamp\": \"2025-09-01T04:22:44.7795035Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Update Account",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"numeroCuenta\": \"200001\",\r\n  \"tipoCuenta\": 1,\r\n  \"saldoInicial\": 1200,\r\n  \"estado\": true,\r\n  \"cliente\": {\r\n    \"id\": 2,\r\n    \"nombre\": \"Ana Gómez\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUri}}/Cuentas/4"
+					},
+					"response": [
+						{
+							"name": "Update Account",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"numeroCuenta\": \"200001\",\r\n  \"tipoCuenta\": 1,\r\n  \"saldoInicial\": 1200,\r\n  \"estado\": true,\r\n  \"cliente\": {\r\n    \"id\": 2,\r\n    \"nombre\": \"Ana Gómez\"\r\n  }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUri}}/Cuentas/4"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 01 Sep 2025 04:24:55 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "Kestrel"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"message\": \"Operación exitosa\",\n    \"data\": {\n        \"id\": 4,\n        \"numeroCuenta\": \"200001\",\n        \"tipoCuenta\": 1,\n        \"saldoInicial\": 1200,\n        \"estado\": true,\n        \"cliente\": {\n            \"id\": 2,\n            \"nombre\": \"Ana Gómez\"\n        }\n    },\n    \"errors\": [],\n    \"timestamp\": \"2025-09-01T04:24:55.8934683Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete Account",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUri}}/Cuentas/4"
+					},
+					"response": [
+						{
+							"name": "Delete Account",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUri}}/Cuentas/4"
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Date",
+									"value": "Mon, 01 Sep 2025 04:27:01 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "Kestrel"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Movimientos",
+			"item": [
+				{
+					"name": "Get All Transactions",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 0,\r\n    \"estado\": true,\r\n    \"nombre\": \"4 Septiembre\",\r\n    \"identificacion\": \"1234567890\",\r\n    \"direccion\": \"0000000000000\",\r\n    \"telefono\": \"3016277911\",\r\n    \"edad\": 23,\r\n    \"genero\": \"Masculino\",\r\n    \"cuentas\": [],\r\n    \"contrasena\": \"1234567890'\"\r\n  }"
+						},
+						"url": "{{baseUri}}/Movimientos"
+					},
+					"response": [
+						{
+							"name": "Get All Transactions",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": 0,\r\n    \"estado\": true,\r\n    \"nombre\": \"4 Septiembre\",\r\n    \"identificacion\": \"1234567890\",\r\n    \"direccion\": \"0000000000000\",\r\n    \"telefono\": \"3016277911\",\r\n    \"edad\": 23,\r\n    \"genero\": \"Masculino\",\r\n    \"cuentas\": [],\r\n    \"contrasena\": \"1234567890'\"\r\n  }"
+								},
+								"url": "{{baseUri}}/Movimientos"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 01 Sep 2025 04:09:12 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "Kestrel"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"message\": \"Movimientos obtenidos exitosamente\",\n    \"data\": [\n        {\n            \"id\": 2,\n            \"fecha\": \"2025-08-22T00:00:00\",\n            \"tipoMovimiento\": 1,\n            \"valor\": 200,\n            \"saldo\": 1600,\n            \"cuenta\": {\n                \"id\": 1,\n                \"numeroCuenta\": \"100001\"\n            }\n        },\n        {\n            \"id\": 3,\n            \"fecha\": \"2025-08-23T00:00:00\",\n            \"tipoMovimiento\": 0,\n            \"valor\": 50,\n            \"saldo\": 1550,\n            \"cuenta\": {\n                \"id\": 1,\n                \"numeroCuenta\": \"100001\"\n            }\n        },\n        {\n            \"id\": 4,\n            \"fecha\": \"2025-08-21T00:00:00\",\n            \"tipoMovimiento\": 1,\n            \"valor\": 500,\n            \"saldo\": 3000,\n            \"cuenta\": {\n                \"id\": 2,\n                \"numeroCuenta\": \"100002\"\n            }\n        },\n        {\n            \"id\": 5,\n            \"fecha\": \"2025-08-22T00:00:00\",\n            \"tipoMovimiento\": 0,\n            \"valor\": 1000,\n            \"saldo\": 2000,\n            \"cuenta\": {\n                \"id\": 2,\n                \"numeroCuenta\": \"100002\"\n            }\n        },\n        {\n            \"id\": 6,\n            \"fecha\": \"2025-08-23T00:00:00\",\n            \"tipoMovimiento\": 1,\n            \"valor\": 250,\n            \"saldo\": 2250,\n            \"cuenta\": {\n                \"id\": 2,\n                \"numeroCuenta\": \"100002\"\n            }\n        },\n        {\n            \"id\": 7,\n            \"fecha\": \"2025-08-21T00:00:00\",\n            \"tipoMovimiento\": 0,\n            \"valor\": 50,\n            \"saldo\": 450,\n            \"cuenta\": {\n                \"id\": 3,\n                \"numeroCuenta\": \"100003\"\n            }\n        },\n        {\n            \"id\": 8,\n            \"fecha\": \"2025-08-22T00:00:00\",\n            \"tipoMovimiento\": 1,\n            \"valor\": 100,\n            \"saldo\": 550,\n            \"cuenta\": {\n                \"id\": 3,\n                \"numeroCuenta\": \"100003\"\n            }\n        },\n        {\n            \"id\": 9,\n            \"fecha\": \"2025-08-23T00:00:00\",\n            \"tipoMovimiento\": 0,\n            \"valor\": 25,\n            \"saldo\": 525,\n            \"cuenta\": {\n                \"id\": 3,\n                \"numeroCuenta\": \"100003\"\n            }\n        },\n        {\n            \"id\": 28,\n            \"fecha\": \"2025-08-30T19:55:27.002\",\n            \"tipoMovimiento\": 0,\n            \"valor\": -500,\n            \"saldo\": 175,\n            \"cuenta\": {\n                \"id\": 3,\n                \"numeroCuenta\": \"100003\"\n            }\n        },\n        {\n            \"id\": 29,\n            \"fecha\": \"2025-08-30T19:56:01.962\",\n            \"tipoMovimiento\": 0,\n            \"valor\": -100,\n            \"saldo\": 75,\n            \"cuenta\": {\n                \"id\": 3,\n                \"numeroCuenta\": \"100003\"\n            }\n        },\n        {\n            \"id\": 30,\n            \"fecha\": \"2025-08-30T19:56:48.998\",\n            \"tipoMovimiento\": 1,\n            \"valor\": 1000000,\n            \"saldo\": 1000075,\n            \"cuenta\": {\n                \"id\": 3,\n                \"numeroCuenta\": \"100003\"\n            }\n        },\n        {\n            \"id\": 1,\n            \"fecha\": \"2025-09-01T01:35:13.984\",\n            \"tipoMovimiento\": 0,\n            \"valor\": 100,\n            \"saldo\": 0,\n            \"cuenta\": {\n                \"id\": 4,\n                \"numeroCuenta\": \"200001\"\n            }\n        },\n        {\n            \"id\": 10,\n            \"fecha\": \"2025-08-21T00:00:00\",\n            \"tipoMovimiento\": 1,\n            \"valor\": 300,\n            \"saldo\": 1500,\n            \"cuenta\": {\n                \"id\": 4,\n                \"numeroCuenta\": \"200001\"\n            }\n        },\n        {\n            \"id\": 11,\n            \"fecha\": \"2025-08-22T00:00:00\",\n            \"tipoMovimiento\": 0,\n            \"valor\": 200,\n            \"saldo\": 1300,\n            \"cuenta\": {\n                \"id\": 4,\n                \"numeroCuenta\": \"200001\"\n            }\n        },\n        {\n            \"id\": 12,\n            \"fecha\": \"2025-08-23T00:00:00\",\n            \"tipoMovimiento\": 1,\n            \"valor\": 100,\n            \"saldo\": 1400,\n            \"cuenta\": {\n                \"id\": 4,\n                \"numeroCuenta\": \"200001\"\n            }\n        },\n        {\n            \"id\": 31,\n            \"fecha\": \"2025-09-01T01:21:06.678\",\n            \"tipoMovimiento\": 1,\n            \"valor\": 123,\n            \"saldo\": 1923,\n            \"cuenta\": {\n                \"id\": 4,\n                \"numeroCuenta\": \"200001\"\n            }\n        },\n        {\n            \"id\": 32,\n            \"fecha\": \"2025-09-01T01:23:59.094\",\n            \"tipoMovimiento\": 1,\n            \"valor\": 12344,\n            \"saldo\": 14267,\n            \"cuenta\": {\n                \"id\": 4,\n                \"numeroCuenta\": \"200001\"\n            }\n        },\n        {\n            \"id\": 13,\n            \"fecha\": \"2025-08-21T00:00:00\",\n            \"tipoMovimiento\": 0,\n            \"valor\": 500,\n            \"saldo\": 2500,\n            \"cuenta\": {\n                \"id\": 5,\n                \"numeroCuenta\": \"200002\"\n            }\n        },\n        {\n            \"id\": 14,\n            \"fecha\": \"2025-08-22T00:00:00\",\n            \"tipoMovimiento\": 1,\n            \"valor\": 1000,\n            \"saldo\": 3500,\n            \"cuenta\": {\n                \"id\": 5,\n                \"numeroCuenta\": \"200002\"\n            }\n        },\n        {\n            \"id\": 15,\n            \"fecha\": \"2025-08-23T00:00:00\",\n            \"tipoMovimiento\": 0,\n            \"valor\": 250,\n            \"saldo\": 3250,\n            \"cuenta\": {\n                \"id\": 5,\n                \"numeroCuenta\": \"200002\"\n            }\n        },\n        {\n            \"id\": 16,\n            \"fecha\": \"2025-08-21T00:00:00\",\n            \"tipoMovimiento\": 1,\n            \"valor\": 200,\n            \"saldo\": 1000,\n            \"cuenta\": {\n                \"id\": 6,\n                \"numeroCuenta\": \"200003\"\n            }\n        },\n        {\n            \"id\": 17,\n            \"fecha\": \"2025-08-22T00:00:00\",\n            \"tipoMovimiento\": 0,\n            \"valor\": 100,\n            \"saldo\": 900,\n            \"cuenta\": {\n                \"id\": 6,\n                \"numeroCuenta\": \"200003\"\n            }\n        },\n        {\n            \"id\": 18,\n            \"fecha\": \"2025-08-23T00:00:00\",\n            \"tipoMovimiento\": 1,\n            \"valor\": 50,\n            \"saldo\": 950,\n            \"cuenta\": {\n                \"id\": 6,\n                \"numeroCuenta\": \"200003\"\n            }\n        },\n        {\n            \"id\": 19,\n            \"fecha\": \"2025-08-21T00:00:00\",\n            \"tipoMovimiento\": 0,\n            \"valor\": 1000,\n            \"saldo\": 4000,\n            \"cuenta\": {\n                \"id\": 7,\n                \"numeroCuenta\": \"300001\"\n            }\n        },\n        {\n            \"id\": 20,\n            \"fecha\": \"2025-08-22T00:00:00\",\n            \"tipoMovimiento\": 1,\n            \"valor\": 500,\n            \"saldo\": 4500,\n            \"cuenta\": {\n                \"id\": 7,\n                \"numeroCuenta\": \"300001\"\n            }\n        },\n        {\n            \"id\": 21,\n            \"fecha\": \"2025-08-23T00:00:00\",\n            \"tipoMovimiento\": 0,\n            \"valor\": 250,\n            \"saldo\": 4250,\n            \"cuenta\": {\n                \"id\": 7,\n                \"numeroCuenta\": \"300001\"\n            }\n        },\n        {\n            \"id\": 22,\n            \"fecha\": \"2025-08-21T00:00:00\",\n            \"tipoMovimiento\": 1,\n            \"valor\": 100,\n            \"saldo\": 700,\n            \"cuenta\": {\n                \"id\": 8,\n                \"numeroCuenta\": \"300002\"\n            }\n        },\n        {\n            \"id\": 23,\n            \"fecha\": \"2025-08-22T00:00:00\",\n            \"tipoMovimiento\": 0,\n            \"valor\": 50,\n            \"saldo\": 650,\n            \"cuenta\": {\n                \"id\": 8,\n                \"numeroCuenta\": \"300002\"\n            }\n        },\n        {\n            \"id\": 24,\n            \"fecha\": \"2025-08-23T00:00:00\",\n            \"tipoMovimiento\": 1,\n            \"valor\": 25,\n            \"saldo\": 675,\n            \"cuenta\": {\n                \"id\": 8,\n                \"numeroCuenta\": \"300002\"\n            }\n        },\n        {\n            \"id\": 25,\n            \"fecha\": \"2025-08-21T00:00:00\",\n            \"tipoMovimiento\": 0,\n            \"valor\": 100,\n            \"saldo\": 150,\n            \"cuenta\": {\n                \"id\": 9,\n                \"numeroCuenta\": \"300003\"\n            }\n        },\n        {\n            \"id\": 26,\n            \"fecha\": \"2025-08-22T00:00:00\",\n            \"tipoMovimiento\": 1,\n            \"valor\": 200,\n            \"saldo\": 350,\n            \"cuenta\": {\n                \"id\": 9,\n                \"numeroCuenta\": \"300003\"\n            }\n        },\n        {\n            \"id\": 27,\n            \"fecha\": \"2025-08-23T00:00:00\",\n            \"tipoMovimiento\": 0,\n            \"valor\": 50,\n            \"saldo\": 300,\n            \"cuenta\": {\n                \"id\": 9,\n                \"numeroCuenta\": \"300003\"\n            }\n        }\n    ],\n    \"errors\": [],\n    \"timestamp\": \"2025-09-01T04:09:13.0496738Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Create Transaction",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 0,\r\n  \"fecha\": \"2025-09-01T04:09:51.676Z\",\r\n  \"tipoMovimiento\": 1,\r\n  \"valor\": 123,\r\n  \"saldo\": 0,\r\n  \"cuenta\": {\r\n    \"id\": 4,\r\n    \"numeroCuenta\": \"200001\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUri}}/Movimientos"
+					},
+					"response": [
+						{
+							"name": "Create Transaction",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"id\": 0,\r\n  \"fecha\": \"2025-09-01T04:09:51.676Z\",\r\n  \"tipoMovimiento\": 1,\r\n  \"valor\": 123,\r\n  \"saldo\": 0,\r\n  \"cuenta\": {\r\n    \"id\": 4,\r\n    \"numeroCuenta\": \"200001\"\r\n  }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUri}}/Movimientos"
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 01 Sep 2025 04:10:58 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "Kestrel"
+								},
+								{
+									"key": "Location",
+									"value": "https://localhost:7221/api/Movimientos/35"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"message\": \"Movimiento creado exitosamente\",\n    \"data\": {\n        \"id\": 35,\n        \"fecha\": \"2025-09-01T04:09:51.676Z\",\n        \"tipoMovimiento\": 1,\n        \"valor\": 123,\n        \"saldo\": 14736,\n        \"cuenta\": {\n            \"id\": 4,\n            \"numeroCuenta\": \"200001\"\n        }\n    },\n    \"errors\": [],\n    \"timestamp\": \"2025-09-01T04:10:58.8999941Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Update Transaction",
+					"request": {
+						"method": "PUT",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Transaction",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 0,\r\n  \"fecha\": \"2025-09-01T04:09:51.676Z\",\r\n  \"tipoMovimiento\": 1,\r\n  \"valor\": 123,\r\n  \"saldo\": 0,\r\n  \"cuenta\": {\r\n    \"id\": 4,\r\n    \"numeroCuenta\": \"200001\"\r\n  }\r\n}"
+						},
+						"url": "{{baseUri}}/Movimientos/3"
+					},
+					"response": [
+						{
+							"name": "Delete Transaction",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"id\": 0,\r\n  \"fecha\": \"2025-09-01T04:09:51.676Z\",\r\n  \"tipoMovimiento\": 1,\r\n  \"valor\": 123,\r\n  \"saldo\": 0,\r\n  \"cuenta\": {\r\n    \"id\": 4,\r\n    \"numeroCuenta\": \"200001\"\r\n  }\r\n}"
+								},
+								"url": "{{baseUri}}/Movimientos/3"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 01 Sep 2025 04:12:18 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "Kestrel"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"message\": \"Movimiento eliminado exitosamente\",\n    \"data\": null,\n    \"errors\": [],\n    \"timestamp\": \"2025-09-01T04:12:18.9243155Z\"\n}"
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUri",
+			"value": "https://localhost:7221/api"
+		}
+	]
+}

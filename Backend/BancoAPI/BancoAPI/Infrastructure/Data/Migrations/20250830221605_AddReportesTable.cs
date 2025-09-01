@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace BancoAPI.Migrations
+namespace BancoAPI.Infrastructure.Data.Migrations
 {
     /// <inheritdoc />
     public partial class AddReportesTable : Migration

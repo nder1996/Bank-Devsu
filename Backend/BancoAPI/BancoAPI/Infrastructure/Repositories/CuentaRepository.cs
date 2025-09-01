@@ -67,7 +67,6 @@ namespace BancoAPI.Infrastructure.Repositories
             
             return await _context.Cuentas
                 .Include(c => c.ClienteNavigation)
-                    .ThenInclude(cliente => cliente.Persona)
                 .FirstOrDefaultAsync(c => c.Id == cuentaExistente.Id);
         }
 
@@ -88,7 +87,6 @@ namespace BancoAPI.Infrastructure.Repositories
             return await _context.Cuentas
                 .Where(c => c.ClienteId == clienteId)
                 .Include(c => c.ClienteNavigation)
-                    .ThenInclude(cliente => cliente.Persona)
                 .ToListAsync();
         }
 
@@ -96,7 +94,6 @@ namespace BancoAPI.Infrastructure.Repositories
         {
             return await _context.Cuentas
                 .Include(c => c.ClienteNavigation)
-                    .ThenInclude(cliente => cliente.Persona)
                 .FirstOrDefaultAsync(c => c.Id == cuentaId);
         }
 
@@ -104,7 +101,6 @@ namespace BancoAPI.Infrastructure.Repositories
         {
             return await _context.Cuentas
                .Include(c => c.ClienteNavigation)
-                   .ThenInclude(cliente => cliente.Persona)
                .FirstOrDefaultAsync(c => c.NumeroCuenta == numeroCuenta);
         }
 
@@ -113,7 +109,6 @@ namespace BancoAPI.Infrastructure.Repositories
             return await _context.Cuentas
             .Where(c => c.Estado == true)
             .Include(c => c.ClienteNavigation)
-                .ThenInclude(cliente => cliente.Persona)
             .ToListAsync();
 
         }

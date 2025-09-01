@@ -20,17 +20,17 @@ namespace BancoAPI.Infrastructure.Repositories
             var movimientos = await _context.Movimientos
                 .Include(m => m.Cuenta)
                     .ThenInclude(c => c.ClienteNavigation)
-                        .ThenInclude(cli => cli.Persona)
                 .Where(m => m.Cuenta.ClienteId == clienteId && 
                            m.Fecha >= fechaInicio && 
-                           m.Fecha <= fechaFin)
+                           m.Fecha <= fechaFin &&
+                           m.Cuenta.Estado)
                 .OrderBy(m => m.Fecha)
                 .ToListAsync();
 
             return movimientos.Select(m => new EstadoCuentaDto
             {
                 Fecha = m.Fecha.ToString("yyyy-MM-dd"),
-                Cliente = m.Cuenta.ClienteNavigation?.Persona?.Nombre ?? "Cliente Desconocido",
+                Cliente = m.Cuenta.ClienteNavigation?.Nombre ?? "Cliente Desconocido",
                 NumeroCuenta = m.Cuenta.NumeroCuenta,
                 Tipo = m.Cuenta.TipoCuenta.ToString(),
                 SaldoInicial = m.Cuenta.SaldoInicial,

@@ -52,13 +52,13 @@ namespace BancoAPI.Application.Services
                 if (clienteExistente == null)
                     throw new KeyNotFoundException("Cliente no encontrado.");
 
-                // Actualizar datos de Persona
-                clienteExistente.Persona.Nombre = clienteDto.nombre;
-                clienteExistente.Persona.Identificacion = clienteDto.identificacion;
-                clienteExistente.Persona.Direccion = clienteDto.direccion;
-                clienteExistente.Persona.Telefono = clienteDto.telefono;
-                clienteExistente.Persona.Edad = clienteDto.edad;
-                clienteExistente.Persona.Genero = clienteDto.genero;
+                // Actualizar datos de Persona (herencia)
+                clienteExistente.Nombre = clienteDto.nombre;
+                clienteExistente.Identificacion = clienteDto.identificacion;
+                clienteExistente.Direccion = clienteDto.direccion;
+                clienteExistente.Telefono = clienteDto.telefono;
+                clienteExistente.Edad = clienteDto.edad;
+                clienteExistente.Genero = clienteDto.genero;
 
                 // Actualizar datos de Cliente
                 clienteExistente.Estado = clienteDto.estado;
@@ -153,24 +153,6 @@ namespace BancoAPI.Application.Services
             }
         }
 
-        public async Task<ClienteDto> ObtenerPorIdAsync(int clienteId)
-        {
-            if (clienteId <= 0)
-                throw new ArgumentException("El identificador del cliente es inválido.", nameof(clienteId));
-
-            try
-            {
-                var cliente = await _clienteRepository.ObtenerPorIdAsync(clienteId);
-                if (cliente == null)
-                    throw new KeyNotFoundException("Cliente no encontrado.");
-
-                return _mapper.Map<ClienteDto>(cliente);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
 
         public async Task<ClienteDto> ObtenerPorIdentificacionAsync(string identificacion)
         {

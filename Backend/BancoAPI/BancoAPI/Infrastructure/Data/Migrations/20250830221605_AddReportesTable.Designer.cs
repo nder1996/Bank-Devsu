@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace BancoAPI.Migrations
+namespace BancoAPI.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(BancoDbContext))]
     [Migration("20250830221605_AddReportesTable")]

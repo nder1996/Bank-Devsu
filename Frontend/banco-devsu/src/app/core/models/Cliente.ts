@@ -1,11 +1,9 @@
 import { Persona } from "./Persona";
 import { Cuenta } from "./Cuenta";
 
-export interface Cliente {
-  id?: number | null;
-  contrasena?: string | null;
-  estado?: boolean | null;
-  personaId?: number | null;
-  persona?: Persona | null;
+export interface Cliente extends Persona {
+  clienteId: number;
+  contrasena: string;
+  estado: boolean;
   cuentas?: Cuenta[] | null;
 }

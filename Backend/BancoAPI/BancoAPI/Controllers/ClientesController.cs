@@ -27,13 +27,6 @@ namespace BancoAPI.Controllers
             return Ok(clientes);
         }
 
-        // GET: api/Clientes/5
-        [HttpGet("{id:int}")]
-        public async Task<IActionResult> Get(int id)
-        {
-            var cliente = await _clienteService.ObtenerPorIdAsync(id);
-            return Ok(cliente);
-        }
 
         // POST: api/Clientes
         [HttpPost]

@@ -17,7 +17,7 @@ namespace BancoAPI.Application.Mapping
                 .ForMember(dest => dest.cliente, opt => opt.MapFrom(src => new CuentaDto.ClienteResumido
                 {
                     id = src.ClienteNavigation != null ? src.ClienteNavigation.Id : 0,
-                    nombre = src.ClienteNavigation != null && src.ClienteNavigation.Persona != null ? src.ClienteNavigation.Persona.Nombre : "Sin cliente"
+                    nombre = src.ClienteNavigation != null ? src.ClienteNavigation.Nombre : "Sin cliente"
                 }));
 
 
@@ -37,31 +37,29 @@ namespace BancoAPI.Application.Mapping
                 .ForMember(dest => dest.CuentaId, opt => opt.MapFrom(src => src.cuenta.id))
                 .ForMember(dest => dest.Cuenta, opt => opt.Ignore()); // Se maneja por separado
 
-            // Mapeo Cliente -> ClienteDto (incluye datos de Persona)
+            // Mapeo Cliente -> ClienteDto (hereda de Persona)
             CreateMap<Cliente, ClienteDto>()
-               .ForMember(dest => dest.nombre, opt => opt.MapFrom(src => src.Persona != null ? src.Persona.Nombre : null))
-               .ForMember(dest => dest.identificacion, opt => opt.MapFrom(src => src.Persona != null ? src.Persona.Identificacion : null))
-               .ForMember(dest => dest.direccion, opt => opt.MapFrom(src => src.Persona != null ? src.Persona.Direccion : null))
-               .ForMember(dest => dest.telefono, opt => opt.MapFrom(src => src.Persona != null ? src.Persona.Telefono : null))
-               .ForMember(dest => dest.edad, opt => opt.MapFrom(src => src.Persona != null ? src.Persona.Edad : 0))
-               .ForMember(dest => dest.genero, opt => opt.MapFrom(src => src.Persona != null ? src.Persona.Genero : null))
+               .ForMember(dest => dest.id, opt => opt.MapFrom(src => src.Id))
+               .ForMember(dest => dest.nombre, opt => opt.MapFrom(src => src.Nombre))
+               .ForMember(dest => dest.identificacion, opt => opt.MapFrom(src => src.Identificacion))
+               .ForMember(dest => dest.direccion, opt => opt.MapFrom(src => src.Direccion))
+               .ForMember(dest => dest.telefono, opt => opt.MapFrom(src => src.Telefono))
+               .ForMember(dest => dest.edad, opt => opt.MapFrom(src => src.Edad))
+               .ForMember(dest => dest.genero, opt => opt.MapFrom(src => src.Genero))
+               .ForMember(dest => dest.estado, opt => opt.MapFrom(src => src.Estado))
                .ForMember(dest => dest.cuentas, opt => opt.MapFrom(src => src.Cuentas));
 
-            // Mapeo ClienteDto -> Cliente (crea/actualiza Persona)
+            // Mapeo ClienteDto -> Cliente (hereda de Persona)
             CreateMap<ClienteDto, Cliente>()
                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.id))
+               .ForMember(dest => dest.Nombre, opt => opt.MapFrom(src => src.nombre))
+               .ForMember(dest => dest.Identificacion, opt => opt.MapFrom(src => src.identificacion))
+               .ForMember(dest => dest.Direccion, opt => opt.MapFrom(src => src.direccion))
+               .ForMember(dest => dest.Telefono, opt => opt.MapFrom(src => src.telefono))
+               .ForMember(dest => dest.Edad, opt => opt.MapFrom(src => src.edad))
+               .ForMember(dest => dest.Genero, opt => opt.MapFrom(src => src.genero))
                .ForMember(dest => dest.Estado, opt => opt.MapFrom(src => src.estado))
                .ForMember(dest => dest.Contrasena, opt => opt.Ignore()) // Se maneja por separado
-               .ForMember(dest => dest.PersonaId, opt => opt.Ignore()) // Se asigna después de crear Persona
-               .ForMember(dest => dest.Persona, opt => opt.MapFrom(src => new Persona
-               {
-                   Nombre = src.nombre,
-                   Identificacion = src.identificacion,
-                   Direccion = src.direccion,
-                   Telefono = src.telefono,
-                   Edad = src.edad,
-                   Genero = src.genero
-               }))
                .ForMember(dest => dest.Cuentas, opt => opt.Ignore()); // Se maneja por separado
 
             CreateMap<CuentaDto, Cuenta>()

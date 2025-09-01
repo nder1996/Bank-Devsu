@@ -97,18 +97,20 @@ export class ClientesComponent implements OnInit {
     });
   }
 
-  private mapClientesFromResponse(data: ClienteDto[]): ClienteDto[] {
-    return data.map(cliente => ({
-      id: cliente.id,
-      nombre: cliente.nombre,
-      identificacion: cliente.identificacion,
-      direccion: cliente.direccion,
-      telefono: cliente.telefono,
-      edad: cliente.edad,
-      genero: cliente.genero,
-      estado: cliente.estado,
-      cuentas: cliente.cuentas || []
-    }));
+  private mapClientesFromResponse(data: any[]): ClienteDto[] {
+    return data.map(item => new ClienteDto(
+      item.id,
+      item.nombre,
+      item.genero,
+      item.edad,
+      item.identificacion,
+      item.direccion,
+      item.telefono,
+      item.clienteId || item.id,
+      item.contrasena || '',
+      item.estado,
+      item.cuentas || []
+    ));
   }
 
   // === SEARCH & PAGINATION ===
@@ -222,15 +224,16 @@ export class ClientesComponent implements OnInit {
     // Crear el DTO completo en el componente
     const clienteDto = new ClienteDto(
       formData.id || 0,
-      formData.estado,
       formData.nombre,
+      formData.genero,
+      formData.edad,
       formData.identificacion,
       formData.direccion,
       formData.telefono,
-      formData.edad,
-      formData.genero,
-      [],
-      formData.contrasena
+      formData.clienteId || formData.id || 0,
+      formData.contrasena,
+      formData.estado,
+      []
     );
 
     const operation = this.isEditMode
