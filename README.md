@@ -1,6 +1,4 @@
-Claro, aquí tienes una versión más detallada pero aún concisa, en formato de texto plano, como lo solicitaste.
 
-````
 ***************************************************
 *** 🏦 BANCO DEVSU - README COMPLETO 🏦 ***
 ***************************************************
@@ -129,4 +127,3 @@ Esta es la forma más fácil, ya que Docker gestiona la base de datos y el backe
 ---
 Para probar los endpoints del backend directamente, puedes usar la colección de Postman que se encuentra en la carpeta `Backend/BancoAPI/Postman`. ¡Solo impórtala y empieza a jugar!
 
-````
