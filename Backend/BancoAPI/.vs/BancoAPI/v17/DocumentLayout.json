@@ -61,7 +61,8 @@
               "RelativeToolTip": "BancoAPI\\Properties\\launchSettings.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAACcAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-09-02T14:37:11.855Z"
+              "WhenOpened": "2025-09-02T14:37:11.855Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -119,7 +120,7 @@
               "RelativeDocumentMoniker": "BancoAPI\\Dockerfile",
               "ToolTip": "C:\\Users\\USUARIO\\Documents\\Github\\Bank-Devsu\\Backend\\BancoAPI\\BancoAPI\\Dockerfile",
               "RelativeToolTip": "BancoAPI\\Dockerfile",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
               "WhenOpened": "2025-09-02T02:52:12.437Z",
               "EditorCaption": ""

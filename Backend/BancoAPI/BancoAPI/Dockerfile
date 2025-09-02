@@ -2,12 +2,12 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build
 
 WORKDIR /src
-COPY BancoAPI/BancoAPI.csproj ./BancoAPI/
-RUN dotnet restore ./BancoAPI/BancoAPI.csproj
+COPY *.csproj ./
+RUN dotnet restore
 
 COPY . .
-WORKDIR /src/BancoAPI
-RUN dotnet publish -c Release -o /app/publish --no-restore
+WORKDIR /src
+RUN dotnet publish -c Release -o /app/publish
 
 # Etapa final - Imagen de producción
 FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine AS final
