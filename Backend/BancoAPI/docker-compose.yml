@@ -1,0 +1,19 @@
+# Docker Compose para BancoAPI - Solo API (BD Remota)
+
+services:
+  # API del Banco
+  banco-api:
+    build:
+      context: .
+      dockerfile: BancoAPI/Dockerfile
+      target: final
+    container_name: banco-api
+    restart: unless-stopped
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:8080
+      - DOTNET_RUNNING_IN_CONTAINER=true
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./logs:/app/logs

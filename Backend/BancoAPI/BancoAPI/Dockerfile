@@ -1,30 +1,40 @@
-# Consulte https://aka.ms/customizecontainer para aprender a personalizar su contenedor de depuración y cómo Visual Studio usa este Dockerfile para compilar sus imágenes para una depuración más rápida.
+# Etapa de build
+FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build
 
-# Esta fase se usa cuando se ejecuta desde VS en modo rápido (valor predeterminado para la configuración de depuración)
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-USER $APP_UID
+WORKDIR /src
+COPY BancoAPI/BancoAPI.csproj ./BancoAPI/
+RUN dotnet restore ./BancoAPI/BancoAPI.csproj
+
+COPY . .
+WORKDIR /src/BancoAPI
+RUN dotnet publish -c Release -o /app/publish --no-restore
+
+# Etapa final - Imagen de producción
+FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine AS final
+
+# Crear usuario no-root
+RUN adduser -D -u 1001 appuser
+
+# Instalar dependencias básicas
+RUN apk add --no-cache curl
+
+# Configuración básica
+ENV ASPNETCORE_ENVIRONMENT=Production \
+    ASPNETCORE_URLS=http://+:8080 \
+    TZ=America/Bogota
+
 WORKDIR /app
 EXPOSE 8080
-EXPOSE 8081
 
+# Copiar archivos publicados
+COPY --from=build --chown=appuser:1001 /app/publish .
 
-# Esta fase se usa para compilar el proyecto de servicio
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-ARG BUILD_CONFIGURATION=Release
-WORKDIR /src
-COPY ["BancoAPI/BancoAPI.csproj", "BancoAPI/"]
-RUN dotnet restore "./BancoAPI/BancoAPI.csproj"
-COPY . .
-WORKDIR "/src/BancoAPI"
-RUN dotnet build "./BancoAPI.csproj" -c $BUILD_CONFIGURATION -o /app/build
+# Usar usuario sin privilegios
+USER 1001
 
-# Esta fase se usa para publicar el proyecto de servicio que se copiará en la fase final.
-FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./BancoAPI.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+# Health check básico
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
+    CMD curl -f http://localhost:8080/api/clientes || exit 1
 
-# Esta fase se usa en producción o cuando se ejecuta desde VS en modo normal (valor predeterminado cuando no se usa la configuración de depuración)
-FROM base AS final
-WORKDIR /app
-COPY --from=publish /app/publish .
+# Ejecutar la aplicación
 ENTRYPOINT ["dotnet", "BancoAPI.dll"]

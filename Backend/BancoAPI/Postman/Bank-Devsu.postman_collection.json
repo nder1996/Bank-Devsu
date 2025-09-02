@@ -858,7 +858,7 @@
 	"variable": [
 		{
 			"key": "baseUri",
-			"value": "https://localhost:7221/api"
+			"value": "https://localhost:8080/api"
 		}
 	]
 }
